@@ -3,7 +3,10 @@ title: "MNet Manual"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 documentclass: book
-description:MNet: an R package and Shiny app for integrative analysis of metabolomic and transcriptomic data.
+description: "MNet: an R package and Shiny app for integrative analysis of metabolomic and transcriptomic data."
+output:
+  bookdown::gitbook:
+    css: style.css
 ---
 
 ```{r setup, include=FALSE}
@@ -20,24 +23,25 @@ knitr::opts_chunk$set(fig_cap="yes")
 knitr::include_graphics("figure/overview.png")
 ```
 
-The surge in metabolomics and transcriptomic data has necessitated the development of innovative network analysis tools for the integrated analysis of multi-omics data. However, current tools often focus on individual pathways, extracting the subnetwork for the interested genes and metabolites or extracting the correlation subnetwork, neglecting the valuable information embedded in gene-metabolite or metabolite-metabolite knowledge networks across all metabolic pathways. In response to this gap, we introduce **an integrated analytical tool MNet, an R package for mining metabolomics coupled with clinical and transcriptomic data**. 
+<blockquote>
+**Motivation**
+</blockquote> 
 
-MNet introduces three key feature to enhance the analytical capabilities：
+Advance since any previous publication (if relevant):  
 
-<ul>
-<li>**Knowledgebase - dbMNet**: dbKEGG for extended pathway analysis and dbNet for metabolism-related subnetwork analysis  
-<li>**Algorithm for extended pathway analysis**: identify dysregulated metabolic pathways via considering both metabolites and genes  
-<ul> 
-<li>Extended pathway enrichment analysis (EPEA)
-<li>Extended differential abundance analysis (EDA)
-<li>Extended data sets enrichment analysis (ESEA)
-</ul>
-<li>**Algorithm for metabolism-related subnetwork analysis**: Maximising the potential of our well-established dnet algorithm in integrative analysis of metabolomic and transcriptomic data to provide a systems-level understanding of metabolic interconnections   
-</ul> 
+Integration of metabolomic and transcriptomic data is vital for pathway-centric, systems-biology understandings of disease ([Nucleic Acids Research 2022]( https://doi.org/10.1093/nar/gkab1132) and [Communications Biology 2023](https://doi.org/10.1038/s42003-023-05548-w)). Existing pathway knowledgebases, including but not limited to BiGG ([Nucleic Acids Research 2020](https://doi.org/10.1093/nar/gkz1054)), KEGG ([Nucleic Acids Research 2023](https://doi.org/10.1093/nar/gkac963)), Reactome ([Nucleic Acids Research 2024](https://doi.org/10.1093/nar/gkad1025)), SMPDB ([Nucleic Acids Research 2014](https://doi.org/10.1093/nar/gkt1067)), and WikiPathways ([Nucleic Acids Research 2024](https://doi.org/10.1093/nar/gkad960)), provide metabolic pathway information on genes and metabolites. However, these databases lack the comprehensive integration of both metabolites and genes necessary for downstream pathway and subnetwork analyses, thereby limiting the exploration of potential therapeutic targets from a metabolomic perspective.  
 
--------------------------------------------------------------------------------
+Our well-established algorithm/tool called ‘dnet’ and its related software([Genome Medicine 2014](https://doi.org/10.1186/s13073-014-0064-8), [Genome Medicine 2016](https://doi.org/10.1186/s13073-016-0384-y) and [Nature Genetics 2019](https://doi.org/10.1038/s41588-019-0456-1)) have received nearly 400 citations over time (AS OF October 2024 according to Google Scholar). They excel at identifying core subnetwork using prior knowledge but has been limited to genomic or transcriptomic challenges, without extending its application to metabolomics. In this aspect, MNet supports pathway-centric, network-driven analyses, enabling by the compilation of the dbMNet knowledgebase, which includes dbKEGG and dbNet.  
+
+The dbKEGG facilitates KEGG metabolic pathway-based extended pathway analysis to identify dysregulated metabolic pathways involving both metabolites and genes.  
+
+The dbNet enhances metabolism-related subnetwork analysis by leveraging gene-metabolite and metabolite-metabolite information to identify subnetwork that best explain the input data.  
+
+
+<blockquote>
 **MNet Installation**
--------------------------------------------------------------------------------
+</blockquote>
+
 ```{r,eval=FALSE}
 
 if(!require(BiocManager)){

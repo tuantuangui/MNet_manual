@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>MNet Manual</title>
+  <meta name="description" content="MNet Manual" />
+  <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="MNet Manual" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="MNet Manual" />
+  
+  
+  
+
+
+
+<meta name="date" content="2024-10-30" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+
+<link rel="next" href="extended-pathway-analyses.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="overview.html"><a href="overview.html"><i class="fa fa-check"></i><b>1</b> OVERVIEW</a></li>
+<li class="chapter" data-level="2" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html"><i class="fa fa-check"></i><b>2</b> Extended Pathway Analyses</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#extended-pathway-enrichment-analysis-epea"><i class="fa fa-check"></i><b>2.1</b> Extended pathway enrichment analysis (ePEA)</a></li>
+<li class="chapter" data-level="2.2" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#extended-differential-abundance-eda-score"><i class="fa fa-check"></i><b>2.2</b> Extended differential abundance (EDA) score</a></li>
+<li class="chapter" data-level="2.3" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#extended-data-set-enrichment-analysis-esea"><i class="fa fa-check"></i><b>2.3</b> Extended data set enrichment analysis (ESEA)</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">MNet Manual</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">MNet Manual</h1>
+<p class="date"><em>2024-10-30</em></p>
+</div>
+<div id="overview" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">1</span> OVERVIEW<a href="overview.html#overview" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><img src="figure/overview.png" width="993" style="display: block; margin: auto;" /></p>
+<p>The surge in metabolomics and transcriptomic data has necessitated the development of innovative network analysis tools for the integrated analysis of multi-omics data. However, current tools often focus on individual pathways, extracting the subnetwork for the interested genes and metabolites or extracting the correlation subnetwork, neglecting the valuable information embedded in gene-metabolite or metabolite-metabolite knowledge networks across all metabolic pathways. In response to this gap, we introduce <strong>an integrated analytical tool MNet, an R package for mining metabolomics coupled with clinical and transcriptomic data</strong>.</p>
+<p>MNet introduces three key feature to enhance the analytical capabilities：</p>
+<ul>
+<li>
+<strong>Knowledgebase - dbMNet</strong>: dbKEGG for extended pathway analysis and dbNet for metabolism-related subnetwork analysis<br />
+
+<li>
+<strong>Algorithm for extended pathway analysis</strong>: identify dysregulated metabolic pathways via considering both metabolites and genes<br />
+
+<ul>
+<li>
+Extended pathway enrichment analysis (EPEA)
+<li>
+Extended differential abundance analysis (EDA)
+<li>
+Extended data sets enrichment analysis (ESEA)
+</ul>
+<li>
+<strong>Algorithm for metabolism-related subnetwork analysis</strong>: Maximising the potential of our well-established dnet algorithm in integrative analysis of metabolomic and transcriptomic data to provide a systems-level understanding of metabolic interconnections<br />
+
+</ul>
+<table>
+<colgroup>
+<col width="100%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td align="left">Advance since any previous publication (if relevant):
+Integration of metabolomic and transcriptomic data is vital for pathway-centric, systems-biology understandings of disease [1,2]. Existing pathway knowledgebases, including but not limited to BiGG [3], KEGG [4], Reactome [5], SMPDB [6], and WikiPathways [7], provide metabolic pathway information on genes and metabolites. However, these databases lack the comprehensive integration of both metabolites and genes necessary for downstream pathway and subnetwork analyses, thereby limiting the exploration of potential therapeutic targets from a metabolomic perspective. Our well-established algorithm/tool called ‘dnet’ and its related software [8–10] have received nearly 400 citations over time (AS OF October 2024 according to Google Scholar). They excel at identifying core subnetwork using prior knowledge but has been limited to genomic or transcriptomic challenges, without extending its application to metabolomics. In this aspect, MNet supports pathway-centric, network-driven analyses, enabling by the compilation of the dbMNet knowledgebase, which includes dbKEGG and dbNet. The dbKEGG facilitates KEGG metabolic pathway-based extended pathway analysis to identify dysregulated metabolic pathways involving both metabolites and genes. The dbNet enhances metabolism-related subnetwork analysis by leveraging gene-metabolite and metabolite-metabolite information to identify subnetwork that best explain the input data.</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">``` r
+if(!require(BiocManager)){
+install.packages(“BiocManager”)
+}</td>
+</tr>
+<tr class="even">
+<td align="left">if (!require(remotes)) {
+BiocManager::install(“remotes”, dependencies=T)
+}</td>
+</tr>
+<tr class="odd">
+<td align="left">if (!require(devtools)) {
+BiocManager::install(“devtools”, dependencies=T)
+}</td>
+</tr>
+<tr class="even">
+<td align="left">BiocManager::install(“hfang-bristol/dnet”, dependencies=T)
+BiocManager::install(“tuantuangui/MNet”, dependencies=T)</td>
+</tr>
+<tr class="odd">
+<td align="left">## Check the package ‘MNet’ successfully installed
+library(help=MNet)
+```</td>
+</tr>
+<tr class="even">
+<td align="left"><!--chapter:end:index.Rmd--></td>
+</tr>
+<tr class="odd">
+<td align="left"># Input and output
+## Data input
+The sample data comprises an integrated analysis of metabolomic and transcriptomic profiles in triple-negative breast cancer.</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><img src="figure/Meta.png" width="245" /><img src="figure/Metabolite.png" width="815" /></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><img src="figure/Gene.png" width="249" /><img src="figure/GeneExp.png" width="807" /></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><img src="figure/Group.png" width="249" style="display: block; margin: auto auto auto 0;" /><img src="figure/GroupInfo.png" width="786" style="display: block; margin: auto auto auto 0;" /></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">## Result output
+<strong>The analysis results can be output in image form in two formats: PDF and JPEG. The figure width, height and resolution(DPI) can be adjusted.</strong></td>
+</tr>
+<tr class="even">
+<td align="left"><img src="figure/output.png" width="265" /></td>
+</tr>
+<tr class="odd">
+<td align="left"><!--chapter:end:01-SampleData.Rmd--></td>
+</tr>
+<tr class="even">
+<td align="left"># Metabolic Network
+<strong>The metabolism-related subnetwork analysis is executed through an analyzer specifically designed to identify subnetwork based on input gene- and metabolite-level summary data.</strong></td>
+</tr>
+<tr class="odd">
+<td align="left">## Meta-Gene Network</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>Procedure</strong></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">In R network analysis, nodes number refers to the total count of nodes, representing individual elements or entities within the network.</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Results</strong></p>
+<p>By utilising the dbNet knowledgebase and employing the dnet algorithm, MNet analyses a list of genes and metabolites along with their significance information, allowing a graphical display of the metabolism-related subnetwork that contains both genes and metabolites</p>
+<p><img src="figure/subnetwork.png" width="560" style="display: block; margin: auto;" /></p>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+<a href="extended-pathway-analyses.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/02-subnetwork.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

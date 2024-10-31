@@ -5,24 +5,24 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>MNet Manual</title>
-  <meta name="description" content="MNet Manual" />
+  <meta name="description" content="MNet: an R package and Shiny app for integrative analysis of metabolomic and transcriptomic data." />
   <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
 
   <meta property="og:title" content="MNet Manual" />
   <meta property="og:type" content="book" />
   
-  
+  <meta property="og:description" content="MNet: an R package and Shiny app for integrative analysis of metabolomic and transcriptomic data." />
   
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="MNet Manual" />
   
+  <meta name="twitter:description" content="MNet: an R package and Shiny app for integrative analysis of metabolomic and transcriptomic data." />
   
-  
 
 
 
-<meta name="date" content="2024-10-28" />
+<meta name="date" content="2024-10-31" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -30,7 +30,7 @@
   
   
 
-<link rel="next" href="input-and-output.html"/>
+<link rel="next" href="metabolic-network.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -140,20 +140,40 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> OVERVIEW</a></li>
-<li class="chapter" data-level="2" data-path="input-and-output.html"><a href="input-and-output.html"><i class="fa fa-check"></i><b>2</b> Input and output</a>
+<li class="chapter" data-level="2" data-path="metabolic-network.html"><a href="metabolic-network.html"><i class="fa fa-check"></i><b>2</b> Metabolic Network</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="input-and-output.html"><a href="input-and-output.html#data-input"><i class="fa fa-check"></i><b>2.1</b> Data input</a></li>
-<li class="chapter" data-level="2.2" data-path="input-and-output.html"><a href="input-and-output.html#result-output"><i class="fa fa-check"></i><b>2.2</b> Result output</a></li>
+<li class="chapter" data-level="2.1" data-path="metabolic-network.html"><a href="metabolic-network.html#m-g-network"><i class="fa fa-check"></i><b>2.1</b> M-G Network</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="metabolic-network.html"><a href="metabolic-network.html#interface"><i class="fa fa-check"></i><b>2.1.1</b> Interface</a></li>
+<li class="chapter" data-level="2.1.2" data-path="metabolic-network.html"><a href="metabolic-network.html#results"><i class="fa fa-check"></i><b>2.1.2</b> Results</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="metabolic-network.html"><a href="metabolic-network.html"><i class="fa fa-check"></i><b>3</b> Metabolic Network</a>
-<ul>
-<li class="chapter" data-level="3.1" data-path="metabolic-network.html"><a href="metabolic-network.html#meta-gene-network"><i class="fa fa-check"></i><b>3.1</b> Meta-Gene Network</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html"><i class="fa fa-check"></i><b>4</b> Extended Pathway Analyses</a>
+<li class="chapter" data-level="3" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html"><i class="fa fa-check"></i><b>3</b> Extended Pathway Analyses</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#extended-pathway-enrichment-analysis-epea"><i class="fa fa-check"></i><b>4.1</b> Extended pathway enrichment analysis (ePEA)</a></li>
-<li class="chapter" data-level="4.2" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#extended-differential-abundance-eda-score"><i class="fa fa-check"></i><b>4.2</b> Extended differential abundance (EDA) score</a></li>
-<li class="chapter" data-level="4.3" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#extended-data-set-enrichment-analysis-esea"><i class="fa fa-check"></i><b>4.3</b> Extended data set enrichment analysis (ESEA)</a></li>
+<li class="chapter" data-level="3.1" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#extended-pathway-enrichment-analysis-epea"><i class="fa fa-check"></i><b>3.1</b> Extended pathway enrichment analysis (ePEA)</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#interface-1"><i class="fa fa-check"></i><b>3.1.1</b> Interface</a></li>
+<li class="chapter" data-level="3.1.2" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#results-1"><i class="fa fa-check"></i><b>3.1.2</b> Results</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#extended-differential-abundance-eda-score"><i class="fa fa-check"></i><b>3.2</b> Extended differential abundance (EDA) score</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#interface-2"><i class="fa fa-check"></i><b>3.2.1</b> Interface</a></li>
+<li class="chapter" data-level="3.2.2" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#results-2"><i class="fa fa-check"></i><b>3.2.2</b> Results</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#extended-data-set-enrichment-analysis-esea"><i class="fa fa-check"></i><b>3.3</b> Extended data set enrichment analysis (ESEA)</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#interface-3"><i class="fa fa-check"></i><b>3.3.1</b> Interface</a></li>
+<li class="chapter" data-level="3.3.2" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#results-3"><i class="fa fa-check"></i><b>3.3.2</b> Results</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="deployment.html"><a href="deployment.html"><i class="fa fa-check"></i><b>4</b> Deployment</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="deployment.html"><a href="deployment.html#installing-r-4.4.1-for-ubuntu-20"><i class="fa fa-check"></i><b>4.1</b> Installing R 4.4.1 for Ubuntu 20</a></li>
+<li class="chapter" data-level="4.2" data-path="deployment.html"><a href="deployment.html#installing-r-packages"><i class="fa fa-check"></i><b>4.2</b> Installing R Packages</a></li>
+<li class="chapter" data-level="4.3" data-path="deployment.html"><a href="deployment.html#installing-shiny-sever"><i class="fa fa-check"></i><b>4.3</b> Installing shiny-sever</a></li>
+<li class="chapter" data-level="4.4" data-path="deployment.html"><a href="deployment.html#shiny-app-server-and-logs"><i class="fa fa-check"></i><b>4.4</b> Shiny App Server and Logs</a></li>
+<li class="chapter" data-level="4.5" data-path="deployment.html"><a href="deployment.html#firewall-firewalld-or-ufw"><i class="fa fa-check"></i><b>4.5</b> Firewall: firewalld or ufw</a></li>
+<li class="chapter" data-level="4.6" data-path="deployment.html"><a href="deployment.html#apache2-config"><i class="fa fa-check"></i><b>4.6</b> Apache2 Config</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -177,39 +197,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="header">
 <h1 class="title">MNet Manual</h1>
-<p class="date"><em>2024-10-28</em></p>
+<p class="date"><em>2024-10-31</em></p>
 </div>
 <div id="overview" class="section level1 hasAnchor" number="1">
 <h1><span class="header-section-number">1</span> OVERVIEW<a href="index.html#overview" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p><img src="figure/overview.png" width="993" style="display: block; margin: auto;" /></p>
-<p>The surge in metabolomics and transcriptomic data has necessitated the development of innovative network analysis tools for the integrated analysis of multi-omics data. However, current tools often focus on individual pathways, extracting the subnetwork for the interested genes and metabolites or extracting the correlation subnetwork, neglecting the valuable information embedded in gene-metabolite or metabolite-metabolite knowledge networks across all metabolic pathways. In response to this gap, we introduce <strong>an integrated analytical tool MNet, an R package for mining metabolomics coupled with clinical and transcriptomic data</strong>.</p>
-<p>MNet introduces three key feature to enhance the analytical capabilities：</p>
-<ul>
-<li>
-<strong>Knowledgebase - dbMNet</strong>: dbKEGG for extended pathway analysis and dbNet for metabolism-related subnetwork analysis<br />
-
-<li>
-<strong>Algorithm for extended pathway analysis</strong>: identify dysregulated metabolic pathways via considering both metabolites and genes<br />
-
-<ul>
-<li>
-Extended pathway enrichment analysis (EPEA)
-<li>
-Extended differential abundance analysis (EDA)
-<li>
-Extended data sets enrichment analysis (ESEA)
-</ul>
-<li>
-<strong>Algorithm for metabolism-related subnetwork analysis</strong>: Maximising the potential of our well-established dnet algorithm in integrative analysis of metabolomic and transcriptomic data to provide a systems-level understanding of metabolic interconnections<br />
-
-</ul>
-<table>
-<tbody>
-<tr class="odd">
-<td align="left"><strong>MNet Installation</strong></td>
-</tr>
-</tbody>
-</table>
+<blockquote>
+<strong>Motivation</strong>
+</blockquote>
+<p>Advance since any previous publication (if relevant):</p>
+<p>Integration of metabolomic and transcriptomic data is vital for pathway-centric, systems-biology understandings of disease (<a href="https://doi.org/10.1093/nar/gkab1132">Nucleic Acids Research 2022</a> and <a href="https://doi.org/10.1038/s42003-023-05548-w">Communications Biology 2023</a>). Existing pathway knowledgebases, including but not limited to BiGG (<a href="https://doi.org/10.1093/nar/gkz1054">Nucleic Acids Research 2020</a>), KEGG (<a href="https://doi.org/10.1093/nar/gkac963">Nucleic Acids Research 2023</a>), Reactome (<a href="https://doi.org/10.1093/nar/gkad1025">Nucleic Acids Research 2024</a>), SMPDB (<a href="https://doi.org/10.1093/nar/gkt1067">Nucleic Acids Research 2014</a>), and WikiPathways (<a href="https://doi.org/10.1093/nar/gkad960">Nucleic Acids Research 2024</a>), provide metabolic pathway information on genes and metabolites. However, these databases lack the comprehensive integration of both metabolites and genes necessary for downstream pathway and subnetwork analyses, thereby limiting the exploration of potential therapeutic targets from a metabolomic perspective.</p>
+<p>Our well-established algorithm/tool called ‘dnet’ and its related software(<a href="https://doi.org/10.1186/s13073-014-0064-8">Genome Medicine 2014</a>, <a href="https://doi.org/10.1186/s13073-016-0384-y">Genome Medicine 2016</a> and <a href="https://doi.org/10.1038/s41588-019-0456-1">Nature Genetics 2019</a>) have received nearly 400 citations over time (AS OF October 2024 according to Google Scholar). They excel at identifying core subnetwork using prior knowledge but has been limited to genomic or transcriptomic challenges, without extending its application to metabolomics. In this aspect, MNet supports pathway-centric, network-driven analyses, enabling by the compilation of the dbMNet knowledgebase, which includes dbKEGG and dbNet.</p>
+<p>The dbKEGG facilitates KEGG metabolic pathway-based extended pathway analysis to identify dysregulated metabolic pathways involving both metabolites and genes.</p>
+<p>The dbNet enhances metabolism-related subnetwork analysis by leveraging gene-metabolite and metabolite-metabolite information to identify subnetwork that best explain the input data.</p>
+<blockquote>
+<strong>MNet Installation</strong>
+</blockquote>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="index.html#cb1-1" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(BiocManager)){</span>
 <span id="cb1-2"><a href="index.html#cb1-2" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)</span>
 <span id="cb1-3"><a href="index.html#cb1-3" tabindex="-1"></a>}</span>
@@ -235,7 +238,7 @@ Extended data sets enrichment analysis (ESEA)
         </div>
       </div>
 
-<a href="input-and-output.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="metabolic-network.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

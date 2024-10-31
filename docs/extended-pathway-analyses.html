@@ -4,25 +4,25 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>4 Extended Pathway Analyses | MNet Manual</title>
-  <meta name="description" content="4 Extended Pathway Analyses | MNet Manual" />
+  <title>3 Extended Pathway Analyses | MNet Manual</title>
+  <meta name="description" content="MNet: an R package and Shiny app for integrative analysis of metabolomic and transcriptomic data." />
   <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="4 Extended Pathway Analyses | MNet Manual" />
+  <meta property="og:title" content="3 Extended Pathway Analyses | MNet Manual" />
   <meta property="og:type" content="book" />
   
-  
+  <meta property="og:description" content="MNet: an R package and Shiny app for integrative analysis of metabolomic and transcriptomic data." />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="4 Extended Pathway Analyses | MNet Manual" />
+  <meta name="twitter:title" content="3 Extended Pathway Analyses | MNet Manual" />
   
-  
+  <meta name="twitter:description" content="MNet: an R package and Shiny app for integrative analysis of metabolomic and transcriptomic data." />
   
 
 
 
-<meta name="date" content="2024-10-28" />
+<meta name="date" content="2024-10-31" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -30,7 +30,7 @@
   
   
 <link rel="prev" href="metabolic-network.html"/>
-
+<link rel="next" href="deployment.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -140,20 +140,40 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> OVERVIEW</a></li>
-<li class="chapter" data-level="2" data-path="input-and-output.html"><a href="input-and-output.html"><i class="fa fa-check"></i><b>2</b> Input and output</a>
+<li class="chapter" data-level="2" data-path="metabolic-network.html"><a href="metabolic-network.html"><i class="fa fa-check"></i><b>2</b> Metabolic Network</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="input-and-output.html"><a href="input-and-output.html#data-input"><i class="fa fa-check"></i><b>2.1</b> Data input</a></li>
-<li class="chapter" data-level="2.2" data-path="input-and-output.html"><a href="input-and-output.html#result-output"><i class="fa fa-check"></i><b>2.2</b> Result output</a></li>
+<li class="chapter" data-level="2.1" data-path="metabolic-network.html"><a href="metabolic-network.html#m-g-network"><i class="fa fa-check"></i><b>2.1</b> M-G Network</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="metabolic-network.html"><a href="metabolic-network.html#interface"><i class="fa fa-check"></i><b>2.1.1</b> Interface</a></li>
+<li class="chapter" data-level="2.1.2" data-path="metabolic-network.html"><a href="metabolic-network.html#results"><i class="fa fa-check"></i><b>2.1.2</b> Results</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="metabolic-network.html"><a href="metabolic-network.html"><i class="fa fa-check"></i><b>3</b> Metabolic Network</a>
-<ul>
-<li class="chapter" data-level="3.1" data-path="metabolic-network.html"><a href="metabolic-network.html#meta-gene-network"><i class="fa fa-check"></i><b>3.1</b> Meta-Gene Network</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html"><i class="fa fa-check"></i><b>4</b> Extended Pathway Analyses</a>
+<li class="chapter" data-level="3" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html"><i class="fa fa-check"></i><b>3</b> Extended Pathway Analyses</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#extended-pathway-enrichment-analysis-epea"><i class="fa fa-check"></i><b>4.1</b> Extended pathway enrichment analysis (ePEA)</a></li>
-<li class="chapter" data-level="4.2" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#extended-differential-abundance-eda-score"><i class="fa fa-check"></i><b>4.2</b> Extended differential abundance (EDA) score</a></li>
-<li class="chapter" data-level="4.3" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#extended-data-set-enrichment-analysis-esea"><i class="fa fa-check"></i><b>4.3</b> Extended data set enrichment analysis (ESEA)</a></li>
+<li class="chapter" data-level="3.1" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#extended-pathway-enrichment-analysis-epea"><i class="fa fa-check"></i><b>3.1</b> Extended pathway enrichment analysis (ePEA)</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#interface-1"><i class="fa fa-check"></i><b>3.1.1</b> Interface</a></li>
+<li class="chapter" data-level="3.1.2" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#results-1"><i class="fa fa-check"></i><b>3.1.2</b> Results</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#extended-differential-abundance-eda-score"><i class="fa fa-check"></i><b>3.2</b> Extended differential abundance (EDA) score</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#interface-2"><i class="fa fa-check"></i><b>3.2.1</b> Interface</a></li>
+<li class="chapter" data-level="3.2.2" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#results-2"><i class="fa fa-check"></i><b>3.2.2</b> Results</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#extended-data-set-enrichment-analysis-esea"><i class="fa fa-check"></i><b>3.3</b> Extended data set enrichment analysis (ESEA)</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#interface-3"><i class="fa fa-check"></i><b>3.3.1</b> Interface</a></li>
+<li class="chapter" data-level="3.3.2" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#results-3"><i class="fa fa-check"></i><b>3.3.2</b> Results</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="deployment.html"><a href="deployment.html"><i class="fa fa-check"></i><b>4</b> Deployment</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="deployment.html"><a href="deployment.html#installing-r-4.4.1-for-ubuntu-20"><i class="fa fa-check"></i><b>4.1</b> Installing R 4.4.1 for Ubuntu 20</a></li>
+<li class="chapter" data-level="4.2" data-path="deployment.html"><a href="deployment.html#installing-r-packages"><i class="fa fa-check"></i><b>4.2</b> Installing R Packages</a></li>
+<li class="chapter" data-level="4.3" data-path="deployment.html"><a href="deployment.html#installing-shiny-sever"><i class="fa fa-check"></i><b>4.3</b> Installing shiny-sever</a></li>
+<li class="chapter" data-level="4.4" data-path="deployment.html"><a href="deployment.html#shiny-app-server-and-logs"><i class="fa fa-check"></i><b>4.4</b> Shiny App Server and Logs</a></li>
+<li class="chapter" data-level="4.5" data-path="deployment.html"><a href="deployment.html#firewall-firewalld-or-ufw"><i class="fa fa-check"></i><b>4.5</b> Firewall: firewalld or ufw</a></li>
+<li class="chapter" data-level="4.6" data-path="deployment.html"><a href="deployment.html#apache2-config"><i class="fa fa-check"></i><b>4.6</b> Apache2 Config</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -175,11 +195,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="extended-pathway-analyses" class="section level1 hasAnchor" number="4">
-<h1><span class="header-section-number">4</span> Extended Pathway Analyses<a href="extended-pathway-analyses.html#extended-pathway-analyses" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="extended-pathway-enrichment-analysis-epea" class="section level2 hasAnchor" number="4.1">
-<h2><span class="header-section-number">4.1</span> Extended pathway enrichment analysis (ePEA)<a href="extended-pathway-analyses.html#extended-pathway-enrichment-analysis-epea" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p><strong>Procedure</strong></p>
+<div id="extended-pathway-analyses" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">3</span> Extended Pathway Analyses<a href="extended-pathway-analyses.html#extended-pathway-analyses" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="extended-pathway-enrichment-analysis-epea" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Extended pathway enrichment analysis (ePEA)<a href="extended-pathway-analyses.html#extended-pathway-enrichment-analysis-epea" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="interface-1" class="section level3 hasAnchor" number="3.1.1">
+<h3><span class="header-section-number">3.1.1</span> Interface<a href="extended-pathway-analyses.html#interface-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<blockquote>
+<strong>Procedure</strong>
+</blockquote>
 <ul>
 <li>
 <p>Step 1: Enter <strong>Metabolite Data</strong>, <strong>GeneExp Data</strong> and <strong>Group Data</strong>, respectively.</p>
@@ -196,40 +220,40 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>
 <p>Step 3: Select <strong>Figure Format</strong> and adjust <strong>figure width, height and DPI</strong>.</p>
 <li>
-<p>Step 4: click <strong>Figure Download</strong> to export analysis result.</p>
+<p>Step 4: Click the <strong>User</strong> panel to <strong>view the input and output</strong>, and finally click <strong>Figure Download</strong> and export the analysis results.</p>
 </ul>
-<hr />
-<p><strong>Results</strong></p>
-<p><img src="figure/EPEA.png" width="818" style="display: block; margin: auto;" /></p>
+<p><img src="figure/1.M-G.png" width="1206" style="display: block; margin: auto;" /></p>
+<blockquote>
+<strong>Demo data</strong>
+</blockquote>
+<ul>
+<li>
+<p><strong>Expand the Demo Panel and click Metabolic Data to download demo data</strong>, which comprises an integrated analysis of metabolomic and transcriptomic profiles in triple-negative breast cancer.</p>
+<ul>
+<li>
+<p><strong>Metabolite Data</strong>: an interactive table for user-input metabolic data with rows corresponding to metabolites and columns corresponding to samples.</p>
+<p><img src="figure/Metabolite.png" width="815" /></p>
+<li>
+<p><strong>GeneExp Data</strong>: an interactive table for user-input metabolic data with rows corresponding to genes and columns correspond to the samples.</p>
+<p><img src="figure/GeneExp.png" width="807" /></p>
+<li>
+<p><strong>Group Data</strong>: Group information.</p>
+<p><img src="figure/GroupInfo.png" width="786" style="display: block; margin: auto auto auto 0;" /></p>
+</ul>
+</ul>
 </div>
-<div id="extended-differential-abundance-eda-score" class="section level2 hasAnchor" number="4.2">
-<h2><span class="header-section-number">4.2</span> Extended differential abundance (EDA) score<a href="extended-pathway-analyses.html#extended-differential-abundance-eda-score" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p><strong>Procedure</strong></p>
-<ul>
-<li>
-<p>Step 1: Enter <strong>Metabolite Data</strong>, <strong>GeneExp Data</strong> and <strong>Group Data</strong>, respectively.</p>
-<li>
-<p>Step 2: Select <strong>Log(FoldChange), Padjust Cutoff and Pathway Pcutoff</strong>, respectively.</p>
-<ul>
-<li>
-<p><strong>Fold change</strong>: Identifies key metabolites with significant expression shifts between conditions, revealing potential metabolic alterations and pathway involvement in biological processes.</p>
-<li>
-<p><strong>Padjust Cutoff</strong>: Helps filter significant results by controlling for false positives, ensuring that only statistically robust pathways are identified for further investigation.</p>
-<li>
-<p><strong>Pathway Pcutoff</strong>: Sets a significance threshold, helping to identify pathways with meaningful changes while reducing the likelihood of false-positive findings.</p>
-</ul>
-<li>
-<p>Step 3: Select <strong>Figure Format</strong> and adjust <strong>figure width, height and DPI</strong>.</p>
-<li>
-<p>Step 4: click <strong>Figure Download</strong> to export analysis result.</p>
-</ul>
-<hr />
-<p><strong>Results</strong></p>
-<p><img src="figure/EDA.png" width="820" style="display: block; margin: auto;" /></p>
+<div id="results-1" class="section level3 hasAnchor" number="3.1.2">
+<h3><span class="header-section-number">3.1.2</span> Results<a href="extended-pathway-analyses.html#results-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><img src="figure/2.ePEA.png" width="2550" style="display: block; margin: auto;" /></p>
 </div>
-<div id="extended-data-set-enrichment-analysis-esea" class="section level2 hasAnchor" number="4.3">
-<h2><span class="header-section-number">4.3</span> Extended data set enrichment analysis (ESEA)<a href="extended-pathway-analyses.html#extended-data-set-enrichment-analysis-esea" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p><strong>Procedure</strong></p>
+</div>
+<div id="extended-differential-abundance-eda-score" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Extended differential abundance (EDA) score<a href="extended-pathway-analyses.html#extended-differential-abundance-eda-score" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="interface-2" class="section level3 hasAnchor" number="3.2.1">
+<h3><span class="header-section-number">3.2.1</span> Interface<a href="extended-pathway-analyses.html#interface-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<blockquote>
+<strong>Procedure</strong>
+</blockquote>
 <ul>
 <li>
 <p>Step 1: Enter <strong>Metabolite Data</strong>, <strong>GeneExp Data</strong> and <strong>Group Data</strong>, respectively.</p>
@@ -246,12 +270,83 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>
 <p>Step 3: Select <strong>Figure Format</strong> and adjust <strong>figure width, height and DPI</strong>.</p>
 <li>
-<p>Step 4: click <strong>Figure Download</strong> to export analysis result.</p>
+<p>Step 4: Click the <strong>User</strong> panel to <strong>view the input and output</strong>, and finally click <strong>Figure Download</strong> and export the analysis results.</p>
 </ul>
-<hr />
-<p><strong>Results</strong></p>
-<p><img src="figure/ESEA.png" width="826" style="display: block; margin: auto;" /></p>
+<p><img src="figure/1.M-G.png" width="1206" style="display: block; margin: auto;" /></p>
+<blockquote>
+<strong>Demo data</strong>
+</blockquote>
+<ul>
+<li>
+<p><strong>Expand the Demo Panel and click Metabolic Data to download demo data</strong>, which comprises an integrated analysis of metabolomic and transcriptomic profiles in triple-negative breast cancer.</p>
+<ul>
+<li>
+<p><strong>Metabolite Data</strong>: an interactive table for user-input metabolic data with rows corresponding to metabolites and columns corresponding to samples.</p>
+<p><img src="figure/Metabolite.png" width="815" /></p>
+<li>
+<p><strong>GeneExp Data</strong>: an interactive table for user-input metabolic data with rows corresponding to genes and columns correspond to the samples.</p>
+<p><img src="figure/GeneExp.png" width="807" /></p>
+<li>
+<p><strong>Group Data</strong>: Group information.</p>
+<p><img src="figure/GroupInfo.png" width="786" style="display: block; margin: auto auto auto 0;" /></p>
+</ul>
+</ul>
+</div>
+<div id="results-2" class="section level3 hasAnchor" number="3.2.2">
+<h3><span class="header-section-number">3.2.2</span> Results<a href="extended-pathway-analyses.html#results-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><img src="figure/2.ePDA.png" width="70%" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="extended-data-set-enrichment-analysis-esea" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Extended data set enrichment analysis (ESEA)<a href="extended-pathway-analyses.html#extended-data-set-enrichment-analysis-esea" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="interface-3" class="section level3 hasAnchor" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> Interface<a href="extended-pathway-analyses.html#interface-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<blockquote>
+<strong>Procedure</strong>
+</blockquote>
+<ul>
+<li>
+<p>Step 1: Enter <strong>Metabolite Data</strong>, <strong>GeneExp Data</strong> and <strong>Group Data</strong>, respectively.</p>
+<li>
+<p>Step 2: Select <strong>Log(FoldChange), Padjust Cutoff and Pathway Pcutoff</strong>, respectively.</p>
+<ul>
+<li>
+<p><strong>Fold change</strong>: Identifies key metabolites with significant expression shifts between conditions, revealing potential metabolic alterations and pathway involvement in biological processes.</p>
+<li>
+<p><strong>Padjust Cutoff</strong>: Helps filter significant results by controlling for false positives, ensuring that only statistically robust pathways are identified for further investigation.</p>
+<li>
+<p><strong>Pathway Pcutoff</strong>: Sets a significance threshold, helping to identify pathways with meaningful changes while reducing the likelihood of false-positive findings.</p>
+</ul>
+<li>
+<p>Step 3: Select <strong>Figure Format</strong> and adjust <strong>figure width, height and DPI</strong>.</p>
+<li>
+<p>Step 4: Click the <strong>User</strong> panel to <strong>view the input and output</strong>, and finally click <strong>Figure Download</strong> and export the analysis results.</p>
+</ul>
+<p><img src="figure/1.M-G.png" width="1206" style="display: block; margin: auto;" /></p>
+<blockquote>
+<strong>Demo data</strong>
+</blockquote>
+<ul>
+<li>
+<p><strong>Expand the Demo Panel and click Metabolic Data to download demo data</strong>, which comprises an integrated analysis of metabolomic and transcriptomic profiles in triple-negative breast cancer.</p>
+<ul>
+<li>
+<p><strong>Metabolite Data</strong>: an interactive table for user-input metabolic data with rows corresponding to metabolites and columns corresponding to samples.</p>
+<p><img src="figure/Metabolite.png" width="815" /></p>
+<li>
+<p><strong>GeneExp Data</strong>: an interactive table for user-input metabolic data with rows corresponding to genes and columns correspond to the samples.</p>
+<p><img src="figure/GeneExp.png" width="807" /></p>
+<li>
+<p><strong>Group Data</strong>: Group information.</p>
+<p><img src="figure/GroupInfo.png" width="786" style="display: block; margin: auto auto auto 0;" /></p>
+</ul>
+</ul>
+</div>
+<div id="results-3" class="section level3 hasAnchor" number="3.3.2">
+<h3><span class="header-section-number">3.3.2</span> Results<a href="extended-pathway-analyses.html#results-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><img src="figure/2.eSEA.png" width="60%" style="display: block; margin: auto;" /></p>
 
+</div>
 </div>
 </div>
             </section>
@@ -259,8 +354,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="metabolic-network.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="metabolic-network.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="deployment.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -291,7 +386,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/03-EPA.Rmd",
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/02-EPA.Rmd",
 "text": "Edit"
 },
 "history": {
