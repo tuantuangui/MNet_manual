@@ -7,10 +7,10 @@ extended-pathway-analyses
 extended-pathway-enrichment-analysis-epea
 interface-1
 results-1
-extended-differential-abundance-eda-score
+extended-pathway-differential-abundance-epda-score
 interface-2
 results-2
-extended-data-set-enrichment-analysis-esea
+extended-pathway-set-enrichment-analysis-esea
 interface-3
 results-3
 deployment

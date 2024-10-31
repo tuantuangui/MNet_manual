@@ -71,3 +71,4 @@ knitr::include_graphics("figure/GroupInfo.png")
 ```{r,eval=TRUE,echo=FALSE,fig.align='center'}
 knitr::include_graphics("figure/subnetwork.png")
 ```
+<center><b>Figure 1.</b> Visualization of the identified optimal subnetwork that best explains the biological processes comparing two groups. The colors represent the logFC (logarithm of fold change) of genes, with red and green indicating different expression levels, while yellow and blue represent the logFC of metabolites, indicating varying levels.</center>
