@@ -1,6 +1,7 @@
 # Extended Pathway Analyses
 
-## Extended pathway enrichment analysis (ePEA)
+## ePEA
+Extended pathway enrichment analysis
 
 ### Interface
 
@@ -73,7 +74,8 @@ knitr::include_graphics("figure/2.ePEA.png")
 ```
 <center><b>Figure 1.</b> Extended pathway enrichment analysis. (A) Barplot of up-regulated metabolic pathways corresponding to metabolites and genes. (B) Dotplot of up-regulated metabolic pathways corresponding to metabolites and genes. (C) Barplot of down-regulated metabolic pathways corresponding to metabolites and genes. (D) Dotplot of down-regulated metabolic pathways corresponding to metabolites and genes.</center>
 
-## Extended pathway differential abundance (ePDA) score
+## ePDA
+Extended pathway differential abundance (ePDA) score
 
 ### Interface
 
@@ -146,7 +148,8 @@ knitr::include_graphics("figure/2.ePDA.png")
 ```
 <center><b>Figure 1.</b> ePDA score captures the tendency for a pathway to exhibit increased or decreased levels of genes and metabolites that are statistically significant differences between two group.</center>
 
-## Extended pathway set enrichment analysis (eSEA)
+## eSEA
+Extended pathway set enrichment analysis
 
 ### Interface
 

@@ -1,7 +1,7 @@
-# Metabolic Network
+# Metabolic Subnetwork
 **The metabolism-related subnetwork analysis is executed through an analyzer specifically designed to identify subnetwork based on input gene- and metabolite-level summary data.**  
 
-## M-G Network
+## M-G Subnetwork
 
 ### Interface
 

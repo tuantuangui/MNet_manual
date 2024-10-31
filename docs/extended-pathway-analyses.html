@@ -29,7 +29,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="metabolic-network.html"/>
+<link rel="prev" href="metabolic-subnetwork.html"/>
 <link rel="next" href="deployment.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -136,27 +136,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> OVERVIEW</a></li>
-<li class="chapter" data-level="2" data-path="metabolic-network.html"><a href="metabolic-network.html"><i class="fa fa-check"></i><b>2</b> Metabolic Network</a>
+<li class="chapter" data-level="2" data-path="metabolic-subnetwork.html"><a href="metabolic-subnetwork.html"><i class="fa fa-check"></i><b>2</b> Metabolic Subnetwork</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="metabolic-network.html"><a href="metabolic-network.html#m-g-network"><i class="fa fa-check"></i><b>2.1</b> M-G Network</a>
+<li class="chapter" data-level="2.1" data-path="metabolic-subnetwork.html"><a href="metabolic-subnetwork.html#m-g-subnetwork"><i class="fa fa-check"></i><b>2.1</b> M-G Subnetwork</a>
 <ul>
-<li class="chapter" data-level="2.1.1" data-path="metabolic-network.html"><a href="metabolic-network.html#interface"><i class="fa fa-check"></i><b>2.1.1</b> Interface</a></li>
-<li class="chapter" data-level="2.1.2" data-path="metabolic-network.html"><a href="metabolic-network.html#results"><i class="fa fa-check"></i><b>2.1.2</b> Results</a></li>
+<li class="chapter" data-level="2.1.1" data-path="metabolic-subnetwork.html"><a href="metabolic-subnetwork.html#interface"><i class="fa fa-check"></i><b>2.1.1</b> Interface</a></li>
+<li class="chapter" data-level="2.1.2" data-path="metabolic-subnetwork.html"><a href="metabolic-subnetwork.html#results"><i class="fa fa-check"></i><b>2.1.2</b> Results</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html"><i class="fa fa-check"></i><b>3</b> Extended Pathway Analyses</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#extended-pathway-enrichment-analysis-epea"><i class="fa fa-check"></i><b>3.1</b> Extended pathway enrichment analysis (ePEA)</a>
+<li class="chapter" data-level="3.1" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#epea"><i class="fa fa-check"></i><b>3.1</b> ePEA</a>
 <ul>
 <li class="chapter" data-level="3.1.1" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#interface-1"><i class="fa fa-check"></i><b>3.1.1</b> Interface</a></li>
 <li class="chapter" data-level="3.1.2" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#results-1"><i class="fa fa-check"></i><b>3.1.2</b> Results</a></li>
 </ul></li>
-<li class="chapter" data-level="3.2" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#extended-pathway-differential-abundance-epda-score"><i class="fa fa-check"></i><b>3.2</b> Extended pathway differential abundance (ePDA) score</a>
+<li class="chapter" data-level="3.2" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#epda"><i class="fa fa-check"></i><b>3.2</b> ePDA</a>
 <ul>
 <li class="chapter" data-level="3.2.1" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#interface-2"><i class="fa fa-check"></i><b>3.2.1</b> Interface</a></li>
 <li class="chapter" data-level="3.2.2" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#results-2"><i class="fa fa-check"></i><b>3.2.2</b> Results</a></li>
 </ul></li>
-<li class="chapter" data-level="3.3" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#extended-pathway-set-enrichment-analysis-esea"><i class="fa fa-check"></i><b>3.3</b> Extended pathway set enrichment analysis (eSEA)</a>
+<li class="chapter" data-level="3.3" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#esea"><i class="fa fa-check"></i><b>3.3</b> eSEA</a>
 <ul>
 <li class="chapter" data-level="3.3.1" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#interface-3"><i class="fa fa-check"></i><b>3.3.1</b> Interface</a></li>
 <li class="chapter" data-level="3.3.2" data-path="extended-pathway-analyses.html"><a href="extended-pathway-analyses.html#results-3"><i class="fa fa-check"></i><b>3.3.2</b> Results</a></li>
@@ -193,8 +193,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="extended-pathway-analyses" class="section level1 hasAnchor" number="3">
 <h1><span class="header-section-number">3</span> Extended Pathway Analyses<a href="extended-pathway-analyses.html#extended-pathway-analyses" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="extended-pathway-enrichment-analysis-epea" class="section level2 hasAnchor" number="3.1">
-<h2><span class="header-section-number">3.1</span> Extended pathway enrichment analysis (ePEA)<a href="extended-pathway-analyses.html#extended-pathway-enrichment-analysis-epea" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="epea" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> ePEA<a href="extended-pathway-analyses.html#epea" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Extended pathway enrichment analysis</p>
 <div id="interface-1" class="section level3 hasAnchor" number="3.1.1">
 <h3><span class="header-section-number">3.1.1</span> Interface<a href="extended-pathway-analyses.html#interface-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <blockquote>
@@ -246,8 +247,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </center>
 </div>
 </div>
-<div id="extended-pathway-differential-abundance-epda-score" class="section level2 hasAnchor" number="3.2">
-<h2><span class="header-section-number">3.2</span> Extended pathway differential abundance (ePDA) score<a href="extended-pathway-analyses.html#extended-pathway-differential-abundance-epda-score" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="epda" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> ePDA<a href="extended-pathway-analyses.html#epda" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Extended pathway differential abundance (ePDA) score</p>
 <div id="interface-2" class="section level3 hasAnchor" number="3.2.1">
 <h3><span class="header-section-number">3.2.1</span> Interface<a href="extended-pathway-analyses.html#interface-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <blockquote>
@@ -299,8 +301,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </center>
 </div>
 </div>
-<div id="extended-pathway-set-enrichment-analysis-esea" class="section level2 hasAnchor" number="3.3">
-<h2><span class="header-section-number">3.3</span> Extended pathway set enrichment analysis (eSEA)<a href="extended-pathway-analyses.html#extended-pathway-set-enrichment-analysis-esea" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="esea" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> eSEA<a href="extended-pathway-analyses.html#esea" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Extended pathway set enrichment analysis</p>
 <div id="interface-3" class="section level3 hasAnchor" number="3.3.1">
 <h3><span class="header-section-number">3.3.1</span> Interface<a href="extended-pathway-analyses.html#interface-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <blockquote>
@@ -359,7 +362,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="metabolic-network.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="metabolic-subnetwork.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="deployment.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
