@@ -1,0 +1,84 @@
+Carbohydrate metabolism	hsa00010
+Carbohydrate metabolism	hsa00020
+Carbohydrate metabolism	hsa00030
+Carbohydrate metabolism	hsa00040
+Carbohydrate metabolism	hsa00051
+Carbohydrate metabolism	hsa00052
+Carbohydrate metabolism	hsa00053
+Carbohydrate metabolism	hsa00500
+Carbohydrate metabolism	hsa00520
+Carbohydrate metabolism	hsa00620
+Carbohydrate metabolism	hsa00630
+Carbohydrate metabolism	hsa00640
+Carbohydrate metabolism	hsa00650
+Carbohydrate metabolism	hsa00562
+Energy metabolism	hsa00190
+Energy metabolism	hsa00910
+Energy metabolism	hsa00920
+Lipid metabolism	hsa00061
+Lipid metabolism	hsa00062
+Lipid metabolism	hsa00071
+Lipid metabolism	hsa00100
+Lipid metabolism	hsa00120
+Lipid metabolism	hsa00140
+Lipid metabolism	hsa00561
+Lipid metabolism	hsa00564
+Lipid metabolism	hsa00565
+Lipid metabolism	hsa00600
+Lipid metabolism	hsa00590
+Lipid metabolism	hsa00591
+Lipid metabolism	hsa00592
+Lipid metabolism	hsa01040
+Nucleotide metabolism	hsa00230
+Nucleotide metabolism	hsa00240
+Amino acid metabolism	hsa00250
+Amino acid metabolism	hsa00260
+Amino acid metabolism	hsa00270
+Amino acid metabolism	hsa00280
+Amino acid metabolism	hsa00290
+Amino acid metabolism	hsa00310
+Amino acid metabolism	hsa00220
+Amino acid metabolism	hsa00330
+Amino acid metabolism	hsa00340
+Amino acid metabolism	hsa00350
+Amino acid metabolism	hsa00360
+Amino acid metabolism	hsa00380
+Amino acid metabolism	hsa00400
+Metabolism of other amino acids	hsa00410
+Metabolism of other amino acids	hsa00430
+Metabolism of other amino acids	hsa00440
+Metabolism of other amino acids	hsa00450
+Metabolism of other amino acids	hsa00470
+Metabolism of other amino acids	hsa00480
+Glycan biosynthesis and metabolism	hsa00510
+Glycan biosynthesis and metabolism	hsa00513
+Glycan biosynthesis and metabolism	hsa00512
+Glycan biosynthesis and metabolism	hsa00515
+Glycan biosynthesis and metabolism	hsa00514
+Glycan biosynthesis and metabolism	hsa00532
+Glycan biosynthesis and metabolism	hsa00534
+Glycan biosynthesis and metabolism	hsa00533
+Glycan biosynthesis and metabolism	hsa00531
+Glycan biosynthesis and metabolism	hsa00563
+Glycan biosynthesis and metabolism	hsa00601
+Glycan biosynthesis and metabolism	hsa00603
+Glycan biosynthesis and metabolism	hsa00604
+Glycan biosynthesis and metabolism	hsa00511
+Metabolism of cofactors and vitamins	hsa00730
+Metabolism of cofactors and vitamins	hsa00740
+Metabolism of cofactors and vitamins	hsa00750
+Metabolism of cofactors and vitamins	hsa00760
+Metabolism of cofactors and vitamins	hsa00770
+Metabolism of cofactors and vitamins	hsa00780
+Metabolism of cofactors and vitamins	hsa00785
+Metabolism of cofactors and vitamins	hsa00790
+Metabolism of cofactors and vitamins	hsa00670
+Metabolism of cofactors and vitamins	hsa00830
+Metabolism of cofactors and vitamins	hsa00860
+Metabolism of cofactors and vitamins	hsa00130
+Metabolism of terpenoids and polyketides	hsa00900
+Biosynthesis of other secondary metabolites	hsa00232
+Biosynthesis of other secondary metabolites	hsa00524
+Xenobiotics biodegradation and metabolism	hsa00980
+Xenobiotics biodegradation and metabolism	hsa00982
+Xenobiotics biodegradation and metabolism	hsa00983

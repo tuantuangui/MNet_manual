@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>4 Deployment | MNet Manual</title>
   <meta name="description" content="MNet: an R package and Shiny app for integrative analysis of metabolomic and transcriptomic data." />
-  <meta name="generator" content="bookdown 0.33 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
 
   <meta property="og:title" content="4 Deployment | MNet Manual" />
   <meta property="og:type" content="book" />
@@ -30,7 +30,7 @@
   
   
 <link rel="prev" href="extended-pathway-analyses.html"/>
-
+<link rel="next" href="dbmnet.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -55,7 +55,7 @@
 
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -118,6 +118,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -138,7 +142,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> OVERVIEW</a></li>
 <li class="chapter" data-level="2" data-path="metabolic-subnetwork.html"><a href="metabolic-subnetwork.html"><i class="fa fa-check"></i><b>2</b> Metabolic Subnetwork</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="metabolic-subnetwork.html"><a href="metabolic-subnetwork.html#m-g-subnetwork"><i class="fa fa-check"></i><b>2.1</b> M-G Subnetwork</a>
+<li class="chapter" data-level="2.1" data-path="metabolic-subnetwork.html"><a href="metabolic-subnetwork.html#met-gene-subnetwork"><i class="fa fa-check"></i><b>2.1</b> Met-Gene Subnetwork</a>
 <ul>
 <li class="chapter" data-level="2.1.1" data-path="metabolic-subnetwork.html"><a href="metabolic-subnetwork.html#interface"><i class="fa fa-check"></i><b>2.1.1</b> Interface</a></li>
 <li class="chapter" data-level="2.1.2" data-path="metabolic-subnetwork.html"><a href="metabolic-subnetwork.html#results"><i class="fa fa-check"></i><b>2.1.2</b> Results</a></li>
@@ -170,6 +174,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.4" data-path="deployment.html"><a href="deployment.html#shiny-app-server-and-logs"><i class="fa fa-check"></i><b>4.4</b> Shiny App Server and Logs</a></li>
 <li class="chapter" data-level="4.5" data-path="deployment.html"><a href="deployment.html#firewall-firewalld-or-ufw"><i class="fa fa-check"></i><b>4.5</b> Firewall: firewalld or ufw</a></li>
 <li class="chapter" data-level="4.6" data-path="deployment.html"><a href="deployment.html#apache2-config"><i class="fa fa-check"></i><b>4.6</b> Apache2 Config</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="dbmnet.html"><a href="dbmnet.html"><i class="fa fa-check"></i><b>5</b> dbMNet</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="dbmnet.html"><a href="dbmnet.html#dbkegg"><i class="fa fa-check"></i><b>5.1</b> dbKEGG</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="dbmnet.html"><a href="dbmnet.html#kegg-pathways-metabolite-and-gene"><i class="fa fa-check"></i><b>5.1.1</b> KEGG pathway’s metabolite and gene</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="dbmnet.html"><a href="dbmnet.html#dbnet"><i class="fa fa-check"></i><b>5.2</b> dbNet</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="dbmnet.html"><a href="dbmnet.html#kegg-metabolite-metabolite-pairs-and-metabolite-gene-pairs"><i class="fa fa-check"></i><b>5.2.1</b> KEGG metabolite-metabolite pairs and metabolite-gene pairs</a></li>
+<li class="chapter" data-level="5.2.2" data-path="dbmnet.html"><a href="dbmnet.html#graphite"><i class="fa fa-check"></i><b>5.2.2</b> Graphite</a></li>
+<li class="chapter" data-level="5.2.3" data-path="dbmnet.html"><a href="dbmnet.html#bigg"><i class="fa fa-check"></i><b>5.2.3</b> BiGG</a></li>
+</ul></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -230,8 +247,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="extended-pathway-analyses.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="extended-pathway-analyses.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="dbmnet.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

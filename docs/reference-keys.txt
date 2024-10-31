@@ -1,6 +1,6 @@
 overview
 metabolic-subnetwork
-m-g-subnetwork
+met-gene-subnetwork
 interface
 results
 extended-pathway-analyses
@@ -20,3 +20,10 @@ installing-shiny-sever
 shiny-app-server-and-logs
 firewall-firewalld-or-ufw
 apache2-config
+dbmnet
+dbkegg
+kegg-pathways-metabolite-and-gene
+dbnet
+kegg-metabolite-metabolite-pairs-and-metabolite-gene-pairs
+graphite
+bigg
