@@ -1,0 +1,48 @@
+Pathway	DA_score	Increase_members_num	Decrease_members_num	Measured_members_num	Increase_member_result	Decrease_member_result	Measure_member_result	KEGG_pathwayid	Pathway Category
+Glycolysis / Gluconeogenesis	-1	0	3	3		C00074;C00111;C00197	C00074;C00111;C00197	hsa00010	Carbohydrate metabolism
+Fructose and mannose metabolism	-1	0	2	2		C00111;C00794	C00111;C00794	hsa00051	Carbohydrate metabolism
+Fatty acid degradation	-1	0	1	1		C02990	C02990	hsa00071	Lipid metabolism
+Ether lipid metabolism	-1	0	1	1		C00670	C00670	hsa00565	Lipid metabolism
+Phenylalanine metabolism	-1	0	1	1		C00082	C00082	hsa00360	Amino acid metabolism
+Ubiquinone and other terpenoid-quinone biosynthesis	-1	0	1	1		C00082	C00082	hsa00130	Metabolism of cofactors and vitamins
+Caffeine metabolism	-1	0	2	2		C00385;C01762	C00385;C01762	hsa00232	Biosynthesis of other secondary metabolites
+beta-Alanine metabolism	-0.714285714285714	1	6	7	C02642	C00099;C00106;C00334;C00386;C00864;C01262	C00099;C00106;C00334;C00386;C00864;C01262;C02642	hsa00410	Metabolism of other amino acids
+Pentose phosphate pathway	-0.666666666666667	0	2	3		C00197;C00345	C00197;C00279;C00345	hsa00030	Carbohydrate metabolism
+Propanoate metabolism	-0.666666666666667	0	2	3		C00099;C00111	C00099;C00111;C05984	hsa00640	Carbohydrate metabolism
+Tryptophan metabolism	-0.6	0	3	5		C00078;C00780;C01717	C00078;C00108;C00780;C01717;C05635	hsa00380	Amino acid metabolism
+Phenylalanine, tyrosine and tryptophan biosynthesis	-0.6	0	3	5		C00074;C00078;C00082	C00074;C00078;C00082;C00108;C00279	hsa00400	Amino acid metabolism
+Galactose metabolism	-0.5	1	4	6	C00029	C00089;C00111;C00243;C00794	C00029;C00089;C00111;C00137;C00243;C00794	hsa00052	Carbohydrate metabolism
+Tyrosine metabolism	-0.5	0	1	2		C00082	C00082;C01829	hsa00350	Amino acid metabolism
+Phosphonate and phosphinate metabolism	-0.5	0	1	2		C00074	C00037;C00074	hsa00440	Metabolism of other amino acids
+Thiamine metabolism	-0.5	0	2	4		C00082;C00378	C00003;C00037;C00082;C00378	hsa00730	Metabolism of cofactors and vitamins
+Nicotinate and nicotinamide metabolism	-0.5	0	3	6		C00006;C00111;C00334	C00003;C00006;C00111;C00153;C00334;C02918	hsa00760	Metabolism of cofactors and vitamins
+Pantothenate and CoA biosynthesis	-0.5	1	3	4	C02642	C00099;C00106;C00864	C00099;C00106;C00864;C02642	hsa00770	Metabolism of cofactors and vitamins
+Drug metabolism - other enzymes	-0.5	0	1	2		C00006	C00003;C00006	hsa00983	Xenobiotics biodegradation and metabolism
+Glycine, serine and threonine metabolism	-0.4	1	5	10	C00065	C00078;C00197;C00213;C00719;C01026	C00037;C00065;C00078;C00114;C00188;C00197;C00213;C00300;C00719;C01026	hsa00260	Amino acid metabolism
+Lysine degradation	-0.333333333333333	0	2	6		C00956;C01181	C00026;C00037;C00408;C00487;C00956;C01181	hsa00310	Amino acid metabolism
+Pyrimidine metabolism	-0.272727272727273	2	5	11	C00881;C02642	C00099;C00106;C00239;C00299;C00475	C00055;C00099;C00105;C00106;C00178;C00214;C00239;C00299;C00475;C00881;C02642	hsa00240	Nucleotide metabolism
+Glycerolipid metabolism	-0.25	1	2	4	C00029	C00111;C00197	C00029;C00093;C00111;C00197	hsa00561	Lipid metabolism
+Histidine metabolism	-0.25	1	2	4	C00025	C00386;C01262	C00025;C00026;C00386;C01262	hsa00340	Amino acid metabolism
+Purine metabolism	-0.214285714285714	1	4	14	C00262	C00147;C00366;C00385;C01762	C00020;C00037;C00144;C00147;C00209;C00212;C00262;C00294;C00366;C00385;C00387;C00559;C00575;C01762	hsa00230	Nucleotide metabolism
+Glycerophospholipid metabolism	-0.166666666666667	1	2	6	C00065	C00111;C00670	C00065;C00093;C00111;C00114;C00670;C01996	hsa00564	Lipid metabolism
+Arginine and proline metabolism	-0.142857142857143	2	3	7	C00025;C00134	C00213;C00334;C00791	C00025;C00134;C00213;C00300;C00334;C00791;C02305	hsa00330	Amino acid metabolism
+Citrate cycle (TCA cycle)	0	1	1	6	C00149	C00074	C00026;C00074;C00149;C00158;C00311;C00417	hsa00020	Carbohydrate metabolism
+Starch and sucrose metabolism	0	1	1	2	C00029	C00089	C00029;C00089	hsa00500	Carbohydrate metabolism
+Pyruvate metabolism	0	1	1	2	C00149	C00074	C00074;C00149	hsa00620	Carbohydrate metabolism
+Inositol phosphate metabolism	0	1	1	3	C00191	C00111	C00111;C00137;C00191	hsa00562	Carbohydrate metabolism
+Alanine, aspartate and glutamate metabolism	0	1	1	4	C00025	C00334	C00025;C00026;C00158;C00334	hsa00250	Amino acid metabolism
+Cysteine and methionine metabolism	0	2	2	6	C00051;C00065	C00197;C02989	C00051;C00065;C00073;C00155;C00197;C02989	hsa00270	Amino acid metabolism
+Arginine biosynthesis	0	1	1	3	C00025	C00327	C00025;C00026;C00327	hsa00220	Amino acid metabolism
+Glyoxylate and dicarboxylate metabolism	0.0909090909090909	3	2	11	C00025;C00065;C00149	C00111;C00197	C00025;C00026;C00037;C00065;C00111;C00149;C00158;C00197;C00209;C00311;C00417	hsa00630	Carbohydrate metabolism
+Pentose and glucuronate interconversions	0.25	2	1	4	C00029;C00191	C00111	C00026;C00029;C00111;C00191	hsa00040	Carbohydrate metabolism
+Butanoate metabolism	0.25	2	1	4	C00025;C02630	C00334	C00025;C00026;C00334;C02630	hsa00650	Carbohydrate metabolism
+Taurine and hypotaurine metabolism	0.25	1	0	4	C00025		C00025;C00026;C00245;C05122	hsa00430	Metabolism of other amino acids
+Sulfur metabolism	0.333333333333333	1	0	3	C00065		C00065;C00155;C00245	hsa00920	Energy metabolism
+Glutathione metabolism	0.333333333333333	3	1	6	C00025;C00051;C00134	C00006	C00006;C00025;C00037;C00051;C00134;C01879	hsa00480	Metabolism of other amino acids
+Porphyrin metabolism	0.333333333333333	1	0	3	C00025		C00025;C00037;C00188	hsa00860	Metabolism of cofactors and vitamins
+D-Amino acid metabolism	0.428571428571429	3	0	7	C00025;C00065;C00134		C00025;C00026;C00037;C00065;C00073;C00134;C00188	hsa00470	Metabolism of other amino acids
+Ascorbate and aldarate metabolism	0.5	2	0	4	C00029;C00191		C00026;C00029;C00137;C00191	hsa00053	Carbohydrate metabolism
+Amino sugar and nucleotide sugar metabolism	1	2	0	2	C00029;C00191		C00029;C00191	hsa00520	Carbohydrate metabolism
+Nitrogen metabolism	1	1	0	1	C00025		C00025	hsa00910	Energy metabolism
+Sphingolipid metabolism	1	1	0	1	C00065		C00065	hsa00600	Lipid metabolism
+Neomycin, kanamycin and gentamicin biosynthesis	1	2	0	2	C00025;C00029		C00025;C00029	hsa00524	Biosynthesis of other secondary metabolites
