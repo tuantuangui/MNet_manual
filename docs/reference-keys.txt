@@ -14,7 +14,7 @@ results-2
 esea
 interface-3
 results-3
-knowledgebase-construction
+construction-of-knowledgebase-dbmnet
 dbkegg
 kegg-pathways-metabolite-and-gene
 dbnet

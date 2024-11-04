@@ -300,16 +300,18 @@ knitr::include_graphics("figure/2.eSEA.png")
 <center><b>Figure 1.</b> Extended pathway set enrichment analysis.</center>
 
 
-## Knowledgebase Construction
+## Construction of Knowledgebase dbMNet
+
+Knowledgebase - dbMNet: dbKEGG for extended pathway analysis and dbNet for metabolism-related subnetwork analysis
+The construction may takes more than 60 hours.
 
 ### dbKEGG
 
-dbKEGG for extended pathway analysis and dbNet for metabolism-related subnetwork analysis.
+dbKEGG for extended pathway analysis
 
 #### KEGG pathway’s metabolite and gene
 
 This is the metabolites and the genes in every metabolism KEGG pathway.
-
 ```{r}
 library(KEGGREST)
 library(dplyr)
@@ -358,10 +360,11 @@ for (i in 1:length(pathway_meta$V2)){
 result <- rbind(result_gene,result_compound) %>%
   as_tibble()
 dim(result)
-write.table(result,"result/KEGGpathway_metabolite_gene-v20240427.txt",quote=F,row.names = F,sep="\t")
+write.table(result,"result/KEGGpathway_metabolite_gene.txt",quote=F,row.names = F,sep="\t")
 ```
 
 ### dbNet
+dbNet for metabolism-related subnetwork analysis
 
 #### KEGG metabolite-metabolite pairs and metabolite-gene pairs
 
@@ -370,7 +373,6 @@ write.table(result,"result/KEGGpathway_metabolite_gene-v20240427.txt",quote=F,ro
 </blockquote>
 
 ```{r}
-## the code is runing in 2024.04.28
 library(KEGGREST)
 library(plyr)
 
@@ -380,13 +382,13 @@ source("input/get.kegg.byId.R")
 ## Metabolic reactions and metabolite annotation information in the KEGG database
 keggAll = get.kegg.all()
 
-saveRDS(keggAll, file = "result/keggAll-v20240428.RDS")
+saveRDS(keggAll, file = "result/keggAll.RDS")
 
 dim(keggAll$reaction)
 dim(keggAll$compound)
 
-write.csv(keggAll$reaction,file = "result/keggAllreaction_v20240428.csv",row.names = F)
-write.csv(keggAll$compound,file = "result/keggAllcompound_v20240428.csv",row.names = F)
+write.csv(keggAll$reaction,file = "result/keggAllreaction.csv",row.names = F)
+write.csv(keggAll$compound,file = "result/keggAllcompound.csv",row.names = F)
 ```
 
 <blockquote>
@@ -396,9 +398,12 @@ write.csv(keggAll$compound,file = "result/keggAllcompound_v20240428.csv",row.nam
 ```{r}
 ## Download the htext file.
 curl https://www.genome.jp/kegg-bin/get_htext?hsa01000 -o result/hsa01000.keg
+
 grep "^E" result/hsa01000.keg | sed 's/E        //g'|cut -d" " -f2 |cut -d";" -f1 >result/gene.txt
-grep "^E" result/hsa01000.keg | sed 's/E        //g'|sed 's/\[EC\:/    /g' |sed 's/\] //g' |cut -f3 >result/enzyme.txt
-sed 's/\[EC\:/    /g'
+
+###sed 's/\[EC\:/ /g' is followed by a tab character
+grep "^E" result/hsa01000.keg | sed 's/E        //g'|sed 's/\[EC\:/	/g' |sed 's/\] //g' |cut -f3 >result/enzyme.txt
+
 paste result/gene.txt result/enzyme.txt |grep -v "D-dopachrome" |grep -v "cytochrome"|grep -v "putative" >result/gene_enzyme.txt
 
 ## The gene_enzyme.txt is like this:
@@ -421,12 +426,12 @@ gene_enzyme <- data.table::fread("result/gene_enzyme.txt",header=F) %>%
   dplyr::rename("gene_name"="V1") %>%
   dplyr::rename("enzyme"="V2")
 
-## all the reaction in kegg
-a <- read.csv("result/keggAllreaction_v20240428.csv")
+## All the reaction in kegg
+a <- read.csv("result/keggAllreaction.csv")
 
-# get all the metabolite and its corresponding gene from all the reaction in kegg
+# Get all the metabolite and its corresponding gene from all the reaction in kegg
 
-## the metabolite-gene pairs are exacted from every compound in the equation and the gene with the enzyme
+## The metabolite-gene pairs are exacted from every compound in the equation and the gene with the enzyme
 
 metabolite_gene <- a %>%
   dplyr::select(c("EQUATION","ENZYME")) %>%
@@ -451,9 +456,8 @@ metabolite_gene <- a %>%
   dplyr::rename("dest"="gene_name") %>%
   dplyr::select(c("src_type","src","dest_type","dest"))
 
-# get all the metabolite-metabolite pairs in the reactions
-## get the metabolite from the EQUATION, the metabolite-metabolite pairs are exacted from every compound in left of equation and every compound in right of equation.
-
+# Get all the metabolite-metabolite pairs in the reactions
+## Get the metabolite from the EQUATION, the metabolite-metabolite pairs are exacted from every compound in left of equation and every compound in right of equation.
 metabolite_metabolite <- a %>%
   dplyr::select(c("EQUATION","ENZYME")) %>%
   tidyr::separate(EQUATION,c("a","b"),sep=" <=> ")%>%
@@ -488,8 +492,8 @@ metabolite_metabolite <- a %>%
   dplyr::rename("dest"="metabolite_2") %>%
   dplyr::select(c("src_type","src","dest_type","dest"))
 
-write.table(metabolite_gene,"result/KEGG_metabolite_gene_v20240428.txt",quote=F,row.names = F,sep="\t")
-write.table(metabolite_metabolite,"result/KEGG_metabolite_metabolite_v20240428.txt",quote=F,row.names = F,sep="\t")
+write.table(metabolite_gene,"result/KEGG_metabolite_gene.txt",quote=F,row.names = F,sep="\t")
+write.table(metabolite_metabolite,"result/KEGG_metabolite_metabolite.txt",quote=F,row.names = F,sep="\t")
 ```
 
 #### Graphite
@@ -562,14 +566,20 @@ write.table(reactome_result,"result/Graphite/gene-metabolite-reactome.txt",quote
 **Download the information of metabolism pathways**
 </blockquote>
 
-```{r}
+
+Download all gpml files of homo-species from Wikipathway and extract the file names
+```{bash}
 ## Wikipathway
-# Download all gpml files of homo-species from Wikipathway and extract the file names
-ls > all.txt
+wget https://data.wikipathways.org/current/gpml/wikipathways-20241010-gpml-Homo_sapiens.zip
+```
+
+```{r}
+ls wikipathways-20241010-gpml-Homo_sapiens/* >all.txt
 rev all.txt|cut -d"_" -f2|rev >all.1.txt
-touch test.txt
 cat /dev/null > test.txt
 
+
+if (0) {
 cat all.1.txt |while read line
 do
 grep TERM homo/*${line}_*.gpml |cut -d">" -f2|cut -d"<" -f1|  tr -s "\n" ";"|sed -e 's/;$//g' | sed "s/^/${line}
@@ -577,6 +587,7 @@ grep TERM homo/*${line}_*.gpml |cut -d">" -f2|cut -d"<" -f1|  tr -s "\n" ";"|sed
 done
 
 grep -i metabolic test.txt >test_metabolic.txt
+}
 
 cat all.1.txt | while read line
 do
@@ -588,7 +599,8 @@ grep -i metabolic test.txt >test_metabolic.txt
 wget https://smpdb.ca/downloads/smpdb_pathways.csv.zip
 
 ## Reactome
-#R-HSA-1430728 is the metabolism, then choose the hierarchical is lower than it
+R-HSA-1430728 is the metabolism, then choose the hierarchical is lower than it
+wget https://reactome.org/download/current/ReactomePathwaysRelation.txt
 
 ## KEGG
 #choose the metabolism pathway
@@ -658,6 +670,7 @@ smpdb_metabolism <-  smpdb_data %>%
   dplyr::rename("src_type"="src_type_new","src"="src_new1","dest_type"="dest_type_new","dest"="dest_new1") %>%
   dplyr::select(c("src_type","src","dest_type","dest","pathwayid","pathway")) %>%
   unique()
+write.table(smpdb_metabolism,"result/Graphite/gene-metabolite-smpdb_metabolism.txt",quote=F,sep="\t",row.names=F)
 
 ## Reactome
 # metabolism pathway
@@ -709,8 +722,6 @@ wikipathway_data <- data.table::fread("result/Graphite/gene-metabolite-wikipaths
   unique()
 write.table(wikipathway_data,"result/Graphite/gene-metabolite-wikipathway_metabolism.txt",quote=F,sep="\t",row.names=F)
 
-## Combine the data from database kegg, wikipathway, reactome, smpdb and then uniq the data.
-cat gene-metabolite-*metabolism.txt |cut -f1-4,6|sort|uniq >result.graphite.txt
 ```
 
 <blockquote>
@@ -734,6 +745,8 @@ curl 'http://bigg.ucsd.edu/api/v2/models'
 ## Then, choice the model from Homo sapiens,then in reserve model is iAT_PLT_636, iAB_RBC_283, RECON1, Recon3D.
 
 ## Get all the reactions names in the 4 human models.
+2 minutes
+
 curl 'http://bigg.ucsd.edu/api/v2/models/iAT_PLT_636/reactions' >result/BiGG/iAT_PLT_636.reactions
 curl 'http://bigg.ucsd.edu/api/v2/models/iAB_RBC_283/reactions' >result/BiGG/iAB_RBC_283.reactions
 curl 'http://bigg.ucsd.edu/api/v2/models/RECON1/reactions' >result/BiGG/RECON1.reactions
@@ -741,16 +754,16 @@ curl 'http://bigg.ucsd.edu/api/v2/models/Recon3D/reactions' >result/BiGG/Recon3D
 
 ## Change the json reaction names to txt file.
 tt<-jsonlite::stream_in(file("result/BiGG/iAB_RBC_283.reactions"),pagesize = 100)
-write.table(tt$results[[1]],"result/BiGG/iAB_RBC_283.reactions.txt",quote=F,row.names=F,col.names=F)
+write.table(tt$results[[1]]$bigg_id,"result/BiGG/iAB_RBC_283.reaction.txt",quote=F,row.names=F,col.names=F)
 
 tt<-jsonlite::stream_in(file("result/BiGG/iAT_PLT_636.reactions"),pagesize = 100)
-write.table(tt$results[[1]],"result/BiGG/iAT_PLT_636.reactions.txt",quote=F,row.names=F,col.names=F)
+write.table(tt$results[[1]]$bigg_id,"result/BiGG/iAT_PLT_636.reaction.txt",quote=F,row.names=F,col.names=F)
 
 tt<-jsonlite::stream_in(file("result/BiGG/RECON1.reactions"),pagesize = 100)
-write.table(tt$results[[1]],"result/BiGG/RECON1.reactions.txt",quote=F,row.names=F,col.names=F)
+write.table(tt$results[[1]]$bigg_id,"result/BiGG/RECON1.reaction.txt",quote=F,row.names=F,col.names=F)
 
 tt<-jsonlite::stream_in(file("result/BiGG/Recon3D.reactions"),pagesize = 100)
-write.table(tt$results[[1]],"result/BiGG/Recon3D.reactions.txt",quote=F,row.names=F,col.names=F)
+write.table(tt$results[[1]]$bigg_id,"result/BiGG/Recon3D.reaction.txt",quote=F,row.names=F,col.names=F)
 ```
 
 <blockquote>
@@ -761,10 +774,69 @@ write.table(tt$results[[1]],"result/BiGG/Recon3D.reactions.txt",quote=F,row.name
 
 <li>Download the every reaction.
 
-```{r}
-curl 'http://bigg.ucsd.edu/api/v2/models/iAT_PLT_636/reactions/10FTHF6GLUtm'    >result/BiGG/iAT_PLT_636/reaction/json/10FTHF6GLUtm.txt
-curl 'http://bigg.ucsd.edu/api/v2/models/iAT_PLT_636/reactions/10FTHF7GLUtl'    >result/BiGG/iAT_PLT_636/reaction/json/10FTHF7GLUtl.txt
+Download iAB_RBC_283 reaction
+
+```{bash}
+#!/bin/bash
+
+#####Does output_dir need to add result/BiGG/mainly depends on the path of the full text
+input_file='iAB_RBC_283.reaction.txt'
+output_dir='iAB_RBC_283/reaction/json'
+mkdir -p "$output_dir"
+
+cat "$input_file" | while read line
+do
+curl "http://bigg.ucsd.edu/api/v2/models/iAB_RBC_283/reactions/${line}" > "${output_dir}/${line}.txt"
+done 
 ```
+Download iAT_PLT_636 reaction
+
+```{bash}
+#!/bin/bash
+
+#####Does output_dir need to add result/BiGG/mainly depends on the path of the full text
+input_file='iAT_PLT_636.reaction.txt'
+output_dir='iAT_PLT_636/reaction/json'
+mkdir -p "$output_dir"
+
+cat "$input_file" | while read line
+do
+curl "http://bigg.ucsd.edu/api/v2/models/iAT_PLT_636/reactions/${line}" > "${output_dir}/${line}.txt"
+done
+```
+
+Download RECON1 reaction
+
+```{bash}
+#!/bin/bash
+
+#####Does output_dir need to add result/BiGG/mainly depends on the path of the full text
+input_file='RECON1.reaction.txt'
+output_dir='RECON1/reaction/json'
+mkdir -p "$output_dir"
+
+cat "$input_file" | while read line
+do
+curl "http://bigg.ucsd.edu/api/v2/models/RECON1/reactions/${line}" > "${output_dir}/${line}.txt"
+done
+```
+
+Download Recon3D reaction
+
+```{bash}
+#!/bin/bash 
+
+#####Does output_dir need to add result/BiGG/mainly depends on the path of the full text
+input_file='Recon3D.reaction.txt'
+output_dir='Recon3D/reaction/json'
+mkdir -p "$output_dir"
+
+cat "$input_file" | while read line   
+do
+curl "http://bigg.ucsd.edu/api/v2/models/Recon3D/reactions/${line}" > "${output_dir}/${line}.txt"
+done
+```
+
 
 <li>Get the information in every reaction.
 
@@ -822,6 +894,7 @@ if (length(unique(recon1$metabolites[[1]]$stoichiometry))>1) {
 ```
 
 <li>Run the R script that change the reaction information in json to txt in batch.
+This step takes about 3 hours.
 
 ```{r}
 cat result/BiGG/iAB_RBC_283.reaction.txt |while read line
@@ -850,6 +923,9 @@ done
 ```{r}
 cat result/BiGG/iAB_RBC_283/reaction/txt/*|grep -v metabolite_biggid1 >result/BiGG/cat_reaction_info_iAB_RBC_283.txt
 cat result/BiGG/iAT_PLT_636/reaction/txt/*|grep -v metabolite_biggid1 >result/BiGG/cat_reaction_info_iAT_PLT_636.txt
+
+## Recon3D manually modified several lines starting with (GlcNAc)7 (Man)3
+
 cat result/BiGG/Recon3D/reaction/txt/*|grep -v metabolite_biggid1 >result/BiGG/cat_reaction_info_Recon3D.txt
 cat result/BiGG/RECON1/reaction/txt/*|grep -v metabolite_biggid1 >result/BiGG/cat_reaction_info_RECON1.txt
 ```
@@ -878,7 +954,7 @@ args=commandArgs(T)
 recon1<-jsonlite::stream_in(file(paste0("result/BiGG/",args[1],"_metabolite.json")),pagesize = 100)
 
 aa <- recon1$results[[1]]
-write.table(aa$bigg_id,paste0("result/BiGG/",args[1],"_metabolite.txt"),row.names = F,col.names=F,sep="\t",quote=F)
+write.table(paste0(aa$bigg_id,"_",aa$compartment_bigg_id),paste0("result/BiGG/",args[1],"_metabolite.txt"),row.names = F,col.names=F,sep="\t",quote=F)
 
 ## Use the script.
 Rscript metabolitename_json2txt.R iAB_RBC_283
@@ -889,12 +965,74 @@ Rscript metabolitename_json2txt.R Recon3D
 
 <li>Download every metabolite information.
 
-```{r}
-curl 'http://bigg.ucsd.edu/api/v2/models/iAB_RBC_283/metabolites/13dpg_c'       >result/BiGG/iAB_RBC_283_metabolites/13dpg_c.json
-curl 'http://bigg.ucsd.edu/api/v2/models/iAB_RBC_283/metabolites/23dpg_c'       >result/BiGG/iAB_RBC_283_metabolites/23dpg_c.json
-curl 'http://bigg.ucsd.edu/api/v2/models/iAB_RBC_283/metabolites/2kmb_c'        >result/BiGG/iAB_RBC_283_metabolites/2kmb_c.json
-curl 'http://bigg.ucsd.edu/api/v2/models/iAB_RBC_283/metabolites/2pg_c' >result/BiGG/iAB_RBC_283_metabolites/2pg_c.json
+Download iAB_RBC_283 metabolite
+```{bash}
+#!/bin/bash
+
+#####Does output_dir need to add result/BiGG/mainly depends on the path of the full text
+
+input_file='iAB_RBC_283_metabolite.txt'
+output_dir='iAB_RBC_283/metabolite/json'
+mkdir -p "$output_dir"
+
+cat "$input_file" | while read line
+do
+curl "http://bigg.ucsd.edu/api/v2/models/iAB_RBC_283/metabolites/${line}" > "${output_dir}/${line}.txt"
+done
+
 ```
+
+Download iAT_PLT_636 metabolite
+```{bash}
+#!/bin/bash
+
+#####Does output_dir need to add result/BiGG/mainly depends on the path of the full text
+
+input_file='iAT_PLT_636_metabolite.txt'
+output_dir='iAT_PLT_636/metabolite/json'
+mkdir -p "$output_dir"
+
+cat "$input_file" | while read line
+do
+curl "http://bigg.ucsd.edu/api/v2/models/iAT_PLT_636/metabolites/${line}" > "${output_dir}/${line}.txt"
+done
+
+```
+
+Download RECON1 metabolite
+```{bash}
+#!/bin/bash
+
+#####Does output_dir need to add result/BiGG/mainly depends on the path of the full text
+
+input_file='RECON1_metabolite.txt'
+output_dir='RECON1/metabolite/json'
+mkdir -p "$output_dir"
+
+cat "$input_file" | while read line
+do
+curl "http://bigg.ucsd.edu/api/v2/models/RECON1/metabolites/${line}" > "${output_dir}/${line}.txt"
+done
+
+```
+
+Download Recon3D metabolite
+```{bash}
+#!/bin/bash
+
+#####Does output_dir need to add result/BiGG/mainly depends on the path of the full text
+
+input_file='Recon3D_metabolite.txt'
+output_dir='Recon3D/metabolite/json'
+mkdir -p "$output_dir"
+
+cat "$input_file" | while read line
+do
+curl "http://bigg.ucsd.edu/api/v2/models/Recon3D/metabolites/${line}" > "${output_dir}/${line}.txt"
+done
+
+```
+
 
 <li>The R script that exact the KEGG ID in metabolite file.
 
@@ -937,10 +1075,12 @@ done
 <li>Combine all the metabolite in 1 file for every model.
 
 ```{r}
-cat result/BiGG/iAB_RBC_283/metabolite/txt/*_metabolite.txt|grep -v kegg_id >result/BiGG/iAB_RBC_283_metabolite_all.txt
-cat result/BiGG/iAT_PLT_636/metabolite/txt/*_metabolite.txt |grep -v kegg_id >result/BiGG/iAT_PLT_636_metabolite_all.txt
-cat result/BiGG/RECON1/metabolite/txt/*_metabolite.txt|grep -v kegg_id >result/BiGG/RECON1_metabolite_all.txt
-cat result/BiGG/Recon3D/metabolite/txt/*_metabolite.txt|grep -v kegg_id >result/BiGG/Recon3D_metabolite_all.txt
+cat result/BiGG/iAB_RBC_283/metabolite/txt/*.txt|grep -v kegg_id|grep -v '^ $' >result/BiGG/iAB_RBC_283_metabolite_all.txt
+cat result/BiGG/iAT_PLT_636/metabolite/txt/*.txt |grep -v kegg_id |grep -v '^ $' >result/BiGG/iAT_PLT_636_metabolite_all.txt
+cat result/BiGG/RECON1/metabolite/txt/*.txt|grep -v kegg_id|grep -v '^ $' >result/BiGG/RECON1_metabolite_all.txt
+
+## Recon3D metabolites is so many, so please cat 2 times
+cat result/BiGG/Recon3D/metabolite/txt/*.txt|grep -v kegg_id|grep -v '^ $' >result/BiGG/Recon3D_metabolite_all.txt
 ```
 
 </ul>
@@ -957,7 +1097,7 @@ library(dplyr)
 metabolite_info <- data.table::fread(paste0("result/BiGG/",args[1],"_metabolite_all.txt"),header=F) %>%
   as.data.frame()
 
-gene_metabolite_pairs <- data.table::fread(paste0("result/BiGG/cat_reaction_info_",args[1],".txt"),header=F) %>%
+gene_metabolite_pairs <- data.table::fread(paste0("result/BiGG/cat_reaction_info_",args[1],".txt"),header=F,sep="\t",fill=T) %>%
   as.data.frame() %>%
   dplyr::left_join(metabolite_info,by=c("V3"="V1")) %>%
   dplyr::left_join(metabolite_info,by=c("V6"="V1")) %>%
@@ -982,115 +1122,223 @@ cat result_*.txt |cut -f1-5 |sort|uniq >result/BiGG/result.BiGG.txt
 ```
 
 <blockquote>
-**Combine the data from BiGG and graphite**
+**Combine the data from BiGG, graphite, and KEGG
 </blockquote>
 
 ```{r}
- cat result/BiGG/result.BiGG.txt ../graphite/result.graphite.txt |sed s/KEGGCOMP/metabolite/g |sed s/SYMBOL/gene/g |sort|uniq >gene-metabolite_BiGG_graphite.txt
-```
+library(dplyr)
 
-```{r}
-dat <- data.table::fread("/Users/guituantuan/Desktop/projects/database/gene-metabolite/gene-metabolite_BiGG_graphite.txt") %>%
-  as.data.frame() %>%
-  dplyr::filter(keggId!=gene) %>%
-  dplyr::mutate(keggId_new=ifelse(src_type=="metabolite" & dest_type=="metabolite",
-                                ifelse(keggId>gene,keggId,gene),
-                                keggId)) %>%
-  dplyr::mutate(gene_new=ifelse(src_type=="metabolite" & dest_type=="metabolite",
-                                 ifelse(keggId>gene,gene,keggId),
-                                 gene)) %>%
-  dplyr::select(-c("keggId","gene")) %>%
-  dplyr::rename("keggId"="keggId_new","gene"="gene_new") %>%
-  dplyr::select(c("src_type","keggId","dest_type","gene","subsystems"))
-
-dat$subsystems <- stringr::str_to_title(dat$subsystems)
-
-kegg_pathway1 <- kegg_pathway %>%
-  dplyr::mutate(pathway1=stringr::str_to_title(PATHWAY)) %>%
-  dplyr::select(c("pathway1","pathway_type")) %>%
-  dplyr::rename("subsystems"="pathway1") %>%
-  unique()
-
-pathway_type_1 <- data.table::fread("pathway_type.txt",header=F) %>%
+kegg1 <- data.table::fread("KEGG_metabolite_gene.txt") %>%
   as.data.frame()
+kegg2 <- data.table::fread("KEGG_metabolite_metabolite.txt") %>%
+  as.data.frame()
+dat_kegg <- rbind(kegg1,kegg2)
 
-names(pathway_type_1) <- c("subsystems","pathway_type")
-aa <- rbind(kegg_pathway1,pathway_type_1)
+dat_graphite <- data.table::fread("Graphite/result.graphite.txt",header=F) %>%
+  as.data.frame() %>%
+  dplyr::select(-V5) %>%
+  filter(V1 != "src_type") %>%
+  rename("src_type"="V1","src"="V2","dest_type"="V3","dest"="V4")
 
+dat_bigg <- data.table::fread("BiGG/result.BiGG.txt",header=F) %>%
+  as.data.frame() %>%
+  dplyr::select(-V5) %>%
+  filter(V1 != "src_type") %>%
+  rename("src_type"="V1","src"="V2","dest_type"="V3","dest"="V4")
+
+dat <- rbind(dat_kegg,dat_graphite,dat_bigg) 
+dat1 <- dat %>%
+  filter(src_type==dest_type)
 dat2 <- dat %>%
-  dplyr::mutate(subsystems=ifelse(subsystems=="Urea Cycle/Amino Group Metabolism","Urea Cycle",subsystems)) %>%
-  dplyr::mutate(subsystems=ifelse(subsystems=="Nucleotides","Nucleotide Interconversion",subsystems)) %>%
-  dplyr::mutate(subsystems=ifelse(subsystems=="Citric Acid Cycle","TCA Cycle",subsystems)) %>%
-  dplyr::mutate(subsystems=ifelse(subsystems=="Citrate Cycle (Tca Cycle)","TCA Cycle",subsystems)) %>%
-  dplyr::mutate(subsystems=ifelse(subsystems=="The Citric Acid (Tca) Cycle And Respiratory Electron Transport","TCA Cycle",subsystems)) %>%
-  dplyr::mutate(subsystems=ifelse(grepl("Vitamin",subsystems),"Vitamin Metabolism",subsystems)) %>%
-  dplyr::mutate(subsystems=ifelse(grepl("Tca Cycle",subsystems),"TCA Cycle",subsystems)) %>%
-  dplyr::mutate(subsystems=ifelse(grepl("Amino Acid",subsystems),"Amino Acid Metabolism",subsystems)) %>%
-  dplyr::mutate(subsystems=ifelse(grepl("Coa ",subsystems),"CoA Metabolism",subsystems)) %>%
-  dplyr::mutate(subsystems=ifelse(grepl("Fatty Acid",subsystems),"Fatty Acid Metabolism",subsystems)) %>%
-  dplyr::mutate(subsystems=ifelse(subsystems=="Fatty Acid Oxidation","Fatty Acid Metabolism",subsystems)) %>%
-  dplyr::mutate(subsystems=ifelse(subsystems=="Aminosugar Metabolism","Amino Sugar Metabolism",subsystems)) %>%
-  unique() %>%
-  dplyr::left_join(aa,by="subsystems")
+  filter(src_type!=dest_type)
 
-write.table(dat2,"/Users/guituantuan/Desktop/projects/database/gene-metabolite/gene-metabolite_BiGG_graphite_uniq.txt",
-            quote=F,row.names=F,sep="\t")
+dat11 <- dat1 %>%
+  mutate(src1=ifelse( src > dest,src,dest)) %>%
+  mutate(dest1=ifelse(src > dest, dest, src)) %>%
+  select(-src,-dest) %>%
+  rename("src"="src1","dest"="dest1") %>%
+  select(src_type,src,dest_type,dest)
+dat_all <- rbind(dat2,dat11) %>%
+  unique()
+write.table(dat_all,"Gene-Metabolite-data.txt",quote=F,row.names = F,sep="\t")
 ```
 
 ## Deployment
 
 [MNet Source Files](https://github.com/tuantuangui/MNet)
 
-[MNet Web server](http://www.mnet4all.com/MNet/)
+[MNet Web Server](http://www.mnet4all.com/MNet/)
 
 ### Installing R 4.4.1 for Ubuntu 20
 
-```{r,eval=TRUE,echo=FALSE,fig.align='center'}
-knitr::include_graphics("figure/3.1.png")
+```{bash}
+## 1. Sources
+sudo sh -c 'echo "deb https://mirrors.tuna.tsinghua.edu.cn/CRAN/bin/linux/ubuntu $(lsb_release -cs)-cran40/" >> /etc/apt/sources.list'
+
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+
+## 2. Update and Install
+sudo apt-get update
+sudo apt install -y libcurl4-openssl-dev libssl-dev libxml2-dev
+sudo apt-get install r-base
 ```
 
 ### Installing R Packages
 
-```{r,eval=TRUE,echo=FALSE,fig.align='center'}
-knitr::include_graphics("figure/3.2.png")
+```{bash}
+## In Order Install
+sudo R
+
+options(repos = c(CRAN = "https://mirrors.tuna.tsinghua.edu.cn/CRAN/"))
+options(BioC_mirror="https://mirrors.tuna.tsinghua.edu.cn/bioconductor")
+
+install.packages("shiny")
+install.packages("Rcpp")
+install.packages("RcppEigen")
+
+install.packages("BiocManager")
+BiocManager::install(c("supraHex", "limma", "pathview", "ropls", "fgsea"))
+
+install.packages("remotes") 
+remotes::install_github("hfang-bristol/dnet")
+remotes::install_github("hfang-bristol/XGR")
+
+remotes::install_github("tuantuangui/MNet")
 ```
 
 ### Installing shiny-sever
 
-```{r,eval=TRUE,echo=FALSE,fig.align='center'}
-knitr::include_graphics("figure/3.3.1.png")
-```
+```{bash}
+## 1. Install
+sudo apt-get install gdebi-core
+wget https://download3.rstudio.org/ubuntu-14.04/x86_64/shiny-server-1.5.14.948-amd64.deb
+sudo gdebi shiny-server-1.5.14.948-amd64.deb
 
-```{r,eval=TRUE,echo=FALSE,fig.align='center'}
-knitr::include_graphics("figure/3.3.2.png")
+## 2. Start and Enable shiny-server
+sudo systemctl start shiny-server.service
+sudo systemctl enable shiny-server
+
+## 3. Config
+sudo vim /etc/shiny-server/shiny-server.conf
+
+# Instruct Shiny Server to run applications as the user "shiny"
+run_as shiny;
+
+# Define a server that listens on port 3838
+server {
+  listen 3838;
+  
+# Define a location at the base URL
+location / {
+
+# Host the directory of Shiny Apps stored in this directory
+site_dir /srv/shiny-server;
+
+# Log all Shiny output to files in this directory
+log_dir /var/log/shiny-server;
+
+# When a user visits the base URL rather than a particular application,
+# an index of the applications available in this directory will be shown.
+directory_index on;
+  
+app_idle_timeout 0;
+}
+}
 ```
 
 ### Shiny App Server and Logs
 
-```{r,eval=TRUE,echo=FALSE,fig.align='center'}
-knitr::include_graphics("figure/3.4.1.png")
+```{bash}
+## 1. Shinyapp
+cd ~/
+git clone https://github.com/tuantuangui/MNet.git
+sudo cp -r ~/MNet/inst/shinyapp/ /srv/shiny-server/MNet/
+
+## 2. Restart shiny-server
+sudo systemctl restart shiny-server.service
+
+## 3. Less New Logs
+sudo less /var/log/shiny-server/*.log
 ```
 
 ### Firewall: firewalld or ufw
 
-```{r,eval=TRUE,echo=FALSE,fig.align='center'}
-knitr::include_graphics("figure/3.5.1.png")
-```
+```{bash}
+## firewalld
+# 1. Install
+sudo apt-get install firewalld
 
-```{r,eval=TRUE,echo=FALSE,fig.align='center'}
-knitr::include_graphics("figure/3.5.2.png")
+# 2. Start and Enable 
+sudo systemctl start firewalld
+sudo systemctl enable firewalld
+
+# 3. Usage
+sudo firewall-cmd --list-ports
+sudo firewall-cmd --zone=public --add-port=3838/tcp —-permanent
+sudo firewall-cmd --reload
+sudo firewall-cd --list-ports
+
+## ufw
+# 1. Install
+sudo apt-get install ufw
+
+# 2. Enable
+sudo ufw enable
+
+# 3. Usage
+sudo ufw status
+sudo ufw allow 3838/tcp
+sudo ufw reload
+
+sudo ufw delete allow 3838/tcp
 ```
 
 ### Apache2 Config
 
-```{r,eval=TRUE,echo=FALSE,fig.align='center'}
-knitr::include_graphics("figure/3.6.1.png")
-```
+```{bash}
+## 1. Install 
+sudo apt-get install apache2 
+sudo systemctl start apache2
+sudo systemctl enable apache2
 
-```{r,eval=TRUE,echo=FALSE,fig.align='center'}
-knitr::include_graphics("figure/3.6.2.png")
-```
+## 2. a2enmod config 
+sudo a2enmod proxy
+sudo a2enmod proxy_http 
+sudo a2enmod rewrite
+sudo systemctl restart apache2
 
-```{r,eval=TRUE,echo=FALSE,fig.align='center',out.width="150%"}
-knitr::include_graphics("figure/3.6.3.png")
+## 3. Apache2 Config for shiny-server
+sudo vim /etc/apache2/sites-available/000-default.conf
+
+<VirtualHost *:80>
+# The ServerName directive sets the request scheme, hostname and port that the server uses to identify itself. This is used when creating redirection URLs. In the context of virtual hosts, the ServerName specifies what hostname must appear in the request's Host: header to match this virtual host. For the default virtual host (this file) this value is not decisive as it is used as a last resort host regard less. However, you must set it for any further virtual host explicitly.
+
+ServerName www.mnet4all.com
+ServerAdmin webmaster@localhost
+DocumentRoot /var/www/html
+
+# Available loglevels: trace8, ..., tracel, debug, info, notice, warn, error,  crit, alert, emerg. It is also possible to configure the loglevel for particular modules, e.g.
+# LogLevel info ssl:warn
+
+ErrorLog ${APACHE_LOG_DIR}/error.log
+CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+# For most configuration files from conf-available/, which are enabled or disabled at a global level, it is possible to include a line for only one particular virtual host. For example the following line enables the CGI configuration for this host only after it has been globally disabled with "a2disconf". Include conf-available/serve-cgi-bin.conf
+
+ProxyPass /MNet http://localhost:3838/MNet
+ProxyPassReverse /MNet http://localhost: 3838/MNet
+
+<Location /MNet>
+  ProxyPassReverse / 
+  Order allow,deny
+  Allow from all
+</Location>
+
+</VirtualHost>
+    
+# vim: syntax=apache ts=4 sw=4 sts=4 sr noet
+  
+## 4. Static Sites
+cp -r ~/MNet/pkgdown/docs /var/www/html/mnet-docs
+cp -r ~/MNet/bookdown/book /var/www/html/mnet-manual
 ```
