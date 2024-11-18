@@ -20,7 +20,7 @@ knitr::opts_chunk$set(fig_cap="yes")
 
 # OVERVIEW
 ```{r,eval=TRUE,echo=FALSE,fig.align='center'}
-knitr::include_graphics("figure/overview.png")
+knitr::include_graphics("figrue/overview.png")
 ```
 
 <blockquote>
@@ -36,3 +36,22 @@ Our well-established algorithm/tool called ‘dnet’ and its related software([
 The dbKEGG facilitates KEGG metabolic pathway-based extended pathway analysis to identify dysregulated metabolic pathways involving both metabolites and genes.  
 
 The dbNet enhances metabolism-related subnetwork analysis by leveraging gene-metabolite and metabolite-metabolite information to identify subnetwork that best explain the input data.  
+
+<blockquote>
+**Browser compatibility**
+</blockquote> 
+
+```{r,eval=TRUE,echo=FALSE}
+library(knitr)
+library(dplyr)
+
+data <- data.frame(
+  Browser = c("Safari", "Edge", "Chrome"),
+  `MacOS (Big Sur)` = c("17.4.1", "N/A", "108.0.5359.124"),
+  `Windows (10)` = c("N/A", "108.0.1462.54", "108.0.5359.124"),
+  check.names = FALSE)
+data <- data %>%
+  tibble::column_to_rownames("Browser")
+
+kable(data, align = c("c", "c", "c", "c"), caption = "A summary of the MNet browser compatibility.")
+```

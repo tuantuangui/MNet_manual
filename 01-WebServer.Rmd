@@ -28,7 +28,7 @@ In R network analysis, nodes number refers to the total count of nodes, represen
 
 
 ```{r,eval=TRUE,echo=FALSE,fig.align='center'}
-knitr::include_graphics("figure/1.M-G.png")
+knitr::include_graphics("figrue/1.net.png")
 ```
 
 <blockquote>
@@ -37,25 +37,27 @@ knitr::include_graphics("figure/1.M-G.png")
 
 <ul>
 
-<li>**Expand the Demo Panel and click Metabolic Data to download demo data**, which comprises an integrated analysis of metabolomic and transcriptomic profiles in triple-negative breast cancer.
+<li>**Input**
+
+**Expand the Demo Panel and click Metabolic Data to download demo data**, which comprises an integrated analysis of metabolomic and transcriptomic profiles in triple-negative breast cancer.
 
 <ul>
 <li>**Metabolite Data**: an interactive table for user-input metabolic data with rows corresponding to metabolites and columns corresponding to samples.
 
 ```{r,eval=TRUE,echo=FALSE}
-knitr::include_graphics("figure/Metabolite.png")
+knitr::include_graphics("figrue/1.Metabolite.png")
 ```
 
-<li>**GeneExp Data**: an interactive table for user-input metabolic data with rows corresponding to genes and columns correspond to the samples.
+<li>**Gene Data**: an interactive table for user-input metabolic data with rows corresponding to genes and columns correspond to the samples.
 
 ```{r,eval=TRUE,echo=FALSE}
-knitr::include_graphics("figure/GeneExp.png")
+knitr::include_graphics("figrue/1.GeneExp.png")
 ```
 
 <li>**Group Data**: Group information.
 
 ```{r,eval=TRUE,echo=FALSE,fig.align='left'}
-knitr::include_graphics("figure/GroupInfo.png")
+knitr::include_graphics("figrue/1.GroupInfo.png")
 ```
 
 </ul>
@@ -63,18 +65,30 @@ knitr::include_graphics("figure/GroupInfo.png")
 </ul>
 
 
-#### Results
+#### Output
 
 <ul>
 
-<li>By utilising the dbNet knowledgebase and employing the dnet algorithm, MNet analyses a list of genes and metabolites along with their significance information, allowing a graphical display of the metabolism-related subnetwork that contains both genes and metabolites.
-
-</ul>
+<li>**Nodes Data**: Nodes of subnetworks.
 
 ```{r,eval=TRUE,echo=FALSE,fig.align='center'}
-knitr::include_graphics("figure/subnetwork.png")
+knitr::include_graphics("figrue/1.Nodesdata.png")
+```
+
+<li>**Edges Data**: Edges of subnetworks.
+
+```{r,eval=TRUE,echo=FALSE,fig.align='center'}
+knitr::include_graphics("figrue/1.Edegedata.png")
+```
+
+<li>**Subnetwork Plot**: A core metabolite-gene subnetwork can be downloaded as a PDF or JPEG file with specified width, height, and dpi setting.
+
+```{r,eval=TRUE,echo=FALSE,fig.align='center'}
+knitr::include_graphics("figrue/subnetwork.png")
 ```
 <center><b>Figure 1.</b> Visualization of the identified optimal subnetwork that best explains the biological processes comparing two groups. The colors represent the logFC (logarithm of fold change) of genes, with red and green indicating different expression levels, while yellow and blue represent the logFC of metabolites, indicating varying levels.</center>
+
+</ul>
 
 ## Extended Pathway Analyses
 
@@ -110,7 +124,7 @@ Extended pathway enrichment analysis
 </ul>
 
 ```{r,eval=TRUE,echo=FALSE,fig.align='center'}
-knitr::include_graphics("figure/1.M-G.png")
+knitr::include_graphics("figrue/2.ePEA.1.png")
 ```
 
 <blockquote>
@@ -119,25 +133,27 @@ knitr::include_graphics("figure/1.M-G.png")
 
 <ul>
 
-<li>**Expand the Demo Panel and click Metabolic Data to download demo data**, which comprises an integrated analysis of metabolomic and transcriptomic profiles in triple-negative breast cancer.
+<li>**Input**
+
+**Expand the Demo Panel and click Metabolic Data to download demo data**, which comprises an integrated analysis of metabolomic and transcriptomic profiles in triple-negative breast cancer.
 
 <ul>
 <li>**Metabolite Data**: an interactive table for user-input metabolic data with rows corresponding to metabolites and columns corresponding to samples.
 
 ```{r,eval=TRUE,echo=FALSE}
-knitr::include_graphics("figure/Metabolite.png")
+knitr::include_graphics("figrue/2.Metabolite-1.png")
 ```
 
-<li>**GeneExp Data**: an interactive table for user-input metabolic data with rows corresponding to genes and columns correspond to the samples.
+<li>**Gene Data**: an interactive table for user-input metabolic data with rows corresponding to genes and columns correspond to the samples.
 
 ```{r,eval=TRUE,echo=FALSE}
-knitr::include_graphics("figure/GeneExp.png")
+knitr::include_graphics("figrue/2.GeneExp-1.png")
 ```
 
 <li>**Group Data**: Group information.
 
 ```{r,eval=TRUE,echo=FALSE,fig.align='left'}
-knitr::include_graphics("figure/GroupInfo.png")
+knitr::include_graphics("figrue/2.GroupInfo-1.png")
 ```
 
 </ul>
@@ -145,12 +161,30 @@ knitr::include_graphics("figure/GroupInfo.png")
 </ul>
 
 
-#### Results
+#### Output
+
+<ul>
+
+<li>**Up ePEA Terms**: Up-regulated pathways.
 
 ```{r,eval=TRUE,echo=FALSE,fig.align='center'}
-knitr::include_graphics("figure/2.ePEA.png")
+knitr::include_graphics("figrue/2.ePEA-up.png")
+```
+
+<li>**Down ePEA Terms**: Down-regulated pathways.
+
+```{r,eval=TRUE,echo=FALSE,fig.align='center'}
+knitr::include_graphics("figrue/2.ePEA-down.png")
+```
+
+<li>**ePEA Plot**: Bar plot and dot plot illustrating enriched pathways are available, and can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
+
+```{r,eval=TRUE,echo=FALSE,fig.align='center'}
+knitr::include_graphics("figrue/2.ePEA.png")
 ```
 <center><b>Figure 1.</b> Extended pathway enrichment analysis. (A) Barplot of up-regulated metabolic pathways corresponding to metabolites and genes. (B) Dotplot of up-regulated metabolic pathways corresponding to metabolites and genes. (C) Barplot of down-regulated metabolic pathways corresponding to metabolites and genes. (D) Dotplot of down-regulated metabolic pathways corresponding to metabolites and genes.</center>
+
+</ul>
 
 ### ePDA
 Extended pathway differential abundance (ePDA) score
@@ -184,7 +218,7 @@ Extended pathway differential abundance (ePDA) score
 </ul>
 
 ```{r,eval=TRUE,echo=FALSE,fig.align='center'}
-knitr::include_graphics("figure/1.M-G.png")
+knitr::include_graphics("figrue/2.ePDA.1.png")
 ```
 
 <blockquote>
@@ -193,38 +227,51 @@ knitr::include_graphics("figure/1.M-G.png")
 
 <ul>
 
-<li>**Expand the Demo Panel and click Metabolic Data to download demo data**, which comprises an integrated analysis of metabolomic and transcriptomic profiles in triple-negative breast cancer.
+<li>**Input**
+
+**Expand the Demo Panel and click Metabolic Data to download demo data**, which comprises an integrated analysis of metabolomic and transcriptomic profiles in triple-negative breast cancer.
 
 <ul>
 <li>**Metabolite Data**: an interactive table for user-input metabolic data with rows corresponding to metabolites and columns corresponding to samples.
 
 ```{r,eval=TRUE,echo=FALSE}
-knitr::include_graphics("figure/Metabolite.png")
+knitr::include_graphics("figrue/2.Metabolite-2.png")
 ```
 
-<li>**GeneExp Data**: an interactive table for user-input metabolic data with rows corresponding to genes and columns correspond to the samples.
+<li>**Gene Data**: an interactive table for user-input metabolic data with rows corresponding to genes and columns correspond to the samples.
 
 ```{r,eval=TRUE,echo=FALSE}
-knitr::include_graphics("figure/GeneExp.png")
+knitr::include_graphics("figrue/2.GeneExp-2.png")
 ```
 
 <li>**Group Data**: Group information.
 
 ```{r,eval=TRUE,echo=FALSE,fig.align='left'}
-knitr::include_graphics("figure/GroupInfo.png")
+knitr::include_graphics("figrue/2.GroupInfo-2.png")
 ```
 
 </ul>
 
 </ul>
 
+#### Output
 
-#### Results
+<ul>
+
+<li>**ePDA Terms**: Result of ePDA analysis.
+
+```{r,eval=TRUE,echo=FALSE,fig.align='center'}
+knitr::include_graphics("figrue/2.ePDA-terms.png")
+```
+
+<li>**ePDA Plot**: A DAscore plot captures the tendency for a pathway, and can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
 
 ```{r,eval=TRUE,echo=FALSE,fig.align='center',out.width="70%"}
-knitr::include_graphics("figure/2.ePDA.png")
+knitr::include_graphics("figrue/2.ePDA.png")
 ```
 <center><b>Figure 1.</b> ePDA score captures the tendency for a pathway to exhibit increased or decreased levels of genes and metabolites that are statistically significant differences between two group.</center>
+
+</ul>
 
 ### eSEA
 Extended pathway set enrichment analysis
@@ -258,7 +305,7 @@ Extended pathway set enrichment analysis
 </ul>
 
 ```{r,eval=TRUE,echo=FALSE,fig.align='center'}
-knitr::include_graphics("figure/1.M-G.png")
+knitr::include_graphics("figrue/2.eSEA.1.png")
 ```
 
 <blockquote>
@@ -267,38 +314,52 @@ knitr::include_graphics("figure/1.M-G.png")
 
 <ul>
 
-<li>**Expand the Demo Panel and click Metabolic Data to download demo data**, which comprises an integrated analysis of metabolomic and transcriptomic profiles in triple-negative breast cancer.
+<li>**Input**
+
+**Expand the Demo Panel and click Metabolic Data to download demo data**, which comprises an integrated analysis of metabolomic and transcriptomic profiles in triple-negative breast cancer.
 
 <ul>
 <li>**Metabolite Data**: an interactive table for user-input metabolic data with rows corresponding to metabolites and columns corresponding to samples.
 
 ```{r,eval=TRUE,echo=FALSE}
-knitr::include_graphics("figure/Metabolite.png")
+knitr::include_graphics("figrue/2.Metabolite-3.png")
 ```
 
-<li>**GeneExp Data**: an interactive table for user-input metabolic data with rows corresponding to genes and columns correspond to the samples.
+<li>**Gene Data**: an interactive table for user-input metabolic data with rows corresponding to genes and columns correspond to the samples.
 
 ```{r,eval=TRUE,echo=FALSE}
-knitr::include_graphics("figure/GeneExp.png")
+knitr::include_graphics("figrue/2.GeneExp-3.png")
 ```
 
 <li>**Group Data**: Group information.
 
 ```{r,eval=TRUE,echo=FALSE,fig.align='left'}
-knitr::include_graphics("figure/GroupInfo.png")
+knitr::include_graphics("figrue/2.GroupInfo-3.png")
 ```
 
 </ul>
 
 </ul>
 
-#### Results
+
+#### Output
+
+<ul>
+
+<li>**eSEA Terms**: Result of eSEA analysis.
+
+```{r,eval=TRUE,echo=FALSE,fig.align='center'}
+knitr::include_graphics("figrue/2.eSEA-terms.png")
+```
+
+<li>**eSEA Plot**: Result of pathway set enrichment analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
 
 ```{r,eval=TRUE,echo=FALSE,fig.align='center',out.width="60%"}
-knitr::include_graphics("figure/2.eSEA.png")
+knitr::include_graphics("figrue/2.eSEA.png")
 ```
 <center><b>Figure 1.</b> Extended pathway set enrichment analysis.</center>
 
+</ul>
 
 ## Construction of Knowledgebase dbMNet
 
@@ -977,7 +1038,7 @@ mkdir -p "$output_dir"
 
 cat "$input_file" | while read line
 do
-curl "http://bigg.ucsd.edu/api/v2/models/iAB_RBC_283/metabolites/${line}" > "${output_dir}/${line}.txt"
+curl "http://bigg.ucsd.edu/api/v2/models/iAB_RBC_283/metabolites/${line}" > "${output_dir}/${line}.json"
 done
 
 ```
@@ -994,7 +1055,7 @@ mkdir -p "$output_dir"
 
 cat "$input_file" | while read line
 do
-curl "http://bigg.ucsd.edu/api/v2/models/iAT_PLT_636/metabolites/${line}" > "${output_dir}/${line}.txt"
+curl "http://bigg.ucsd.edu/api/v2/models/iAT_PLT_636/metabolites/${line}" > "${output_dir}/${line}.json"
 done
 
 ```
@@ -1011,7 +1072,7 @@ mkdir -p "$output_dir"
 
 cat "$input_file" | while read line
 do
-curl "http://bigg.ucsd.edu/api/v2/models/RECON1/metabolites/${line}" > "${output_dir}/${line}.txt"
+curl "http://bigg.ucsd.edu/api/v2/models/RECON1/metabolites/${line}" > "${output_dir}/${line}.json"
 done
 
 ```
@@ -1028,7 +1089,7 @@ mkdir -p "$output_dir"
 
 cat "$input_file" | while read line
 do
-curl "http://bigg.ucsd.edu/api/v2/models/Recon3D/metabolites/${line}" > "${output_dir}/${line}.txt"
+curl "http://bigg.ucsd.edu/api/v2/models/Recon3D/metabolites/${line}" > "${output_dir}/${line}.json"
 done
 
 ```
@@ -1122,7 +1183,7 @@ cat result_*.txt |cut -f1-5 |sort|uniq >result/BiGG/result.BiGG.txt
 ```
 
 <blockquote>
-**Combine the data from BiGG, graphite, and KEGG
+**Combine the data from BiGG, graphite, and KEGG**
 </blockquote>
 
 ```{r}

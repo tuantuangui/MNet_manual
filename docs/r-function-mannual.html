@@ -22,7 +22,7 @@
 
 
 
-<meta name="date" content="2024-11-05" />
+<meta name="date" content="2024-11-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -426,7 +426,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb38-87"><a href="r-function-mannual.html#cb38-87" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="cn">NULL</span>)</span>
 <span id="cb38-88"><a href="r-function-mannual.html#cb38-88" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;result/AML-pdnet_epe.pdf&quot;</span>,p1,<span class="at">width=</span><span class="dv">10</span>,<span class="at">height =</span> <span class="dv">5</span>)</span>
 <span id="cb38-89"><a href="r-function-mannual.html#cb38-89" tabindex="-1"></a>}</span></code></pre></div>
-<p><img src="figure/AML_pdent.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="figrue/AML_pdent.png" width="70%" style="display: block; margin: auto;" /></p>
 <center>
 <strong>Met-Gene subnetwork analysis of AML:</strong> Visualization of the identified optimal subnetwork that best explains the biological processes comparing AML-M5 and other subtypes of AML. The colors represent the logFC (logarithm of fold change) of genes, with red and green indicating different expression levels, while yellow and blue represent the logFC of metabolites, indicating varying levels.
 <center>
@@ -531,7 +531,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb39-92"><a href="r-function-mannual.html#cb39-92" tabindex="-1"></a><span class="fu">grid.draw</span>(a)</span>
 <span id="cb39-93"><a href="r-function-mannual.html#cb39-93" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
 <span id="cb39-94"><a href="r-function-mannual.html#cb39-94" tabindex="-1"></a>}</span></code></pre></div>
-<p><img src="figure/AML-PE_dotplot.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="figrue/AML-PE_dotplot.png" width="70%" style="display: block; margin: auto;" /></p>
 <center>
 <strong>Dot plot illustrating enriched pathways. </strong>
 <center>
@@ -701,7 +701,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb40-160"><a href="r-function-mannual.html#cb40-160" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span>
 <span id="cb40-161"><a href="r-function-mannual.html#cb40-161" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;result/AML-DA_num.pdf&quot;</span>,p,<span class="at">width=</span><span class="dv">6</span>,<span class="at">height =</span> <span class="dv">5</span>)</span>
 <span id="cb40-162"><a href="r-function-mannual.html#cb40-162" tabindex="-1"></a>}</span></code></pre></div>
-<p><img src="figure/AML-DA_score.png" width="1875" style="display: block; margin: auto;" /></p>
+<p><img src="figrue/AML-DA_score.png" width="1875" style="display: block; margin: auto;" /></p>
 <center>
 <strong>Dot plot illustrating the DA pathway results.</strong>
 <center>
@@ -802,7 +802,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb41-91"><a href="r-function-mannual.html#cb41-91" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">&quot;Pathway name&quot;</span>)</span>
 <span id="cb41-92"><a href="r-function-mannual.html#cb41-92" tabindex="-1"></a></span>
 <span id="cb41-93"><a href="r-function-mannual.html#cb41-93" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;result/AML-eSEA.pdf&quot;</span>,p,<span class="at">width=</span><span class="dv">10</span>,<span class="at">height =</span> <span class="dv">3</span>)</span></code></pre></div>
-<p><img src="figure/AML-ESEA_barplot.png" width="1503" style="display: block; margin: auto;" /></p>
+<p><img src="figrue/AML-ESEA_barplot.png" width="1503" style="display: block; margin: auto;" /></p>
 <center>
 <strong>Bar plot illustrating NES of enriched pathways.</strong>
 <center>
@@ -899,7 +899,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb42-80"><a href="r-function-mannual.html#cb42-80" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
 <span id="cb42-81"><a href="r-function-mannual.html#cb42-81" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="cn">NULL</span>)</span>
 <span id="cb42-82"><a href="r-function-mannual.html#cb42-82" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;result/TNBC_pdnet_epe.pdf&quot;</span>,p1,<span class="at">width=</span><span class="dv">10</span>,<span class="at">height =</span> <span class="dv">5</span>)</span></code></pre></div>
-<p><img src="figure/TNBC-net.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="figrue/TNBC-net.png" width="70%" style="display: block; margin: auto;" /></p>
 <center>
 <strong>Met-Gene subnetwork analysis of TNBC:</strong> Leveraging the input data including the significance level (such as P-values) for metabolites and genes, MNet extracts the optimal subnetwork that best explains the biological processes underlying the input data. The colors represent the logFC (logarithm of fold change) of genes (red and green indicating different expression levels), while yellow and blue represent the logFC of metabolites, indicating varying levels.
 <center>
@@ -1072,7 +1072,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb43-160"><a href="r-function-mannual.html#cb43-160" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
 <span id="cb43-161"><a href="r-function-mannual.html#cb43-161" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="cn">NULL</span>)</span>
 <span id="cb43-162"><a href="r-function-mannual.html#cb43-162" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;result/TNBC_ePEA.pdf&quot;</span>,p1,<span class="at">width=</span><span class="dv">15</span>,<span class="at">height =</span> <span class="dv">7</span>)</span></code></pre></div>
-<p><img src="figure/TNBC-ePEA.png" width="265" style="display: block; margin: auto;" /></p>
+<p><img src="figrue/TNBC-ePEA.png" width="265" style="display: block; margin: auto;" /></p>
 <center>
 <strong>Pathway enrichment analysis of metabolites and genes.</strong>
 <center>
@@ -1217,7 +1217,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb44-135"><a href="r-function-mannual.html#cb44-135" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">theme_bw</span>()<span class="sc">+</span></span>
 <span id="cb44-136"><a href="r-function-mannual.html#cb44-136" tabindex="-1"></a>  <span class="fu">facet_grid</span>(. <span class="sc">~</span> Type,<span class="at">scales=</span><span class="st">&quot;free_x&quot;</span>)</span>
 <span id="cb44-137"><a href="r-function-mannual.html#cb44-137" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;result/TNBC_ePDA.pdf&quot;</span>,p,<span class="at">width=</span><span class="dv">18</span>,<span class="at">height =</span> <span class="dv">7</span>)</span></code></pre></div>
-<p><img src="figure/TNBC-ePDA.png" width="375" style="display: block; margin: auto;" /></p>
+<p><img src="figrue/TNBC-ePDA.png" width="375" style="display: block; margin: auto;" /></p>
 <center>
 The <strong>EDA score</strong> captures the tendency for a pathway to exhibit increased or decreased levels of genes and metabolites that are statistically significant differences between the cluster 1 and cluster 2.
 <center>
@@ -1323,7 +1323,7 @@ The <strong>EDA score</strong> captures the tendency for a pathway to exhibit in
 <span id="cb45-96"><a href="r-function-mannual.html#cb45-96" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="cn">NULL</span>)<span class="sc">+</span></span>
 <span id="cb45-97"><a href="r-function-mannual.html#cb45-97" tabindex="-1"></a>  <span class="fu">coord_flip</span>()</span>
 <span id="cb45-98"><a href="r-function-mannual.html#cb45-98" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;result/TNBC_eSEA.pdf&quot;</span>,p,<span class="at">width=</span><span class="dv">15</span>,<span class="at">height =</span> <span class="dv">7</span>)</span></code></pre></div>
-<p><img src="figure/TNBC-eSEA.png" width="274" style="display: block; margin: auto;" /></p>
+<p><img src="figrue/TNBC-eSEA.png" width="274" style="display: block; margin: auto;" /></p>
 <center>
 <strong>Extended gene and metabolite set enrichment analysis. </strong>
 <center>
@@ -1395,7 +1395,7 @@ The <strong>EDA score</strong> captures the tendency for a pathway to exhibit in
 <span id="cb46-57"><a href="r-function-mannual.html#cb46-57" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(type),<span class="at">nrow=</span><span class="dv">1</span>)<span class="sc">+</span></span>
 <span id="cb46-58"><a href="r-function-mannual.html#cb46-58" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="cn">NULL</span>)</span>
 <span id="cb46-59"><a href="r-function-mannual.html#cb46-59" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;result/special-ePEA.pdf&quot;</span>,p1,<span class="at">width=</span><span class="dv">10</span>,<span class="at">height =</span> <span class="fl">5.5</span>)</span></code></pre></div>
-<p><img src="figure/Spatial.png" width="1448" style="display: block; margin: auto;" /></p>
+<p><img src="figrue/Spatial.png" width="1448" style="display: block; margin: auto;" /></p>
 <center>
 <strong>Metabolite pathway enrichment analysis, genes pathway enrichment and extend pathway enrichment analysis.</strong>
 <center>
