@@ -4,7 +4,7 @@
 
 **The metabolism-related subnetwork analysis is executed through an analyzer specifically designed to identify subnetwork based on input gene- and metabolite-level summary data.**  
 
-### Met-Gene Subnetwork
+### Subnetworklyser
 
 #### Interface
 
@@ -92,7 +92,7 @@ knitr::include_graphics("figrue/subnetwork.png")
 
 ## Extended Pathway Analyses
 
-### ePEA
+### ePEAlyser
 Extended pathway enrichment analysis
 
 #### Interface
@@ -186,7 +186,7 @@ knitr::include_graphics("figrue/2.ePEA.png")
 
 </ul>
 
-### ePDA
+### ePDAlyser
 Extended pathway differential abundance (ePDA) score
 
 #### Interface
@@ -199,15 +199,13 @@ Extended pathway differential abundance (ePDA) score
 
 <li>Step 1: Enter **Metabolite Data**, **GeneExp Data** and **Group Data**,  respectively.  
 
-<li>Step 2: Select **Log(FoldChange), Padjust Cutoff and Pathway Pcutoff**, respectively.  
+<li>Step 2: Select **Log(FoldChange) and Padjust Cutoff**, respectively.  
 
 <ul>  
 
 <li>**Fold change**: Identifies key metabolites with significant expression shifts between conditions, revealing potential metabolic alterations and pathway involvement in biological processes.  
 
 <li>**Padjust Cutoff**: Helps filter significant results by controlling for false positives, ensuring that only statistically robust pathways are identified for further investigation.  
-
-<li>**Pathway Pcutoff**: Sets a significance threshold, helping to identify pathways with meaningful changes while reducing the likelihood of false-positive findings.  
 
 </ul>  
 
@@ -273,7 +271,7 @@ knitr::include_graphics("figrue/2.ePDA.png")
 
 </ul>
 
-### eSEA
+### eSEAlyser
 Extended pathway set enrichment analysis
 
 #### Interface
@@ -286,17 +284,7 @@ Extended pathway set enrichment analysis
 
 <li>Step 1: Enter **Metabolite Data**, **GeneExp Data** and **Group Data**,  respectively.  
 
-<li>Step 2: Select **Log(FoldChange), Padjust Cutoff and Pathway Pcutoff**, respectively.  
-
-<ul>  
-
-<li>**Fold change**: Identifies key metabolites with significant expression shifts between conditions, revealing potential metabolic alterations and pathway involvement in biological processes.  
-
-<li>**Padjust Cutoff**: Helps filter significant results by controlling for false positives, ensuring that only statistically robust pathways are identified for further investigation.  
-
-<li>**Pathway Pcutoff**: Sets a significance threshold, helping to identify pathways with meaningful changes while reducing the likelihood of false-positive findings.  
-
-</ul>  
+<li>Step 2: Enter interested **Pathway Name**.
 
 <li>Step 3: Select **Figure Format** and adjust **figure width, height and DPI**.  
 
@@ -354,10 +342,16 @@ knitr::include_graphics("figrue/2.eSEA-terms.png")
 
 <li>**eSEA Plot**: Result of pathway set enrichment analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
 
-```{r,eval=TRUE,echo=FALSE,fig.align='center',out.width="60%"}
-knitr::include_graphics("figrue/2.eSEA.png")
+```{r,eval=TRUE,echo=FALSE,fig.align='center',out.width="70%"}
+knitr::include_graphics("figrue/2.eSEA-1.png")
 ```
 <center><b>Figure 1.</b> Extended pathway set enrichment analysis.</center>
+
+<li>**Intested Plot**: Result of interested pathway set enrichment analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
+
+```{r,eval=TRUE,echo=FALSE,fig.align='center',out.width="70%"}
+knitr::include_graphics("figrue/2.eSEA-2.png")
+```
 
 </ul>
 

@@ -22,7 +22,7 @@
 
 
 
-<meta name="date" content="2024-11-18" />
+<meta name="date" content="2024-11-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -144,13 +144,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="2.1" data-path="web-server-manual.html"><a href="web-server-manual.html#metabolic-subnetwork"><i class="fa fa-check"></i><b>2.1</b> Metabolic Subnetwork</a>
 <ul>
-<li class="chapter" data-level="2.1.1" data-path="web-server-manual.html"><a href="web-server-manual.html#met-gene-subnetwork"><i class="fa fa-check"></i><b>2.1.1</b> Met-Gene Subnetwork</a></li>
+<li class="chapter" data-level="2.1.1" data-path="web-server-manual.html"><a href="web-server-manual.html#subnetworklyser"><i class="fa fa-check"></i><b>2.1.1</b> Subnetworklyser</a></li>
 </ul></li>
 <li class="chapter" data-level="2.2" data-path="web-server-manual.html"><a href="web-server-manual.html#extended-pathway-analyses"><i class="fa fa-check"></i><b>2.2</b> Extended Pathway Analyses</a>
 <ul>
-<li class="chapter" data-level="2.2.1" data-path="web-server-manual.html"><a href="web-server-manual.html#epea"><i class="fa fa-check"></i><b>2.2.1</b> ePEA</a></li>
-<li class="chapter" data-level="2.2.2" data-path="web-server-manual.html"><a href="web-server-manual.html#epda"><i class="fa fa-check"></i><b>2.2.2</b> ePDA</a></li>
-<li class="chapter" data-level="2.2.3" data-path="web-server-manual.html"><a href="web-server-manual.html#esea"><i class="fa fa-check"></i><b>2.2.3</b> eSEA</a></li>
+<li class="chapter" data-level="2.2.1" data-path="web-server-manual.html"><a href="web-server-manual.html#epealyser"><i class="fa fa-check"></i><b>2.2.1</b> ePEAlyser</a></li>
+<li class="chapter" data-level="2.2.2" data-path="web-server-manual.html"><a href="web-server-manual.html#epdalyser"><i class="fa fa-check"></i><b>2.2.2</b> ePDAlyser</a></li>
+<li class="chapter" data-level="2.2.3" data-path="web-server-manual.html"><a href="web-server-manual.html#esealyser"><i class="fa fa-check"></i><b>2.2.3</b> eSEAlyser</a></li>
 </ul></li>
 <li class="chapter" data-level="2.3" data-path="web-server-manual.html"><a href="web-server-manual.html#construction-of-knowledgebase-dbmnet"><i class="fa fa-check"></i><b>2.3</b> Construction of Knowledgebase dbMNet</a>
 <ul>
@@ -173,12 +173,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.2" data-path="r-function-mannual.html"><a href="r-function-mannual.html#apply-to-acute-myeloid-leukemia"><i class="fa fa-check"></i><b>3.2</b> Apply to acute myeloid leukemia</a>
 <ul>
 <li class="chapter" data-level="3.2.1" data-path="r-function-mannual.html"><a href="r-function-mannual.html#input-data"><i class="fa fa-check"></i><b>3.2.1</b> Input data</a></li>
-<li class="chapter" data-level="3.2.2" data-path="r-function-mannual.html"><a href="r-function-mannual.html#met-gene-subnetwork-1"><i class="fa fa-check"></i><b>3.2.2</b> Met-Gene Subnetwork</a></li>
+<li class="chapter" data-level="3.2.2" data-path="r-function-mannual.html"><a href="r-function-mannual.html#met-gene-subnetwork"><i class="fa fa-check"></i><b>3.2.2</b> Met-Gene Subnetwork</a></li>
 <li class="chapter" data-level="3.2.3" data-path="r-function-mannual.html"><a href="r-function-mannual.html#extended-pathway-analyses-1"><i class="fa fa-check"></i><b>3.2.3</b> Extended Pathway Analyses</a></li>
 </ul></li>
 <li class="chapter" data-level="3.3" data-path="r-function-mannual.html"><a href="r-function-mannual.html#apply-to-triple-negative-breast-cancer"><i class="fa fa-check"></i><b>3.3</b> Apply to triple-negative breast cancer</a>
 <ul>
-<li class="chapter" data-level="3.3.1" data-path="r-function-mannual.html"><a href="r-function-mannual.html#met-gene-subnetwork-2"><i class="fa fa-check"></i><b>3.3.1</b> Met-Gene Subnetwork</a></li>
+<li class="chapter" data-level="3.3.1" data-path="r-function-mannual.html"><a href="r-function-mannual.html#met-gene-subnetwork-1"><i class="fa fa-check"></i><b>3.3.1</b> Met-Gene Subnetwork</a></li>
 <li class="chapter" data-level="3.3.2" data-path="r-function-mannual.html"><a href="r-function-mannual.html#extended-pathway-analyses-2"><i class="fa fa-check"></i><b>3.3.2</b> Extended Pathway Analyses</a></li>
 </ul></li>
 <li class="chapter" data-level="3.4" data-path="r-function-mannual.html"><a href="r-function-mannual.html#apply-to-spatial-metabolomics"><i class="fa fa-check"></i><b>3.4</b> Apply to spatial metabolomics</a>
@@ -334,8 +334,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb37-74"><a href="r-function-mannual.html#cb37-74" tabindex="-1"></a>  <span class="fu">unique</span>()</span>
 <span id="cb37-75"><a href="r-function-mannual.html#cb37-75" tabindex="-1"></a><span class="fu">write.table</span>(metabolite_kid,<span class="st">&quot;result/AML_metabolite_all_M5vsOther_KEGGID.txt&quot;</span>,<span class="at">quote=</span>F,<span class="at">row.names =</span> F,<span class="at">sep=</span><span class="st">&quot;</span><span class="sc">\t</span><span class="st">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="met-gene-subnetwork-1" class="section level3 hasAnchor" number="3.2.2">
-<h3><span class="header-section-number">3.2.2</span> Met-Gene Subnetwork<a href="r-function-mannual.html#met-gene-subnetwork-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="met-gene-subnetwork" class="section level3 hasAnchor" number="3.2.2">
+<h3><span class="header-section-number">3.2.2</span> Met-Gene Subnetwork<a href="r-function-mannual.html#met-gene-subnetwork" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Conducted metabolism-related subnetwork analysis based on metabolomic and transcriptomic data by comparing AML-M5 with other subtypes of AML. Upon examining the metabolites and genes within the subnetwork, glutamate emerged as an important metabolite in AML-M5, aligning with the differential analysis and pathway enrichment findings and indicating glutamate best explains the biological processes while comparing with the other AML subtypes.</p>
 <div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="r-function-mannual.html#cb38-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb38-2"><a href="r-function-mannual.html#cb38-2" tabindex="-1"></a><span class="fu">library</span>(MNet)</span>
@@ -434,8 +434,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="extended-pathway-analyses-1" class="section level3 hasAnchor" number="3.2.3">
 <h3><span class="header-section-number">3.2.3</span> Extended Pathway Analyses<a href="r-function-mannual.html#extended-pathway-analyses-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Conducted comprehensive pathway analyses based on genes, metabolites, and genes with metabolites.</p>
-<div id="epea-1" class="section level4 hasAnchor" number="3.2.3.1">
-<h4><span class="header-section-number">3.2.3.1</span> ePEA<a href="r-function-mannual.html#epea-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="epea" class="section level4 hasAnchor" number="3.2.3.1">
+<h4><span class="header-section-number">3.2.3.1</span> ePEA<a href="r-function-mannual.html#epea" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>The results of metabolite-based and gene-based pathway enrichment analysis (M-based PEA and G-based PEA) identified a smaller set of overlapping entities than those uncovered by extended pathway enrichment analysis (ePEA) in every pathway. Notably, ePEA uncovered a broader and more statistically significant set of biological pathways, as indicated by more significant P values.</p>
 <div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="r-function-mannual.html#cb39-1" tabindex="-1"></a><span class="fu">library</span>(MNet)</span>
 <span id="cb39-2"><a href="r-function-mannual.html#cb39-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
@@ -536,8 +536,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <strong>Dot plot illustrating enriched pathways. </strong>
 <center>
 </div>
-<div id="epda-1" class="section level4 hasAnchor" number="3.2.3.2">
-<h4><span class="header-section-number">3.2.3.2</span> ePDA<a href="r-function-mannual.html#epda-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="epda" class="section level4 hasAnchor" number="3.2.3.2">
+<h4><span class="header-section-number">3.2.3.2</span> ePDA<a href="r-function-mannual.html#epda" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>The extended pathway differential abundance (ePDA) method revealed a greater number of pathways compared to gene-based or metabolite-based approaches, demonstrating higher stringency.</p>
 <div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="r-function-mannual.html#cb40-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb40-2"><a href="r-function-mannual.html#cb40-2" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
@@ -706,8 +706,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <strong>Dot plot illustrating the DA pathway results.</strong>
 <center>
 </div>
-<div id="esea-1" class="section level4 hasAnchor" number="3.2.3.3">
-<h4><span class="header-section-number">3.2.3.3</span> eSEA<a href="r-function-mannual.html#esea-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="esea" class="section level4 hasAnchor" number="3.2.3.3">
+<h4><span class="header-section-number">3.2.3.3</span> eSEA<a href="r-function-mannual.html#esea" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Gene set enrichment analysis (GSEA) and metabolite set enrichment analysis (MSEA) exhibited minimal pathway overlap, indicating a limitation of this method. This limitation was effectively addressed through extended pathway set enrichment analysis (eSEA), considering both genes and metabolites, thereby enhancing and complementing the insights provided by GSEA and MSEA.</p>
 <div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="r-function-mannual.html#cb41-1" tabindex="-1"></a><span class="fu">library</span>(MNet)</span>
 <span id="cb41-2"><a href="r-function-mannual.html#cb41-2" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
@@ -814,8 +814,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The case study involves an integrated analysis of metabolomic and transcriptomic data, with the aim of understanding rapidly proliferating breast cancers <a href="https://aacrjournals.org/cancerres/article/82/4/665/678072/Integrated-Metabolic-Profiling-and-Transcriptional">Cancer Research</a>.</p>
 <p>The study characterizes the metabolomic profile of two types of 31 breast tumors in human, revealing elevated pyrimidine metabolism and glutaminolysis pathways in triple-negative breast cancer (TNBC).</p>
 <p>As an example of mixed metabolites and genes analyses, we use both dataset of metabolite intensity and gene expression data as reported in the paper. The metabolomics data was accessed from the paper, and the gene expression data was obtained from <strong>GEO (GSE173991)</strong>.</p>
-<div id="met-gene-subnetwork-2" class="section level3 hasAnchor" number="3.3.1">
-<h3><span class="header-section-number">3.3.1</span> Met-Gene Subnetwork<a href="r-function-mannual.html#met-gene-subnetwork-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="met-gene-subnetwork-1" class="section level3 hasAnchor" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> Met-Gene Subnetwork<a href="r-function-mannual.html#met-gene-subnetwork-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The authors’ results demonstrate the essential role of glutamine catabolism-based pyrimidine metabolism in TNBC. MNet not only corroborates this finding but also highlights the significance of oxidative phosphorylation in cluster 2.</p>
 <div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="r-function-mannual.html#cb42-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb42-2"><a href="r-function-mannual.html#cb42-2" tabindex="-1"></a><span class="fu">library</span>(MNet)</span>
@@ -907,8 +907,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="extended-pathway-analyses-2" class="section level3 hasAnchor" number="3.3.2">
 <h3><span class="header-section-number">3.3.2</span> Extended Pathway Analyses<a href="r-function-mannual.html#extended-pathway-analyses-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The authors found that pyrimidine and purine metabolism, carbon metabolism, and the energy production related pathways were highly enriched in cluster 2 while many lipid/fatty acid metabolism related pathways were enriched in cluster 1, which aligns with similar result obtained from MNet.</p>
-<div id="epea-2" class="section level4 hasAnchor" number="3.3.2.1">
-<h4><span class="header-section-number">3.3.2.1</span> ePEA<a href="r-function-mannual.html#epea-2" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="epea-1" class="section level4 hasAnchor" number="3.3.2.1">
+<h4><span class="header-section-number">3.3.2.1</span> ePEA<a href="r-function-mannual.html#epea-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Extended pathway enrichment analysis.</p>
 <div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="r-function-mannual.html#cb43-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb43-2"><a href="r-function-mannual.html#cb43-2" tabindex="-1"></a><span class="fu">library</span>(MNet)</span>
@@ -1072,13 +1072,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb43-160"><a href="r-function-mannual.html#cb43-160" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
 <span id="cb43-161"><a href="r-function-mannual.html#cb43-161" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="cn">NULL</span>)</span>
 <span id="cb43-162"><a href="r-function-mannual.html#cb43-162" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;result/TNBC_ePEA.pdf&quot;</span>,p1,<span class="at">width=</span><span class="dv">15</span>,<span class="at">height =</span> <span class="dv">7</span>)</span></code></pre></div>
-<p><img src="figrue/TNBC-ePEA.png" width="265" style="display: block; margin: auto;" /></p>
+<p><img src="figrue/TNBC-ePEA.png" width="664" style="display: block; margin: auto;" /></p>
 <center>
 <strong>Pathway enrichment analysis of metabolites and genes.</strong>
 <center>
 </div>
-<div id="epda-2" class="section level4 hasAnchor" number="3.3.2.2">
-<h4><span class="header-section-number">3.3.2.2</span> ePDA<a href="r-function-mannual.html#epda-2" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="epda-1" class="section level4 hasAnchor" number="3.3.2.2">
+<h4><span class="header-section-number">3.3.2.2</span> ePDA<a href="r-function-mannual.html#epda-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Extended pathway differential abundance score.</p>
 <div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="r-function-mannual.html#cb44-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb44-2"><a href="r-function-mannual.html#cb44-2" tabindex="-1"></a><span class="fu">library</span>(MNet)</span>
@@ -1217,13 +1217,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb44-135"><a href="r-function-mannual.html#cb44-135" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">theme_bw</span>()<span class="sc">+</span></span>
 <span id="cb44-136"><a href="r-function-mannual.html#cb44-136" tabindex="-1"></a>  <span class="fu">facet_grid</span>(. <span class="sc">~</span> Type,<span class="at">scales=</span><span class="st">&quot;free_x&quot;</span>)</span>
 <span id="cb44-137"><a href="r-function-mannual.html#cb44-137" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;result/TNBC_ePDA.pdf&quot;</span>,p,<span class="at">width=</span><span class="dv">18</span>,<span class="at">height =</span> <span class="dv">7</span>)</span></code></pre></div>
-<p><img src="figrue/TNBC-ePDA.png" width="375" style="display: block; margin: auto;" /></p>
+<p><img src="figrue/TNBC-ePDA.png" width="715" style="display: block; margin: auto;" /></p>
 <center>
 The <strong>EDA score</strong> captures the tendency for a pathway to exhibit increased or decreased levels of genes and metabolites that are statistically significant differences between the cluster 1 and cluster 2.
 <center>
 </div>
-<div id="esea-2" class="section level4 hasAnchor" number="3.3.2.3">
-<h4><span class="header-section-number">3.3.2.3</span> eSEA<a href="r-function-mannual.html#esea-2" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="esea-1" class="section level4 hasAnchor" number="3.3.2.3">
+<h4><span class="header-section-number">3.3.2.3</span> eSEA<a href="r-function-mannual.html#esea-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Extended pathway set enrichment analysis.</p>
 <div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="r-function-mannual.html#cb45-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb45-2"><a href="r-function-mannual.html#cb45-2" tabindex="-1"></a><span class="fu">library</span>(MNet)</span>
@@ -1323,7 +1323,7 @@ The <strong>EDA score</strong> captures the tendency for a pathway to exhibit in
 <span id="cb45-96"><a href="r-function-mannual.html#cb45-96" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="cn">NULL</span>)<span class="sc">+</span></span>
 <span id="cb45-97"><a href="r-function-mannual.html#cb45-97" tabindex="-1"></a>  <span class="fu">coord_flip</span>()</span>
 <span id="cb45-98"><a href="r-function-mannual.html#cb45-98" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;result/TNBC_eSEA.pdf&quot;</span>,p,<span class="at">width=</span><span class="dv">15</span>,<span class="at">height =</span> <span class="dv">7</span>)</span></code></pre></div>
-<p><img src="figrue/TNBC-eSEA.png" width="274" style="display: block; margin: auto;" /></p>
+<p><img src="figrue/TNBC-eSEA.png" width="709" style="display: block; margin: auto;" /></p>
 <center>
 <strong>Extended gene and metabolite set enrichment analysis. </strong>
 <center>
