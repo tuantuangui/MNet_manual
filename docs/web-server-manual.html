@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>2 Web Server Manual | MNet Manual</title>
   <meta name="description" content="MNet: an R package and Shiny app for integrative analysis of metabolomic and transcriptomic data." />
-  <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
 
   <meta property="og:title" content="2 Web Server Manual | MNet Manual" />
   <meta property="og:type" content="book" />
@@ -65,7 +65,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -233,7 +233,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>
 <p>Step 4: Click the <strong>User</strong> panel to <strong>view the input and output</strong>, and finally click <strong>Figure Download</strong> and export the analysis results.</p>
 </ul>
-<p><img src="figrue/1.net.png" width="1249" style="display: block; margin: auto;" /></p>
+<p><img src="figure/1.net.png" width="1249" style="display: block; margin: auto;" /></p>
 <blockquote>
 <strong>Demo data</strong>
 </blockquote>
@@ -244,13 +244,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>
 <p><strong>Metabolite Data</strong>: an interactive table for user-input metabolic data with rows corresponding to metabolites and columns corresponding to samples.</p>
-<p><img src="figrue/1.Metabolite.png" width="1024" /></p>
+<p><img src="figure/1.Metabolite.png" width="1024" /></p>
 <li>
 <p><strong>Gene Data</strong>: an interactive table for user-input metabolic data with rows corresponding to genes and columns correspond to the samples.</p>
-<p><img src="figrue/1.GeneExp.png" width="1021" /></p>
+<p><img src="figure/1.GeneExp.png" width="1021" /></p>
 <li>
 <p><strong>Group Data</strong>: Group information.</p>
-<p><img src="figrue/1.GroupInfo.png" width="918" style="display: block; margin: auto auto auto 0;" /></p>
+<p><img src="figure/1.GroupInfo.png" width="918" style="display: block; margin: auto auto auto 0;" /></p>
 </ul>
 </ul>
 </div>
@@ -259,13 +259,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>
 <p><strong>Nodes Data</strong>: Nodes of subnetworks.</p>
-<p><img src="figrue/1.Nodesdata.png" width="917" style="display: block; margin: auto;" /></p>
+<p><img src="figure/1.Nodesdata.png" width="917" style="display: block; margin: auto;" /></p>
 <li>
 <p><strong>Edges Data</strong>: Edges of subnetworks.</p>
-<p><img src="figrue/1.Edegedata.png" width="916" style="display: block; margin: auto;" /></p>
+<p><img src="figure/1.Edegedata.png" width="916" style="display: block; margin: auto;" /></p>
 <li>
 <p><strong>Subnetwork Plot</strong>: A core metabolite-gene subnetwork can be downloaded as a PDF or JPEG file with specified width, height, and dpi setting.</p>
-<img src="figrue/subnetwork.png" width="560" style="display: block; margin: auto;" />
+<img src="figure/subnetwork.png" width="560" style="display: block; margin: auto;" />
 <center>
 <b>Figure 1.</b> Visualization of the identified optimal subnetwork that best explains the biological processes comparing two groups. The colors represent the logFC (logarithm of fold change) of genes, with red and green indicating different expression levels, while yellow and blue represent the logFC of metabolites, indicating varying levels.
 </center>
@@ -301,7 +301,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>
 <p>Step 4: Click the <strong>User</strong> panel to <strong>view the input and output</strong>, and finally click <strong>Figure Download</strong> and export the analysis results.</p>
 </ul>
-<p><img src="figrue/2.ePEA.1.png" width="1248" style="display: block; margin: auto;" /></p>
+<p><img src="figure/2.ePEA.1.png" width="1248" style="display: block; margin: auto;" /></p>
 <blockquote>
 <strong>Demo data</strong>
 </blockquote>
@@ -312,13 +312,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>
 <p><strong>Metabolite Data</strong>: an interactive table for user-input metabolic data with rows corresponding to metabolites and columns corresponding to samples.</p>
-<p><img src="figrue/2.Metabolite-1.png" width="1024" /></p>
+<p><img src="figure/2.Metabolite-1.png" width="1024" /></p>
 <li>
 <p><strong>Gene Data</strong>: an interactive table for user-input metabolic data with rows corresponding to genes and columns correspond to the samples.</p>
-<p><img src="figrue/2.GeneExp-1.png" width="1022" /></p>
+<p><img src="figure/2.GeneExp-1.png" width="1022" /></p>
 <li>
 <p><strong>Group Data</strong>: Group information.</p>
-<p><img src="figrue/2.GroupInfo-1.png" width="917" style="display: block; margin: auto auto auto 0;" /></p>
+<p><img src="figure/2.GroupInfo-1.png" width="917" style="display: block; margin: auto auto auto 0;" /></p>
 </ul>
 </ul>
 </div>
@@ -327,13 +327,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>
 <p><strong>Up ePEA Terms</strong>: Up-regulated pathways.</p>
-<p><img src="figrue/2.ePEA-up.png" width="919" style="display: block; margin: auto;" /></p>
+<p><img src="figure/2.ePEA-up.png" width="919" style="display: block; margin: auto;" /></p>
 <li>
 <p><strong>Down ePEA Terms</strong>: Down-regulated pathways.</p>
-<p><img src="figrue/2.ePEA-down.png" width="916" style="display: block; margin: auto;" /></p>
+<p><img src="figure/2.ePEA-down.png" width="916" style="display: block; margin: auto;" /></p>
 <li>
 <p><strong>ePEA Plot</strong>: Bar plot and dot plot illustrating enriched pathways are available, and can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.</p>
-<img src="figrue/2.ePEA.png" width="2500" style="display: block; margin: auto;" />
+<img src="figure/2.ePEA.png" width="2500" style="display: block; margin: auto;" />
 <center>
 <b>Figure 1.</b> Extended pathway enrichment analysis. (A) Barplot of up-regulated metabolic pathways corresponding to metabolites and genes. (B) Dotplot of up-regulated metabolic pathways corresponding to metabolites and genes. (C) Barplot of down-regulated metabolic pathways corresponding to metabolites and genes. (D) Dotplot of down-regulated metabolic pathways corresponding to metabolites and genes.
 </center>
@@ -364,7 +364,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>
 <p>Step 4: Click the <strong>User</strong> panel to <strong>view the input and output</strong>, and finally click <strong>Figure Download</strong> and export the analysis results.</p>
 </ul>
-<p><img src="figrue/2.ePDA.1.png" width="1250" style="display: block; margin: auto;" /></p>
+<p><img src="figure/2.ePDA.1.png" width="1250" style="display: block; margin: auto;" /></p>
 <blockquote>
 <strong>Demo data</strong>
 </blockquote>
@@ -375,13 +375,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>
 <p><strong>Metabolite Data</strong>: an interactive table for user-input metabolic data with rows corresponding to metabolites and columns corresponding to samples.</p>
-<p><img src="figrue/2.Metabolite-2.png" width="1021" /></p>
+<p><img src="figure/2.Metabolite-2.png" width="1021" /></p>
 <li>
 <p><strong>Gene Data</strong>: an interactive table for user-input metabolic data with rows corresponding to genes and columns correspond to the samples.</p>
-<p><img src="figrue/2.GeneExp-2.png" width="1022" /></p>
+<p><img src="figure/2.GeneExp-2.png" width="1022" /></p>
 <li>
 <p><strong>Group Data</strong>: Group information.</p>
-<p><img src="figrue/2.GroupInfo-2.png" width="917" style="display: block; margin: auto auto auto 0;" /></p>
+<p><img src="figure/2.GroupInfo-2.png" width="917" style="display: block; margin: auto auto auto 0;" /></p>
 </ul>
 </ul>
 </div>
@@ -390,10 +390,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>
 <p><strong>ePDA Terms</strong>: Result of ePDA analysis.</p>
-<p><img src="figrue/2.ePDA-terms.png" width="915" style="display: block; margin: auto;" /></p>
+<p><img src="figure/2.ePDA-terms.png" width="915" style="display: block; margin: auto;" /></p>
 <li>
 <p><strong>ePDA Plot</strong>: A DAscore plot captures the tendency for a pathway, and can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.</p>
-<img src="figrue/2.ePDA.png" width="70%" style="display: block; margin: auto;" />
+<img src="figure/2.ePDA.png" width="70%" style="display: block; margin: auto;" />
 <center>
 <b>Figure 1.</b> ePDA score captures the tendency for a pathway to exhibit increased or decreased levels of genes and metabolites that are statistically significant differences between two group.
 </center>
@@ -418,7 +418,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>
 <p>Step 4: Click the <strong>User</strong> panel to <strong>view the input and output</strong>, and finally click <strong>Figure Download</strong> and export the analysis results.</p>
 </ul>
-<p><img src="figrue/2.eSEA.1.png" width="1250" style="display: block; margin: auto;" /></p>
+<p><img src="figure/2.eSEA.1.png" width="1250" style="display: block; margin: auto;" /></p>
 <blockquote>
 <strong>Demo data</strong>
 </blockquote>
@@ -429,13 +429,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>
 <p><strong>Metabolite Data</strong>: an interactive table for user-input metabolic data with rows corresponding to metabolites and columns corresponding to samples.</p>
-<p><img src="figrue/2.Metabolite-3.png" width="917" /></p>
+<p><img src="figure/2.Metabolite-3.png" width="917" /></p>
 <li>
 <p><strong>Gene Data</strong>: an interactive table for user-input metabolic data with rows corresponding to genes and columns correspond to the samples.</p>
-<p><img src="figrue/2.GeneExp-3.png" width="913" /></p>
+<p><img src="figure/2.GeneExp-3.png" width="913" /></p>
 <li>
 <p><strong>Group Data</strong>: Group information.</p>
-<p><img src="figrue/2.GroupInfo-3.png" width="920" style="display: block; margin: auto auto auto 0;" /></p>
+<p><img src="figure/2.GroupInfo-3.png" width="920" style="display: block; margin: auto auto auto 0;" /></p>
 </ul>
 </ul>
 </div>
@@ -444,16 +444,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>
 <p><strong>eSEA Terms</strong>: Result of eSEA analysis.</p>
-<p><img src="figrue/2.eSEA-terms.png" width="920" style="display: block; margin: auto;" /></p>
+<p><img src="figure/2.eSEA-terms.png" width="920" style="display: block; margin: auto;" /></p>
 <li>
 <p><strong>eSEA Plot</strong>: Result of pathway set enrichment analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.</p>
-<img src="figrue/2.eSEA-1.png" width="70%" style="display: block; margin: auto;" />
+<img src="figure/2.eSEA-1.png" width="70%" style="display: block; margin: auto;" />
 <center>
 <b>Figure 1.</b> Extended pathway set enrichment analysis.
 </center>
 <li>
 <p><strong>Intested Plot</strong>: Result of interested pathway set enrichment analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.</p>
-<p><img src="figrue/2.eSEA-2.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="figure/2.eSEA-2.png" width="70%" style="display: block; margin: auto;" /></p>
 </ul>
 </div>
 </div>

@@ -28,7 +28,7 @@ In R network analysis, nodes number refers to the total count of nodes, represen
 
 
 ```{r,eval=TRUE,echo=FALSE,fig.align='center'}
-knitr::include_graphics("figrue/1.net.png")
+knitr::include_graphics("figure/1.net.png")
 ```
 
 <blockquote>
@@ -45,19 +45,19 @@ knitr::include_graphics("figrue/1.net.png")
 <li>**Metabolite Data**: an interactive table for user-input metabolic data with rows corresponding to metabolites and columns corresponding to samples.
 
 ```{r,eval=TRUE,echo=FALSE}
-knitr::include_graphics("figrue/1.Metabolite.png")
+knitr::include_graphics("figure/1.Metabolite.png")
 ```
 
 <li>**Gene Data**: an interactive table for user-input metabolic data with rows corresponding to genes and columns correspond to the samples.
 
 ```{r,eval=TRUE,echo=FALSE}
-knitr::include_graphics("figrue/1.GeneExp.png")
+knitr::include_graphics("figure/1.GeneExp.png")
 ```
 
 <li>**Group Data**: Group information.
 
 ```{r,eval=TRUE,echo=FALSE,fig.align='left'}
-knitr::include_graphics("figrue/1.GroupInfo.png")
+knitr::include_graphics("figure/1.GroupInfo.png")
 ```
 
 </ul>
@@ -72,19 +72,19 @@ knitr::include_graphics("figrue/1.GroupInfo.png")
 <li>**Nodes Data**: Nodes of subnetworks.
 
 ```{r,eval=TRUE,echo=FALSE,fig.align='center'}
-knitr::include_graphics("figrue/1.Nodesdata.png")
+knitr::include_graphics("figure/1.Nodesdata.png")
 ```
 
 <li>**Edges Data**: Edges of subnetworks.
 
 ```{r,eval=TRUE,echo=FALSE,fig.align='center'}
-knitr::include_graphics("figrue/1.Edegedata.png")
+knitr::include_graphics("figure/1.Edegedata.png")
 ```
 
 <li>**Subnetwork Plot**: A core metabolite-gene subnetwork can be downloaded as a PDF or JPEG file with specified width, height, and dpi setting.
 
 ```{r,eval=TRUE,echo=FALSE,fig.align='center'}
-knitr::include_graphics("figrue/subnetwork.png")
+knitr::include_graphics("figure/subnetwork.png")
 ```
 <center><b>Figure 1.</b> Visualization of the identified optimal subnetwork that best explains the biological processes comparing two groups. The colors represent the logFC (logarithm of fold change) of genes, with red and green indicating different expression levels, while yellow and blue represent the logFC of metabolites, indicating varying levels.</center>
 
@@ -124,7 +124,7 @@ Extended pathway enrichment analysis
 </ul>
 
 ```{r,eval=TRUE,echo=FALSE,fig.align='center'}
-knitr::include_graphics("figrue/2.ePEA.1.png")
+knitr::include_graphics("figure/2.ePEA.1.png")
 ```
 
 <blockquote>
@@ -141,19 +141,19 @@ knitr::include_graphics("figrue/2.ePEA.1.png")
 <li>**Metabolite Data**: an interactive table for user-input metabolic data with rows corresponding to metabolites and columns corresponding to samples.
 
 ```{r,eval=TRUE,echo=FALSE}
-knitr::include_graphics("figrue/2.Metabolite-1.png")
+knitr::include_graphics("figure/2.Metabolite-1.png")
 ```
 
 <li>**Gene Data**: an interactive table for user-input metabolic data with rows corresponding to genes and columns correspond to the samples.
 
 ```{r,eval=TRUE,echo=FALSE}
-knitr::include_graphics("figrue/2.GeneExp-1.png")
+knitr::include_graphics("figure/2.GeneExp-1.png")
 ```
 
 <li>**Group Data**: Group information.
 
 ```{r,eval=TRUE,echo=FALSE,fig.align='left'}
-knitr::include_graphics("figrue/2.GroupInfo-1.png")
+knitr::include_graphics("figure/2.GroupInfo-1.png")
 ```
 
 </ul>
@@ -168,19 +168,19 @@ knitr::include_graphics("figrue/2.GroupInfo-1.png")
 <li>**Up ePEA Terms**: Up-regulated pathways.
 
 ```{r,eval=TRUE,echo=FALSE,fig.align='center'}
-knitr::include_graphics("figrue/2.ePEA-up.png")
+knitr::include_graphics("figure/2.ePEA-up.png")
 ```
 
 <li>**Down ePEA Terms**: Down-regulated pathways.
 
 ```{r,eval=TRUE,echo=FALSE,fig.align='center'}
-knitr::include_graphics("figrue/2.ePEA-down.png")
+knitr::include_graphics("figure/2.ePEA-down.png")
 ```
 
 <li>**ePEA Plot**: Bar plot and dot plot illustrating enriched pathways are available, and can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
 
 ```{r,eval=TRUE,echo=FALSE,fig.align='center'}
-knitr::include_graphics("figrue/2.ePEA.png")
+knitr::include_graphics("figure/2.ePEA.png")
 ```
 <center><b>Figure 1.</b> Extended pathway enrichment analysis. (A) Barplot of up-regulated metabolic pathways corresponding to metabolites and genes. (B) Dotplot of up-regulated metabolic pathways corresponding to metabolites and genes. (C) Barplot of down-regulated metabolic pathways corresponding to metabolites and genes. (D) Dotplot of down-regulated metabolic pathways corresponding to metabolites and genes.</center>
 
@@ -216,7 +216,7 @@ Extended pathway differential abundance (ePDA) score
 </ul>
 
 ```{r,eval=TRUE,echo=FALSE,fig.align='center'}
-knitr::include_graphics("figrue/2.ePDA.1.png")
+knitr::include_graphics("figure/2.ePDA.1.png")
 ```
 
 <blockquote>
@@ -233,19 +233,19 @@ knitr::include_graphics("figrue/2.ePDA.1.png")
 <li>**Metabolite Data**: an interactive table for user-input metabolic data with rows corresponding to metabolites and columns corresponding to samples.
 
 ```{r,eval=TRUE,echo=FALSE}
-knitr::include_graphics("figrue/2.Metabolite-2.png")
+knitr::include_graphics("figure/2.Metabolite-2.png")
 ```
 
 <li>**Gene Data**: an interactive table for user-input metabolic data with rows corresponding to genes and columns correspond to the samples.
 
 ```{r,eval=TRUE,echo=FALSE}
-knitr::include_graphics("figrue/2.GeneExp-2.png")
+knitr::include_graphics("figure/2.GeneExp-2.png")
 ```
 
 <li>**Group Data**: Group information.
 
 ```{r,eval=TRUE,echo=FALSE,fig.align='left'}
-knitr::include_graphics("figrue/2.GroupInfo-2.png")
+knitr::include_graphics("figure/2.GroupInfo-2.png")
 ```
 
 </ul>
@@ -259,13 +259,13 @@ knitr::include_graphics("figrue/2.GroupInfo-2.png")
 <li>**ePDA Terms**: Result of ePDA analysis.
 
 ```{r,eval=TRUE,echo=FALSE,fig.align='center'}
-knitr::include_graphics("figrue/2.ePDA-terms.png")
+knitr::include_graphics("figure/2.ePDA-terms.png")
 ```
 
 <li>**ePDA Plot**: A DAscore plot captures the tendency for a pathway, and can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
 
 ```{r,eval=TRUE,echo=FALSE,fig.align='center',out.width="70%"}
-knitr::include_graphics("figrue/2.ePDA.png")
+knitr::include_graphics("figure/2.ePDA.png")
 ```
 <center><b>Figure 1.</b> ePDA score captures the tendency for a pathway to exhibit increased or decreased levels of genes and metabolites that are statistically significant differences between two group.</center>
 
@@ -293,7 +293,7 @@ Extended pathway set enrichment analysis
 </ul>
 
 ```{r,eval=TRUE,echo=FALSE,fig.align='center'}
-knitr::include_graphics("figrue/2.eSEA.1.png")
+knitr::include_graphics("figure/2.eSEA.1.png")
 ```
 
 <blockquote>
@@ -310,19 +310,19 @@ knitr::include_graphics("figrue/2.eSEA.1.png")
 <li>**Metabolite Data**: an interactive table for user-input metabolic data with rows corresponding to metabolites and columns corresponding to samples.
 
 ```{r,eval=TRUE,echo=FALSE}
-knitr::include_graphics("figrue/2.Metabolite-3.png")
+knitr::include_graphics("figure/2.Metabolite-3.png")
 ```
 
 <li>**Gene Data**: an interactive table for user-input metabolic data with rows corresponding to genes and columns correspond to the samples.
 
 ```{r,eval=TRUE,echo=FALSE}
-knitr::include_graphics("figrue/2.GeneExp-3.png")
+knitr::include_graphics("figure/2.GeneExp-3.png")
 ```
 
 <li>**Group Data**: Group information.
 
 ```{r,eval=TRUE,echo=FALSE,fig.align='left'}
-knitr::include_graphics("figrue/2.GroupInfo-3.png")
+knitr::include_graphics("figure/2.GroupInfo-3.png")
 ```
 
 </ul>
@@ -337,20 +337,20 @@ knitr::include_graphics("figrue/2.GroupInfo-3.png")
 <li>**eSEA Terms**: Result of eSEA analysis.
 
 ```{r,eval=TRUE,echo=FALSE,fig.align='center'}
-knitr::include_graphics("figrue/2.eSEA-terms.png")
+knitr::include_graphics("figure/2.eSEA-terms.png")
 ```
 
 <li>**eSEA Plot**: Result of pathway set enrichment analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
 
 ```{r,eval=TRUE,echo=FALSE,fig.align='center',out.width="70%"}
-knitr::include_graphics("figrue/2.eSEA-1.png")
+knitr::include_graphics("figure/2.eSEA-1.png")
 ```
 <center><b>Figure 1.</b> Extended pathway set enrichment analysis.</center>
 
 <li>**Intested Plot**: Result of interested pathway set enrichment analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
 
 ```{r,eval=TRUE,echo=FALSE,fig.align='center',out.width="70%"}
-knitr::include_graphics("figrue/2.eSEA-2.png")
+knitr::include_graphics("figure/2.eSEA-2.png")
 ```
 
 </ul>

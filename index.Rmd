@@ -20,7 +20,7 @@ knitr::opts_chunk$set(fig_cap="yes")
 
 # OVERVIEW
 ```{r,eval=TRUE,echo=FALSE,fig.align='center'}
-knitr::include_graphics("figrue/overview.png")
+knitr::include_graphics("figure/overview.png")
 ```
 
 <blockquote>
