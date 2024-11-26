@@ -139,7 +139,7 @@ metabolite_kid <- metabolite_all %>%
 write.table(metabolite_kid,"result/AML_metabolite_all_M5vsOther_KEGGID.txt",quote=F,row.names = F,sep="\t")
 ```
 
-### Met-Gene Subnetwork
+### sNETlyser
 
 Conducted metabolism-related subnetwork analysis based on metabolomic and transcriptomic data by comparing AML-M5 with other subtypes of AML. Upon examining the metabolites and genes within the subnetwork, glutamate emerged as an important metabolite in AML-M5, aligning with the differential analysis and pathway enrichment findings and indicating glutamate best explains the biological processes while comparing with the other AML subtypes.
 
@@ -168,7 +168,7 @@ names(diff_gene)[4] <- "p_value"
 #  Step 2: Conducted metabolism-related subnetwork analysis
 #-------------------------------------------------------------------------------
 pdf("result/AML_pdent.pdf",width=10,height = 10)
-a <- pdnet(diff_meta,diff_gene,nsize=80)
+a <- sNETlyser(diff_meta,diff_gene,nsize=80)
 dev.off()
 
 node <- a$node_result
@@ -183,9 +183,9 @@ metabolite <- node %>%
 gene <- node %>%
   dplyr::filter(type=="gene")
 
-result_metabolite <- PathwayAnalysis(metabolite$name,out="metabolite",test="hypergeo")
-result_gene <- PathwayAnalysis(gene$name,out="gene",test="hypergeo")
-result_all <- PathwayAnalysis(c(gene$name,metabolite$name),out="Extended",test="hypergeo")
+result_metabolite <- ePEAlyser(metabolite$name,out="metabolite",test="hypergeo")
+result_gene <- ePEAlyser(gene$name,out="gene",test="hypergeo")
+result_all <- ePEAlyser(c(gene$name,metabolite$name),out="Extended",test="hypergeo")
 
 write.table(result_metabolite$output,"result/AML-pdnet_metabolite_enrichment.txt",quote=F,row.names = F,sep="\t")
 write.table(result_gene$output,"result/AML-pdnet_gene_enrichment.txt",quote=F,row.names = F,sep="\t")
@@ -239,13 +239,13 @@ ggsave("result/AML-pdnet_epe.pdf",p1,width=10,height = 5)
 knitr::include_graphics("figure/AML_pdent.png")
 ```
 
-<center>**Met-Gene subnetwork analysis of AML:** Visualization of the identified optimal subnetwork that best explains the biological processes comparing AML-M5 and other subtypes of AML. The colors represent the logFC (logarithm of fold change) of genes, with red and green indicating different expression levels, while yellow and blue represent the logFC of metabolites, indicating varying levels.<center>
+<center>**sNETlyser analysis of AML:** Visualization of the identified optimal subnetwork that best explains the biological processes comparing AML-M5 and other subtypes of AML. The colors represent the logFC (logarithm of fold change) of genes, with red and green indicating different expression levels, while yellow and blue represent the logFC of metabolites, indicating varying levels.<center>
 
-### Extended Pathway Analyses
+### Extended Pathway Analysers
 
 Conducted comprehensive pathway analyses based on genes, metabolites, and genes with metabolites.
 
-#### ePEA
+#### ePEAlyser
 
 The results of metabolite-based and gene-based pathway enrichment analysis (M-based PEA and G-based PEA) identified a smaller set of overlapping entities than those uncovered by extended pathway enrichment analysis (ePEA) in every pathway. Notably, ePEA uncovered a broader and more statistically significant set of biological pathways, as indicated by more significant P values. 
 
@@ -276,9 +276,9 @@ diff_meta <- metabolite_all %>%
   dplyr::filter(P.Value < 0.1)
 diff_all <- rbind(diff_gene,diff_meta)
 
-result_gene <- PathwayAnalysis(diff_gene$name,out="gene",p_cutoff=1.5)
-result_meta <- PathwayAnalysis(diff_meta$name,out="metabolite",p_cutoff=1.5)
-result_all <- PathwayAnalysis(diff_all$name,out="Extended",p_cutoff=1.5)
+result_gene <- ePEAlyser(diff_gene$name,out="gene",p_cutoff=1.5)
+result_meta <- ePEAlyser(diff_meta$name,out="metabolite",p_cutoff=1.5)
+result_all <- ePEAlyser(diff_all$name,out="Extended",p_cutoff=1.5)
 
 pathway_overlap <- intersect(result_gene$output$name,result_meta$output$name)
 pathway_all <- rbind(result_gene$output,result_meta$output,result_all$output) %>%
@@ -352,7 +352,7 @@ knitr::include_graphics("figure/AML-PE_dotplot.png")
 
 <center>**Dot plot illustrating enriched pathways. **<center>
 
-#### ePDA
+#### ePDAlyser
 
 The extended pathway differential abundance (ePDA) method revealed a greater number of pathways compared to gene-based or metabolite-based approaches, demonstrating higher stringency.
 
@@ -388,7 +388,7 @@ diff_meta_decrease <- meta_all %>%
   dplyr::filter(logFC < 0) %>%
   dplyr::filter(P.Value < 0.5)
 
-DAscore_meta <- DAscore(diff_meta_increase$name,diff_meta_decrease$name,meta_all$name,
+DAscore_meta <- ePDAlyser(diff_meta_increase$name,diff_meta_decrease$name,meta_all$name,
                         min_measured_num = 3,out="metabolite",sort_plot="category")
 ggsave("result/AML-metabolite_DA.pdf",DAscore_meta$p,width=10,height = 8)
 write.table(DAscore_meta$result,"result/AML-metabolite_DA.txt",quote=F,row.names=F,sep="\t")
@@ -405,7 +405,7 @@ diff_gene_decrease <- gene_all %>%
   dplyr::filter(logFC < -0) %>%
   dplyr::filter(P.Value < 0.1)
 
-DAscore_gene <- DAscore(diff_gene_increase$name,diff_gene_decrease$name,gene_all$name,
+DAscore_gene <- ePDAlyser(diff_gene_increase$name,diff_gene_decrease$name,gene_all$name,
                         min_measured_num = 10,out="gene",sort_plot="category")
 ggsave("result/AML-gene_DA.pdf",DAscore_gene$p,width=10,height = 8)
 write.table(DAscore_gene$result,"result/AML-gene_DA.txt",quote=F,row.names=F,sep="\t")
@@ -432,7 +432,7 @@ diff_dat_increase <- dat_diff %>%
 diff_dat_decrease <- dat_diff %>%
   dplyr::filter(logFC < 0)
 
-DAscore_GM <- DAscore(diff_dat_increase$name,diff_dat_decrease$name,dat_all$name,
+DAscore_GM <- ePDAlyser(diff_dat_increase$name,diff_dat_decrease$name,dat_all$name,
                         min_measured_num = 10,out="Extended",sort_plot="category")
 ggsave("result/AML-GM_DA.pdf",DAscore_GM$p,width=10,height = 8)
 write.table(DAscore_GM$result,"result/AML-GM_DA.txt",quote=F,row.names=F,sep="\t")
@@ -527,7 +527,7 @@ knitr::include_graphics("figure/AML-DA_score.png")
 
 <center>**Dot plot illustrating the DA pathway results.**<center>
 
-#### eSEA
+#### eSEAlyser
 
 Gene set enrichment analysis (GSEA) and metabolite set enrichment analysis (MSEA) exhibited minimal pathway overlap, indicating a limitation of this method. This limitation was effectively addressed through extended pathway set enrichment analysis (eSEA), considering both genes and metabolites, thereby enhancing and complementing the insights provided by GSEA and MSEA.
 
@@ -540,10 +540,10 @@ library(dplyr)
 #  Step 1: Load mlimma analysis data and conduct ESEA analysis
 #-------------------------------------------------------------------------------
 
-gene_all <- data.table::fread("input/AML_gene_all_M5vsOther.txt") %>%
+gene_all <- data.table::fread("result/AML_gene_all_M5vsOther.txt") %>%
   as.data.frame() %>%
   dplyr::arrange(desc(logFC))
-metabolite_all <- data.table::fread("input/AML_metabolite_all_M5vsOther_KEGGID.txt") %>%
+metabolite_all <- data.table::fread("result/AML_metabolite_all_M5vsOther_KEGGID.txt") %>%
   as.data.frame() %>%
   dplyr::filter(!is.na(KEGG_id)) %>%
   tidyr::separate_rows(KEGG_id,sep=";") %>%
@@ -563,9 +563,9 @@ names(gene) <- gene_all$name
 meta <- metabolite_all$logFC
 names(meta) <- metabolite_all$name
 
-result_meta <- ESEA(meta,out="metabolite",minSize = 2)
-result_gene <- ESEA(gene,out = "gene",minSize = 5)
-result_all <- ESEA(all,out="Extended",minSize = 7)
+result_meta <- eSEAlyser(meta,out="metabolite",minSize = 2)
+result_gene <- eSEAlyser(gene,out = "gene",minSize = 5)
+result_all <- eSEAlyser(all,out="Extended",minSize = 7)
 
 result_meta_filter <- result_meta %>%
   dplyr::filter(pval < 0.1) %>%
@@ -641,7 +641,7 @@ The study characterizes the metabolomic profile of two types of 31 breast tumors
 
 As an example of mixed metabolites and genes analyses, we use both dataset of metabolite intensity and gene expression data as reported in the paper. The metabolomics data was accessed from the paper, and the gene expression data was obtained from **GEO (GSE173991)**.
 
-### Met-Gene Subnetwork
+### sNETlyser
 
 The authors’ results demonstrate the essential role of glutamine catabolism-based pyrimidine metabolism in TNBC. MNet not only corroborates this finding but also highlights the significance of oxidative phosphorylation in cluster 2.
 
@@ -664,7 +664,7 @@ names(diff_gene)[4] <- "p_value"
 #-------------------------------------------------------------------------------
 
 pdf("result/TNBC_pdent.pdf",width=10,height = 10)
-a <- pdnet(diff_meta,diff_gene,nsize=100)
+a <- sNETlyser(diff_meta,diff_gene,nsize=100)
 dev.off()
 
 node <- a$node_result
@@ -679,9 +679,9 @@ metabolite <- node %>%
 gene <- node %>%
   dplyr::filter(type=="gene")
 
-result_metabolite <- PathwayAnalysis(metabolite$name,out="metabolite",test="hypergeo")
-result_gene <- PathwayAnalysis(gene$name,out="gene",test="hypergeo")
-result_all <- PathwayAnalysis(c(gene$name,metabolite$name),out="Extended",test="hypergeo")
+result_metabolite <- ePEAlyser(metabolite$name,out="metabolite",test="hypergeo")
+result_gene <- ePEAlyser(gene$name,out="gene",test="hypergeo")
+result_all <- ePEAlyser(c(gene$name,metabolite$name),out="Extended",test="hypergeo")
 
 write.table(result_metabolite$output,"result/TNBC_pdnet_metabolite_enrichment.txt",quote=F,row.names = F,sep="\t")
 write.table(result_gene$output,"result/TNBC_pdnet_gene_enrichment.txt",quote=F,row.names = F,sep="\t")
@@ -734,13 +734,13 @@ ggsave("result/TNBC_pdnet_epe.pdf",p1,width=10,height = 5)
 knitr::include_graphics("figure/TNBC-net.png")
 ```
 
-<center>**Met-Gene subnetwork analysis of TNBC:** Leveraging the input data including the significance level (such as P-values) for metabolites and genes, MNet extracts the optimal subnetwork that best explains the biological processes underlying the input data. The colors represent the logFC (logarithm of fold change) of genes (red and green indicating different expression levels), while yellow and blue represent the logFC of metabolites, indicating varying levels.<center> 
+<center>**sNETlyser analysis of TNBC:** Leveraging the input data including the significance level (such as P-values) for metabolites and genes, MNet extracts the optimal subnetwork that best explains the biological processes underlying the input data. The colors represent the logFC (logarithm of fold change) of genes (red and green indicating different expression levels), while yellow and blue represent the logFC of metabolites, indicating varying levels.<center> 
 
 ### Extended Pathway Analyses
 
 The authors found that pyrimidine and purine metabolism, carbon metabolism, and the energy production related pathways were highly enriched in cluster 2 while many lipid/fatty acid metabolism related pathways were enriched in cluster 1, which aligns with similar result obtained from MNet.
 
-#### ePEA
+#### ePEAlyser
 
 Extended pathway enrichment analysis.
 
@@ -767,7 +767,7 @@ diff_gene_increase <- all_gene %>%
   dplyr::filter(logFC > 0.58) %>%
   dplyr::filter(adj.P.Val < 0.05)
 
-result_gene_increase <- PathwayAnalysis(diff_gene_increase$name,out="gene",p_cutoff=0.05)
+result_gene_increase <- ePEAlyser(diff_gene_increase$name,out="gene",p_cutoff=0.05)
 ggsave("result/TNBC_gene_increase.pdf",result_gene_increase$p_barplot,width=10,height = 5)
 write.table(result_gene_increase$output,"result/TNBC_gene_increase.txt",quote=F,row.names = F,sep="\t")
 
@@ -775,7 +775,7 @@ diff_gene_decrease <- all_gene %>%
   dplyr::filter(logFC < -0.58) %>%
   dplyr::filter(adj.P.Val < 0.05)
 
-result_gene_decrease <- PathwayAnalysis(diff_gene_decrease$name,out="gene",p_cutoff=0.05)
+result_gene_decrease <- ePEAlyser(diff_gene_decrease$name,out="gene",p_cutoff=0.05)
 ggsave("result/TNBC_gene_decrease.pdf",result_gene_decrease$p_barplot,width=10,height = 5)
 write.table(result_gene_decrease$output,"result/TNBC_gene_decrease.txt",quote=F,row.names = F,sep="\t")
 
@@ -785,7 +785,7 @@ diff_meta_increase <- all_meta %>%
   dplyr::filter(logFC > 0.58) %>%
   dplyr::filter(adj.P.Val < 0.05)
 
-result_meta_increase <- PathwayAnalysis(diff_meta_increase$name,out="metabolite",p_cutoff=0.05)
+result_meta_increase <- ePEAlyser(diff_meta_increase$name,out="metabolite",p_cutoff=0.05)
 ggsave("result/TNBC_meta_increase.pdf",result_meta_increase$p_barplot,width=10,height = 5)
 write.table(result_meta_increase$output,"result/TNBC_meta_increase.txt",quote=F,row.names = F,sep="\t")
 
@@ -793,18 +793,18 @@ diff_meta_decrease <- all_meta %>%
   dplyr::filter(logFC < -0.58) %>%
   dplyr::filter(adj.P.Val < 0.05)
 
-result_meta_decrease <- PathwayAnalysis(diff_meta_decrease$name,out="metabolite",p_cutoff=0.05)
+result_meta_decrease <- ePEAlyser(diff_meta_decrease$name,out="metabolite",p_cutoff=0.05)
 ggsave("result/TNBC_meta_decrease.pdf",result_meta_decrease$p_barplot,width=10,height = 5)
 write.table(result_meta_decrease$output,"result/TNBC_meta_decrease.txt",quote=F,row.names = F,sep="\t")
 
 ## Met-Gene
 diff_increase <- rbind(diff_gene_increase,diff_meta_increase)
-result_all_increase <- PathwayAnalysis(diff_increase$name,out="Extended",p_cutoff=0.05)
+result_all_increase <- ePEAlyser(diff_increase$name,out="Extended",p_cutoff=0.05)
 ggsave("result/TNBC_all_increase.pdf",result_all_increase$p_barplot,width=10,height = 5)
 write.table(result_all_increase$output,"result/TNBC_all_increase.txt",quote=F,row.names = F,sep="\t")
 
 diff_decrease <- rbind(diff_gene_decrease,diff_meta_decrease)
-result_all_decrease <- PathwayAnalysis(diff_decrease$name,out="Extended",p_cutoff=0.05)
+result_all_decrease <- ePEAlyser(diff_decrease$name,out="Extended",p_cutoff=0.05)
 ggsave("result/TNBC_all_decrease.pdf",result_all_decrease$p_barplot,width=10,height = 5)
 write.table(result_all_decrease$output,"result/TNBC_all_decrease.txt",quote=F,row.names = F,sep="\t")
 
@@ -915,7 +915,7 @@ knitr::include_graphics("figure/TNBC-ePEA.png")
 
 <center>**Pathway enrichment analysis of metabolites and genes.**<center>
 
-#### ePDA
+#### ePDAlyser
 
 Extended pathway differential abundance score.
 
@@ -936,7 +936,7 @@ all_meta <- mlimma(meta_dat,group)
 all_gene <- mlimma(gene_dat,group)
 
 #-------------------------------------------------------------------------------
-#  Step 2: DAscore
+#  Step 2: ePDAlyser
 #-------------------------------------------------------------------------------
 
 ## gene
@@ -948,7 +948,7 @@ diff_gene_decrease <- all_gene %>%
   dplyr::filter(logFC < -0.58) %>%
   dplyr::filter(adj.P.Val < 0.05)
 
-DAscore_gene <- DAscore(diff_gene_increase$name,
+DAscore_gene <- ePDAlyser(diff_gene_increase$name,
                         diff_gene_decrease$name,all_gene$name,
                         min_measured_num = 10,
                         out="gene",sort_plot="category")
@@ -965,7 +965,7 @@ diff_meta_decrease <- all_meta %>%
   dplyr::filter(logFC < 0) %>%
   dplyr::filter(P.Value < 0.05)
 
-DAscore_meta <- DAscore(diff_meta_increase$name,
+DAscore_meta <- ePDAlyser(diff_meta_increase$name,
                         diff_meta_decrease$name,all_meta$name,
                         min_measured_num = 3,
                         out="metabolite",sort_plot="category")
@@ -973,7 +973,7 @@ ggsave("result/TNBC_DA_meta.pdf",DAscore_meta$p,width=10,height = 8)
 write.table(DAscore_meta$result,"result/TNBC_DA_meta.txt",quote=F,row.names=F,sep="\t")
 
 ## gene and metabolite
-DAscore_all <- DAscore(c(diff_gene_increase$name,diff_meta_increase$name),
+DAscore_all <- ePDAlyser(c(diff_gene_increase$name,diff_meta_increase$name),
                         c(diff_gene_decrease$name,diff_meta_decrease$name),
                         c(all_gene$name,all_meta$name),min_measured_num = 13,
                         out="Extended",sort_plot="category")
@@ -1063,9 +1063,9 @@ ggsave("result/TNBC_ePDA.pdf",p,width=18,height = 7)
 knitr::include_graphics("figure/TNBC-ePDA.png")
 ```
 
-<center>The **EDA score** captures the tendency for a pathway to exhibit increased or decreased levels of genes and metabolites that are statistically significant differences between the cluster 1 and cluster 2. <center>
+<center>The **ePDA score** captures the tendency for a pathway to exhibit increased or decreased levels of genes and metabolites that are statistically significant differences between the cluster 1 and cluster 2. <center>
 
-#### eSEA
+#### eSEAlyser
 
 Extended pathway set enrichment analysis.
 
@@ -1093,12 +1093,12 @@ meta <- all_meta$logFC
 names(meta) <- all_meta$name
 
 #-------------------------------------------------------------------------------
-#  Step 2: ESEA
+#  Step 2: eSEA
 #-------------------------------------------------------------------------------
 
-result_meta <- ESEA(meta,out="metabolite",minSize = 3)
-result_gene <- ESEA(gene,out = "gene",minSize = 10)
-result_all <- ESEA(all,out="Extended",minSize = 13)
+result_meta <- eSEAlyser(meta,out="metabolite",minSize = 3)
+result_gene <- eSEAlyser(gene,out = "gene",minSize = 10)
+result_all <- eSEAlyser(all,out="Extended",minSize = 13)
 
 kegg_pathway_uniq <- PathwayExtendData %>%
   dplyr::select(kegg_pathwayname,kegg_category) %>%

@@ -1,10 +1,10 @@
 # Web Server Manual
 
-## Metabolic Subnetwork
+## Metabolic Subnetwork Analyser
 
 **The metabolism-related subnetwork analysis is executed through an analyzer specifically designed to identify subnetwork based on input gene- and metabolite-level summary data.**  
 
-### Subnetworklyser
+### sNETlyser
 
 #### Interface
 
@@ -1307,7 +1307,7 @@ app_idle_timeout 0;
 ## 1. Shinyapp
 cd ~/
 git clone https://github.com/tuantuangui/MNet.git
-sudo cp -r ~/MNet/inst/shinyapp/ /srv/shiny-server/MNet/
+sudo cp -r ~/MNet/inst/shinyapp/* /srv/shiny-server/MNet/
 
 ## 2. Restart shiny-server
 sudo systemctl restart shiny-server.service
