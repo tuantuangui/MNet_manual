@@ -3,7 +3,7 @@ title: "MNet Manual"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 documentclass: book
-description: "MNet: an R package and Shiny app for integrative analysis of metabolomic and transcriptomic data."
+description: "MNet: a metabolic network-centered tool for interpreting metabolomic and transcriptomic data"
 output:
   bookdown::gitbook:
     css: style.css
@@ -19,6 +19,8 @@ knitr::opts_chunk$set(fig_cap="yes")
 ```
 
 # OVERVIEW
+MNet features a built-in knowledgebase, **dbMNet** which is manually curated and provides information on metabolomics, including almost all currently available human metabolic interactions (gene-metabolite and metabolite-metabolite). Grounded in this knowledgebase, MNet offers one **subnetwork analyser (*sNETlyser*)** and three **extended pathway analysers (*ePEAlyser, ePDAlyser, and eSEAlyser*)** for user-input metabolomic and transcriptomic data.
+
 ```{r,eval=TRUE,echo=FALSE,fig.align='center'}
 knitr::include_graphics("figure/overview.png")
 ```
