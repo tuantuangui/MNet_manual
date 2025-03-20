@@ -47,6 +47,1946 @@ BiocManager::install("tuantuangui/MNet", dependencies=T)
 library(help=MNet)
 ```
 
+## Performance evaluation for pathway enrichment analysis
+
+### Compare MNet with TidyMass
+
+#### Analyze data
+
+Analyzing metabolites data using MNet and TidyMass and using different method parameters.
+
+```{r}
+library(dplyr)
+library(MNet)
+
+all_meta <- mlimma(meta_dat,group)
+
+## metabolite
+### Filter the increase differential genes and metabolites
+diff_meta <- all_meta %>%
+  dplyr::filter(abs(logFC) > 0.58) %>%
+  dplyr::filter(adj.P.Val < 0.05)
+
+time_start <- Sys.time()
+result_meta <- ePEAlyser(diff_meta$name,out="metabolite",p_cutoff=1.5,test="hypergeo")
+time_end <- Sys.time()
+run_time <- difftime(time_end, time_start, units = "secs")
+print(paste("hypergeo_code execution time:", round(run_time, 2), "second"))
+write.table(result_meta$out,"result/ORA/MNet_pathway-hypergeo.txt",quote=F,row.names = F,sep="\t")
+
+time_start <- Sys.time()
+result_meta <- ePEAlyser(diff_meta$name,out="metabolite",p_cutoff=1.5,test="fisher")
+time_end <- Sys.time()
+run_time <- difftime(time_end, time_start, units = "secs")
+print(paste("fisher—_code execution time:", round(run_time, 2), "second"))
+write.table(result_meta$out,"result/ORA/MNet_pathway-fisher.txt",quote=F,row.names = F,sep="\t")
+
+time_start <- Sys.time()
+result_meta <- ePEAlyser(diff_meta$name,out="metabolite",p_cutoff=1.5,test="binomial")
+time_end <- Sys.time()
+run_time <- difftime(time_end, time_start, units = "secs")
+print(paste("binomial_code execution time:", round(run_time, 2), "second"))
+write.table(result_meta$out,"result/ORA/MNet_pathway-binomial.txt",quote=F,row.names = F,sep="\t")
+
+library(tidymass)
+
+data("kegg_hsa_pathway", package = "metpath")
+pathway_database = kegg_hsa_pathway
+
+time_start <- Sys.time()
+result <- enrich_kegg(query_id = diff_meta$name,
+                      query_type = "compound",
+                      id_type = "KEGG",method = "hypergeometric",
+                      pathway_database = pathway_database,
+                      p_cutoff = 1.1,
+                      p_adjust_method = "BH",
+                      threads = 10)
+time_end <- Sys.time()
+run_time <- difftime(time_end, time_start, units = "secs")
+print(paste("Tidymass-hypergeometric_code execution time:", round(run_time, 2), "second"))
+write.table(result@result,"result/ORA/TidyMass_pathway-hypergeometric.txt",quote=F,row.names = F,sep="\t")
+
+time_start <- Sys.time()
+result <- enrich_kegg(query_id = diff_meta$name,
+                      query_type = "compound",
+                      id_type = "KEGG",method = "fisher",
+                      pathway_database = pathway_database,
+                      p_cutoff = 1.1,
+                      p_adjust_method = "BH",
+                      threads = 10)
+time_end <- Sys.time()
+run_time <- difftime(time_end, time_start, units = "secs")
+print(paste("Tidymass-fisher_code execution time:", round(run_time, 2), "second"))
+write.table(result@result,"result/ORA/TidyMass_pathway-fisher.txt",quote=F,row.names = F,sep="\t")
+```
+
+#### Set different cutoffs
+
+Compare the stability of the results of different methods under different cutoff values.
+
+```{r}
+library(ggplot2)
+
+pathway_mnet_hypergeo <- data.table::fread("result/ORA/MNet_pathway-hypergeo.txt") %>%
+  as.data.frame()
+pathway_mnet_fisher <- data.table::fread("result/ORA/MNet_pathway-fisher.txt") %>%
+  as.data.frame()
+pathway_mnet_binomial <- data.table::fread("result/ORA/MNet_pathway-binomial.txt") %>%
+  as.data.frame()
+
+pathway_tidymass_hypergeometric <- data.table::fread("result/ORA/TidyMass_pathway-hypergeometric.txt") %>%
+  as.data.frame() %>%
+  filter(pathway_name %in% PathwayExtendData$kegg_pathwayname) %>%
+  filter(mapped_number != 0)
+
+pathway_tidymass_fisher <- data.table::fread("result/ORA/TidyMass_pathway-fisher.txt") %>%
+  as.data.frame() %>%
+  filter(pathway_name %in% PathwayExtendData$kegg_pathwayname) %>%
+  filter(mapped_number != 0)
+
+n = seq(1,0.0001,-0.005)
+
+result_mnet_hypergeo <- data.frame()
+result_mnet_fisher <- data.frame()
+result_mnet_binomial <- data.frame()
+
+result_tidymass_hypergeometric <- data.frame()
+result_tidymass_fisher <- data.frame()
+
+for (i in n) {
+  ## hypergeo
+  pathway_mnet_filter <- pathway_mnet_hypergeo %>%
+    filter(pvalue < i)
+  result_mnet_temp <- data.frame(n=nrow(pathway_mnet_filter),cutoff=i)
+  result_mnet_hypergeo <- rbind(result_mnet_hypergeo,result_mnet_temp)
+
+  ## fisher
+  pathway_mnet_filter <- pathway_mnet_fisher %>%
+    filter(pvalue < i)
+  result_mnet_temp <- data.frame(n=nrow(pathway_mnet_filter),cutoff=i)
+  result_mnet_fisher <- rbind(result_mnet_fisher,result_mnet_temp)
+
+  ## binomial
+  pathway_mnet_filter <- pathway_mnet_binomial %>%
+    filter(pvalue < i)
+  result_mnet_temp <- data.frame(n=nrow(pathway_mnet_filter),cutoff=i)
+  result_mnet_binomial <- rbind(result_mnet_binomial,result_mnet_temp)
+
+  ## hypergeometric
+  pathway_tidymass_filter <- pathway_tidymass_hypergeometric %>%
+    filter(p_value < i)
+  result_tidymass_temp <- data.frame(n=nrow(pathway_tidymass_filter),cutoff=i)
+  result_tidymass_hypergeometric <- rbind(result_tidymass_hypergeometric,result_tidymass_temp)
+
+  ## fisher
+  pathway_tidymass_filter <- pathway_tidymass_fisher %>%
+    filter(p_value < i)
+  result_tidymass_temp <- data.frame(n=nrow(pathway_tidymass_filter),cutoff=i)
+  result_tidymass_fisher <- rbind(result_tidymass_fisher,result_tidymass_temp)
+}
+
+result <- rbind(result_mnet_hypergeo %>% mutate(type="MNet_hypergeo"),
+                result_mnet_fisher %>% mutate(type="MNet_fisher"),
+                result_mnet_binomial %>% mutate(type="MNet_binomial"),
+                result_tidymass_hypergeometric %>% mutate(type="tidymass_hypergeometric"),
+                result_tidymass_fisher %>% mutate(type="tidymass_fisher"))
+
+p <- ggplot(result,aes(cutoff,n))+
+  geom_point(color="gray",size=.5)+
+  geom_smooth(aes(color=type))+
+  geom_vline(xintercept=c(0.01), linetype = 'dashed',color="gray")+
+  scale_color_manual(values=c("#F3B169","#f16c23","#F94141","#37AB78","#589FF3"))+
+  scale_x_reverse()+
+  theme_bw()
+ggsave("result/ORA/Tidymass-cutoff.pdf",p,width=6.5,height = 5)
+```
+
+```{r,eval=TRUE,echo=FALSE,fig.align='center'}
+knitr::include_graphics("figure/tidymass-cutoff.png")
+```
+
+#### Venn plot
+
+Quantifying the agreement of different methods using Venn diagrams.
+
+```{r}
+library(VennDiagram)
+
+pathway_mnet_hypergeo <- data.table::fread("result/ORA/MNet_pathway-hypergeo.txt") %>%
+  as.data.frame() %>%
+  filter(pvalue < 0.05)
+pathway_mnet_fisher <- data.table::fread("result/ORA/MNet_pathway-fisher.txt") %>%
+  as.data.frame() %>%
+  filter(pvalue < 0.05)
+pathway_mnet_binomial <- data.table::fread("result/ORA/MNet_pathway-binomial.txt") %>%
+  as.data.frame() %>%
+  filter(pvalue < 0.05)
+
+pathway_tidymass_hypergeometric <- data.table::fread("result/ORA/TidyMass_pathway-hypergeometric.txt") %>%
+  as.data.frame()  %>%
+  filter(pathway_name %in% PathwayExtendData$kegg_pathwayname) %>%
+  dplyr::filter(p_value < 0.05)
+pathway_tidymass_fisher <- data.table::fread("result/ORA/TidyMass_pathway-fisher.txt") %>%
+  as.data.frame() %>%
+  filter(pathway_name %in% PathwayExtendData$kegg_pathwayname) %>%
+  dplyr::filter(p_value < 0.05)
+
+venn.plot <- venn.diagram(
+  x = list(
+    MNet_hypergeo = pathway_mnet_hypergeo$name,
+    MNet_fisher = pathway_mnet_fisher$name,
+    MNet_binomial = pathway_mnet_binomial$name,
+    tidymass_hypergeometric = pathway_tidymass_hypergeometric$pathway_name,
+    tidymass_fisher = pathway_tidymass_fisher$pathway_name
+  ),
+  filename = NULL,
+  fill = c("#F94141","#f16c23","#F3B169","#589FF3","#37AB78"),
+  alpha = 0.9)
+
+pdf("result/ORA/MNet-TidyMass-venn.pdf",width=7,height = 7)
+grid.draw(venn.plot)
+dev.off()
+```
+
+```{r,eval=TRUE,echo=FALSE,fig.align='center'}
+knitr::include_graphics("figure/tidymass-venn.png")
+```
+
+### Compare MNet with clusterProfiler
+
+#### Analyze data
+
+Analyzing metabolite-related genes data using MNet and clusterProfiler and using different method parameters.
+
+```{r}
+library(clusterProfiler)
+library(dplyr)
+library(MNet)
+library(KEGG.db)
+
+all_gene <- mlimma(gene_dat,group)
+
+gene_filter <- PathwayExtendData %>%
+  filter(type=="gene") %>%
+  pull(name) %>% unique()
+
+## metabolite
+### Filter the increase differential genes and metabolites
+diff_gene_all <- all_gene %>%
+  dplyr::filter(abs(logFC) > 0.58) %>%
+  dplyr::filter(adj.P.Val < 0.05)
+
+gene.data <- clusterProfiler::bitr(diff_gene_all$name,fromType = "SYMBOL",toType ="ENTREZID",OrgDb='org.Hs.eg.db')
+
+diff_gene_clusterprofiler <- diff_gene_all %>%
+  inner_join(gene.data,by=c("name"="SYMBOL"))
+
+kegg_F <- enrichKEGG(
+  gene = diff_gene_clusterprofiler$ENTREZID,
+  keyType = 'kegg',  
+  organism = 'hsa',
+  minGSSize = 1,
+  pAdjustMethod = 'BH',  
+  pvalueCutoff = 1.1,  
+  use_internal_data = F)
+
+write.table(kegg_F@result,"result/ORA/clusterprofiler-gene-F.txt",quote=F,row.names = F,sep="\t")
+
+kegg_T <- enrichKEGG(
+  gene = diff_gene_clusterprofiler$ENTREZID,  
+  keyType = 'kegg',  
+  organism = 'hsa',
+  minGSSize = 1,
+  pAdjustMethod = 'BH',  
+  pvalueCutoff = 1.1,  
+  use_internal_data = T)
+
+write.table(kegg_T@result,"result/ORA/clusterprofiler-gene-T.txt",quote=F,row.names = F,sep="\t")
+
+diff_gene_mnet <- diff_gene_all %>%
+  filter(name %in% gene_filter)
+
+gene_MNet_result_hypergeo <- ePEAlyser(diff_gene_mnet$name,out="gene",p_cutoff=1.1,test="hypergeo")
+write.table(gene_MNet_result_hypergeo$output,"result/ORA/MNet-gene_hypergeo.txt",quote=F,row.names = F,sep="\t")
+
+gene_MNet_result_fisher <- ePEAlyser(diff_gene_mnet$name,out="gene",p_cutoff=1.1,test="fisher")
+write.table(gene_MNet_result_fisher$output,"result/ORA/MNet-gene_fisher.txt",quote=F,row.names = F,sep="\t")
+
+gene_MNet_result_binomial <- ePEAlyser(diff_gene_mnet$name,out="gene",p_cutoff=1.1,test="binomial")
+write.table(gene_MNet_result_binomial$output,"result/ORA/MNet-gene_binomial.txt",quote=F,row.names = F,sep="\t")
+```
+
+#### Set different cutoffs
+
+Compare the stability of the results of different methods under different cutoff values.
+
+```{r}
+library(ggplot2)
+
+pathway_mnet_hypergeo <- data.table::fread("result/ORA/MNet-gene_hypergeo.txt") %>%
+  as.data.frame()
+pathway_mnet_fisher <- data.table::fread("result/ORA/MNet-gene_fisher.txt") %>%
+  as.data.frame()
+pathway_mnet_binomial <- data.table::fread("result/ORA/MNet-gene_binomial.txt") %>%
+  as.data.frame()
+
+pathway_clusterprofiler_F <- data.table::fread("result/ORA/clusterprofiler-gene-F.txt") %>%
+  as.data.frame() %>%
+  filter(ID %in% PathwayExtendData$kegg_pathwayid)
+pathway_clusterprofiler_T <- data.table::fread("result/ORA/clusterprofiler-gene-T.txt") %>%
+  as.data.frame() %>%
+  filter(ID %in% PathwayExtendData$kegg_pathwayid)
+
+n = seq(1,0.0001,-0.005)
+
+result_mnet_hypergeo <- data.frame()
+result_mnet_fisher <- data.frame()
+result_mnet_binomial <- data.frame()
+
+result_clusterprofiler_T <- data.frame()
+result_clusterprofiler_F <- data.frame()
+
+for (i in n) {
+  ## hypergeo
+  pathway_mnet_hypergeo_filter <- pathway_mnet_hypergeo %>%
+    filter(pvalue < i)
+  result_mnet_hypergeo_temp <- data.frame(n=nrow(pathway_mnet_hypergeo_filter),cutoff=i)
+  result_mnet_hypergeo <- rbind(result_mnet_hypergeo,result_mnet_hypergeo_temp)
+
+  ## fisher
+  pathway_mnet_fisher_filter <- pathway_mnet_fisher %>%
+    filter(pvalue < i)
+  result_mnet_fisher_temp <- data.frame(n=nrow(pathway_mnet_fisher_filter),cutoff=i)
+  result_mnet_fisher <- rbind(result_mnet_fisher,result_mnet_fisher_temp)
+
+  ## binomial
+  pathway_mnet_binomial_filter <- pathway_mnet_binomial %>%
+    filter(pvalue < i)
+  result_mnet_binomial_temp <- data.frame(n=nrow(pathway_mnet_binomial_filter),cutoff=i)
+  result_mnet_binomial <- rbind(result_mnet_binomial,result_mnet_binomial_temp)
+
+  # clusterProfiler-T
+  pathway_clusterprofiler_T_filter <- pathway_clusterprofiler_T %>%
+    filter(pvalue < i)
+  result_clusterprofiler_T_temp <- data.frame(n=nrow(pathway_clusterprofiler_T_filter),cutoff=i)
+  result_clusterprofiler_T <- rbind(result_clusterprofiler_T,result_clusterprofiler_T_temp)
+
+  # clusterProfiler-F
+  pathway_clusterprofiler_F_filter <- pathway_clusterprofiler_F %>%
+    filter(pvalue < i)
+  result_clusterprofiler_F_temp <- data.frame(n=nrow(pathway_clusterprofiler_F_filter),cutoff=i)
+  result_clusterprofiler_F <- rbind(result_clusterprofiler_F,result_clusterprofiler_F_temp)
+}
+
+result <- rbind(result_mnet_hypergeo %>% mutate(type="MNet_hypergeo"),
+                result_mnet_fisher %>% mutate(type="MNet_fisher"),
+                result_mnet_binomial %>% mutate(type="MNet_binomial"),
+                result_clusterprofiler_F %>% mutate(type="clusterprofiler_F"))
+
+p <- ggplot(result,aes(cutoff,n))+
+  geom_point(color="gray",size=.5)+
+  geom_smooth(aes(color=type))+
+  geom_vline(xintercept=c(0.01), linetype = 'dashed',color="gray")+
+  scale_color_manual(values=c("MNet_hypergeo"="#F94141",
+                              "MNet_fisher"="#f16c23",
+                              "MNet_binomial"="#F3B169",
+                              "clusterprofiler_F"="#AA66EB"))+
+  scale_x_reverse()+
+  theme_bw()
+ggsave("result/ORA/clusterprofiler-cutoff.pdf",p,width=6,height = 5)
+```
+
+```{r,eval=TRUE,echo=FALSE,fig.align='center'}
+knitr::include_graphics("figure/cluster-cutoff.png")
+```
+
+#### Venn plot
+
+Quantifying the agreement of different methods using Venn diagrams.
+
+```{r}
+library(VennDiagram)
+
+pathway_mnet_hypergeo <- data.table::fread("result/ORA/MNet-gene_hypergeo.txt") %>%
+  as.data.frame() %>%
+  dplyr::select(name,pvalue) %>%
+  mutate(type="MNet_hypergeo") %>%
+  filter(pvalue < 0.05)
+pathway_mnet_fisher <- data.table::fread("result/ORA/MNet-gene_fisher.txt") %>%
+  as.data.frame() %>%
+  dplyr::select(name,pvalue) %>%
+  mutate(type="MNet_fisher") %>%
+  filter(pvalue < 0.05)
+pathway_mnet_binomial <- data.table::fread("result/ORA/MNet-gene_binomial.txt") %>%
+  as.data.frame() %>%
+  dplyr::select(name,pvalue) %>%
+  mutate(type="MNet_binomial") %>%
+  filter(pvalue < 0.05)
+
+pathway_clusterprofiler <- data.table::fread("result/ORA/clusterprofiler-gene-F.txt") %>%
+  as.data.frame() %>%
+  filter(ID %in% PathwayExtendData$kegg_pathwayid) %>%
+  dplyr::select(Description,pvalue) %>%
+  rename("name"="Description") %>%
+  mutate(type="clusterprofiler")  %>%
+  filter(pvalue < 0.05)
+
+a<-venn.diagram(list(mnet_hypergeo=pathway_mnet_hypergeo$name,
+                     mnet_fisher=pathway_mnet_fisher$name,
+                     mnet_binomial=pathway_mnet_binomial$name,
+                     clusterprofiler=pathway_clusterprofiler$name),
+                filename=NULL,fill=c("#F94141","#f16c23","#F3B169","#AA66EB"),alpha =0.9)
+
+pdf("result/ORA/clusterprofiler-venn.pdf",width=5,height = 5)
+grid.draw(a)
+dev.off()
+```
+
+```{r,eval=TRUE,echo=FALSE,fig.align='center'}
+knitr::include_graphics("figure/cluster-venn.png")
+```
+
+### Compare MNet with PaintOmics
+
+#### Analyze data
+
+Analyzing metabolites and metabolite-related genes data using MNet and PaintOmics and using different method parameters.
+
+```{r}
+library(dplyr)
+library(MNet)
+
+all_meta <- mlimma(meta_dat,group)
+
+## metabolite
+### Filter the increase differential genes and metabolites
+diff_meta <- all_meta %>%
+  dplyr::filter(abs(logFC) > 0.58) %>%
+  dplyr::filter(adj.P.Val < 0.05)
+
+all_gene <- mlimma(gene_dat,group)
+
+## gene
+## Filter the increase differential genes and metabolites
+diff_gene <- all_gene %>%
+  dplyr::filter(abs(logFC) > 0.58) %>%
+  dplyr::filter(adj.P.Val < 0.05)
+
+result <- rbind(diff_meta,diff_gene) %>%
+  filter(name %in% PathwayExtendData$name)
+
+result_pathway_hypergeo <- ePEAlyser(result$name,out="Extended",p_cutoff=1.1,test="hypergeo")
+write.table(result_pathway_hypergeo$output,"result/ORA/MNet-Extended-hypergeo.txt",quote=F,row.names = F,sep="\t")
+
+result_pathway_fisher <- ePEAlyser(result$name,out="Extended",p_cutoff=1.1,test="fisher")
+write.table(result_pathway_fisher$output,"result/ORA/MNet-Extended-fisher.txt",quote=F,row.names = F,sep="\t")
+
+result_pathway_binomial <- ePEAlyser(result$name,out="Extended",p_cutoff=1.1,test="binomial")
+write.table(result_pathway_binomial$output,"result/ORA/MNet-Extended-binomial.txt",quote=F,row.names = F,sep="\t")
+```
+
+#### Set different cutoffs
+
+Compare the stability of the results of different methods under different cutoff values.
+
+```{r}
+library(ggplot2)
+
+pathway_mnet_hypergeo <- data.table::fread("result/ORA/MNet-Extended-hypergeo.txt") %>%
+  as.data.frame()
+pathway_mnet_fisher <- data.table::fread("result/ORA/MNet-Extended-fisher.txt") %>%
+  as.data.frame()
+pathway_mnet_binomial <- data.table::fread("result/ORA/MNet-Extended-binomial.txt") %>%
+  as.data.frame()
+
+pathway_paintomics <- data.table::fread("result/ORA/PaintOmics.txt") %>%
+  as.data.frame() %>%
+  dplyr::select(-V7) %>%
+  dplyr::filter(`Pathway name` %in% PathwayExtendData$kegg_pathwayname)
+
+n = seq(1,0.0001,-0.005)
+
+result_mnet_hypergeo <- data.frame()
+result_mnet_fisher <- data.frame()
+result_mnet_binomial <- data.frame()
+
+result_paintomics <- data.frame()
+
+for (i in n) {
+  ## hypergeo
+  pathway_mnet_filter <- pathway_mnet_hypergeo %>%
+    filter(pvalue < i)
+  result_mnet_temp <- data.frame(n=nrow(pathway_mnet_filter),cutoff=i)
+  result_mnet_hypergeo <- rbind(result_mnet_hypergeo,result_mnet_temp)
+
+  ## fisher
+  pathway_mnet_filter <- pathway_mnet_fisher %>%
+    filter(pvalue < i)
+  result_mnet_temp <- data.frame(n=nrow(pathway_mnet_filter),cutoff=i)
+  result_mnet_fisher <- rbind(result_mnet_fisher,result_mnet_temp)
+
+  ## binomial
+  pathway_mnet_filter <- pathway_mnet_binomial %>%
+    filter(pvalue < i)
+  result_mnet_temp <- data.frame(n=nrow(pathway_mnet_filter),cutoff=i)
+  result_mnet_binomial <- rbind(result_mnet_binomial,result_mnet_temp)
+
+  ## hypergeometric
+  pathway_paintomics_filter <- pathway_paintomics %>%
+    filter(`Combined pValue(Fisher)` < i)
+  result_paintomics_temp <- data.frame(n=nrow(pathway_paintomics_filter),cutoff=i)
+  result_paintomics <- rbind(result_paintomics,result_paintomics_temp)
+}
+
+result <- rbind(result_mnet_hypergeo %>% mutate(type="MNet_hypergeo"),
+                result_mnet_fisher %>% mutate(type="MNet_fisher"),
+                result_mnet_binomial %>% mutate(type="MNet_binomial"),
+                result_paintomics %>% mutate(type="paintomics"))
+
+p <- ggplot(result,aes(cutoff,n))+
+  geom_point(color="gray",size=.5)+
+  geom_smooth(aes(color=type))+
+  geom_vline(xintercept=c(0.01), linetype = 'dashed',color="gray")+
+  scale_color_manual(values=c("#F3B169","#f16c23","#F94141","#008080"))+
+  scale_x_reverse()+
+  theme_bw()
+ggsave("result/ORA/PaintOmics-cutoff.pdf",p,width=6.5,height = 5)
+```
+
+```{r,eval=TRUE,echo=FALSE,fig.align='center'}
+knitr::include_graphics("figure/paintomics-cutoff.png")
+```
+
+#### Venn plot
+
+Quantifying the agreement of different methods using Venn diagrams.
+
+```{r}
+library(VennDiagram)
+
+pathway_mnet_hypergeo <- data.table::fread("result/ORA/MNet-Extended-hypergeo.txt") %>%
+  as.data.frame() %>%
+  filter(pvalue < 0.05)
+pathway_mnet_fisher <- data.table::fread("result/ORA/MNet-Extended-fisher.txt") %>%
+  as.data.frame() %>%
+  filter(pvalue < 0.05)
+pathway_mnet_binomial <- data.table::fread("result/ORA/MNet-Extended-binomial.txt") %>%
+  as.data.frame() %>%
+  filter(pvalue < 0.05)
+
+## Running metabolite pathway analysis at PaintOmics4 website
+pathway_paintomics <- data.table::fread("result/ORA/PaintOmics.txt") %>%
+  as.data.frame()  %>%
+  filter(`Pathway name` %in% PathwayExtendData$kegg_pathwayname) %>%
+  dplyr::filter(`Combined pValue(Fisher)` < 0.05)
+
+venn.plot <- venn.diagram(
+  x = list(
+    MNet_hypergeo = pathway_mnet_hypergeo$name,
+    MNet_fisher = pathway_mnet_fisher$name,
+    MNet_binomial = pathway_mnet_binomial$name,
+    PaintOmics = pathway_paintomics$`Pathway name`),
+  filename = NULL,
+  fill = c("#F94141","#f16c23","#F3B169","#008080"),
+  alpha = 0.9)
+
+pdf("result/ORA/MNet-PaintOmics-venn.pdf",width=7,height = 7)
+grid.draw(venn.plot)
+dev.off()
+```
+
+```{r,eval=TRUE,echo=FALSE,fig.align='center'}
+knitr::include_graphics("figure/paintomics-venn.png")
+```
+
+### Barplot
+
+#### MNet vs TidyMass
+
+The metabolites enriched pathways by MNer and TidyMass.
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(MNet)
+
+pathway_mnet_hypergeo <- data.table::fread("result/ORA/MNet_pathway-hypergeo.txt") %>%
+  as.data.frame() %>%
+  filter(pvalue < 0.05) %>%
+  dplyr::select(name,pvalue) %>%
+  dplyr::mutate(type="MNet_hypergeo")
+pathway_mnet_fisher <- data.table::fread("result/ORA/MNet_pathway-fisher.txt") %>%
+  as.data.frame() %>%
+  filter(pvalue < 0.05)%>%
+  dplyr::select(name,pvalue) %>%
+  dplyr::mutate(type="MNet_fisher")
+pathway_mnet_binomial <- data.table::fread("result/ORA/MNet_pathway-binomial.txt") %>%
+  as.data.frame() %>%
+  filter(pvalue < 0.05)%>%
+  dplyr::select(name,pvalue) %>%
+  dplyr::mutate(type="MNet_binomial")
+
+pathway_tidymass_hypergeometric <- data.table::fread("result/ORA/TidyMass_pathway-hypergeometric.txt") %>%
+  as.data.frame()  %>%
+  filter(pathway_name %in% PathwayExtendData$kegg_pathwayname) %>%
+  dplyr::filter(p_value < 0.05) %>%
+  dplyr::select(pathway_name,p_value) %>%
+  dplyr::rename("name"="pathway_name","pvalue"="p_value") %>%
+  dplyr::mutate(type="TidyMass_hypergeometric")
+pathway_tidymass_fisher <- data.table::fread("result/ORA/TidyMass_pathway-fisher.txt") %>%
+  as.data.frame() %>%
+  filter(pathway_name %in% PathwayExtendData$kegg_pathwayname) %>%
+  dplyr::filter(p_value < 0.05) %>%
+  dplyr::select(pathway_name,p_value) %>%
+  dplyr::rename("name"="pathway_name","pvalue"="p_value") %>%
+  dplyr::mutate(type="TidyMass_fisher")
+
+result <- rbind(pathway_mnet_hypergeo,pathway_mnet_fisher,pathway_mnet_binomial,
+                pathway_tidymass_hypergeometric,pathway_tidymass_fisher) %>%
+  dplyr::arrange(pvalue) %>%
+  dplyr::arrange(type)
+
+result$name <- factor(result$name,levels = rev(unique(result$name)))
+result$type <- factor(result$type,levels=c("MNet_hypergeo","MNet_fisher","MNet_binomial","TidyMass_hypergeometric","TidyMass_fisher"))
+
+p_all <- ggplot(result,aes(name,-log10(pvalue))) +
+  geom_bar(aes(fill=type),stat="identity")+
+  scale_fill_manual(values=c("MNet_fisher"="#f16c23","MNet_hypergeo"="#F94141","MNet_binomial"="#F3B169",                       "TidyMass_hypergeometric"="#589FF3","TidyMass_fisher"="#37AB78"),name="Method")+
+  facet_grid(. ~ type)+
+  theme_bw()+
+  coord_flip()
+ggsave("result/ORA/MNet_TidyMass_barplot.pdf",p_all,width=12,height = 7)
+```
+
+```{r,eval=TRUE,echo=FALSE,fig.align='center'}
+knitr::include_graphics("figure/tidymass-barplot.png")
+```
+
+#### MNet vs clusterProfiler
+
+The genes enriched pathways by MNwt and clusterProfiler.
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(MNet)
+
+pathway_mnet_hypergeo <- data.table::fread("result/ORA/MNet-gene_hypergeo.txt") %>%
+  as.data.frame() %>%
+  dplyr::select(name,pvalue) %>%
+  mutate(type="MNet_hypergeo") %>%
+  filter(pvalue < 0.05)
+
+pathway_mnet_fisher <- data.table::fread("result/ORA/MNet-gene_fisher.txt") %>%
+  as.data.frame() %>%
+  dplyr::select(name,pvalue) %>%
+  mutate(type="MNet_fisher") %>%
+  filter(pvalue < 0.05)
+
+pathway_mnet_binomial <- data.table::fread("result/ORA/MNet-gene_binomial.txt") %>%
+  as.data.frame() %>%
+  dplyr::select(name,pvalue) %>%
+  mutate(type="MNet_binomial") %>%
+  filter(pvalue < 0.05)
+
+pathway_clusterprofiler <- data.table::fread("result/ORA/clusterprofiler-gene-F.txt") %>%
+  as.data.frame() %>%
+  filter(ID %in% PathwayExtendData$kegg_pathwayid) %>%
+  dplyr::select(Description,pvalue) %>%
+  dplyr::rename("name"="Description") %>%
+  mutate(type="clusterprofiler") %>%
+  filter(pvalue < 0.05)
+
+pathway_all_filter <- rbind(pathway_clusterprofiler,pathway_mnet_hypergeo,
+                            pathway_mnet_fisher,pathway_mnet_binomial) %>%
+  as.data.frame() %>%
+  arrange(desc(pvalue)) %>%
+  arrange(match(type,c("clusterprofiler","MNet_binomial","MNet_fisher","MNet_hypergeo"))) %>%
+  mutate(name=factor(name,levels=unique(name)))
+
+pathway_all_filter$type <- factor(pathway_all_filter$type,levels=c("MNet_hypergeo","MNet_fisher","MNet_binomial","clusterprofiler"))
+
+p_all <- ggplot(pathway_all_filter,aes(name,-log10(pvalue),fill=type))+
+  geom_bar(stat="identity",position="dodge")+
+  scale_fill_manual(values=c("MNet_fisher"="#f16c23","MNet_hypergeo"="#F94141","MNet_binomial"="#F3B169","clusterprofiler"="#AA66EB"))+
+  theme_bw()+
+  facet_grid(. ~ type)+
+  coord_flip()
+ggsave("result/ORA/MNet_clusterprofiler_barplot.pdf",p_all,width=12,height = 3.5)
+```
+
+```{r,eval=TRUE,echo=FALSE,fig.align='center'}
+knitr::include_graphics("figure/cluster-barplot.png")
+```
+
+#### MNet vs PaintOmics
+
+The extended enriched pathways by MNet and PaintOmics4.
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(MNet)
+
+pathway_mnet_hypergeo <- data.table::fread("result/ORA/MNet-Extended-hypergeo.txt") %>%
+  as.data.frame() %>%
+  dplyr::select(name,pvalue) %>%
+  mutate(type="MNet_hypergeo") %>%
+  filter(pvalue < 0.05)
+pathway_mnet_fisher <- data.table::fread("result/ORA/MNet-Extended-fisher.txt") %>%
+  as.data.frame() %>%
+  dplyr::select(name,pvalue) %>%
+  mutate(type="MNet_fisher") %>%
+  filter(pvalue < 0.05)
+pathway_mnet_binomial <- data.table::fread("result/ORA/MNet-Extended-binomial.txt") %>%
+  as.data.frame() %>%
+  dplyr::select(name,pvalue) %>%
+  mutate(type="MNet_binomial") %>%
+  filter(pvalue < 0.05)
+
+## Running metabolite pathway analysis at paintomics website
+pathway_paintomics <- data.table::fread("result/ORA/PaintOmics.txt") %>%
+  as.data.frame()  %>%
+  filter(`Pathway name` %in% PathwayExtendData$kegg_pathwayname) %>%
+  dplyr::rename("name"="Pathway name") %>%
+  dplyr::filter(`Combined pValue(Fisher)` < 0.05) %>%
+  dplyr::rename("pvalue"="Combined pValue(Fisher)") %>%
+  mutate(type="PaintOmics") 
+
+pathway_all_filter <- rbind(pathway_paintomics,pathway_mnet_hypergeo,
+                            pathway_mnet_fisher,pathway_mnet_binomial) %>%
+  as.data.frame() %>%
+  arrange(match(type,c("paintomics","MNet_binomial","MNet_fisher","MNet_hypergeo"))) %>%
+  arrange(desc(pvalue)) %>%
+  mutate(name=factor(name,levels=unique(name)))
+
+pathway_all_filter$type <- factor(pathway_all_filter$type,levels=c("MNet_hypergeo","MNet_fisher","MNet_binomial","paintomics"))
+
+p_all <- ggplot(pathway_all_filter,aes(name,-log10(pvalue),fill=type))+
+  geom_bar(stat="identity",position="dodge")+
+  scale_fill_manual(values=c("MNet_fisher"="#f16c23","MNet_hypergeo"="#F94141","MNet_binomial"="#F3B169","paintomics"="#008080"))+
+  theme_bw()+
+  facet_grid(. ~ type)+
+  coord_flip()
+ggsave("result/ORA/MNet_extended_barplot.pdf",p_all,width=12,height = 6)
+```
+
+```{r,eval=TRUE,echo=FALSE,fig.align='center'}
+knitr::include_graphics("figure/paintomics-barplot.png")
+```
+
+#### Runtime
+
+Comparison of running time between different software.
+
+```{r}
+library(dplyr)
+library(MNet)
+library(tidymass)
+library(clusterProfiler)
+library(KEGG.db)
+library(ggplot2)
+
+## Metabolite
+all_meta <- mlimma(meta_dat,group)
+
+diff_meta <- all_meta %>%
+  dplyr::filter(abs(logFC) > 0.58) %>%
+  dplyr::filter(adj.P.Val < 0.05)
+
+data("kegg_hsa_pathway", package = "metpath")
+pathway_database = kegg_hsa_pathway
+
+### MNet-hypergeo
+time_start <- Sys.time()
+result_meta <- ePEAlyser(diff_meta$name,out="metabolite",p_cutoff=1.5,test="hypergeo")
+time_end <- Sys.time()
+run_time <- difftime(time_end, time_start, units = "secs")
+print(paste("MT-MNet-hypergeo_code execution time:", round(run_time, 2), "second"))
+
+### MNet-fisher
+time_start <- Sys.time()
+result_meta <- ePEAlyser(diff_meta$name,out="metabolite",p_cutoff=1.5,test="fisher")
+time_end <- Sys.time()
+run_time <- difftime(time_end, time_start, units = "secs")
+print(paste("MT-MNet-fisher—_code execution time:", round(run_time, 2), "second"))
+
+### MNet-binomial
+time_start <- Sys.time()
+result_meta <- ePEAlyser(diff_meta$name,out="metabolite",p_cutoff=1.5,test="binomial")
+time_end <- Sys.time()
+run_time <- difftime(time_end, time_start, units = "secs")
+print(paste("MT-MNet-binomial_code execution time:", round(run_time, 2), "second"))
+
+### Tidymass-hypergeometric
+time_start <- Sys.time()
+result <- enrich_kegg(query_id = diff_meta$name,
+                      query_type = "compound",
+                      id_type = "KEGG",method = "hypergeometric",
+                      pathway_database = pathway_database,
+                      p_cutoff = 1.1,
+                      p_adjust_method = "BH",
+                      threads = 10)
+time_end <- Sys.time()
+run_time <- difftime(time_end, time_start, units = "secs")
+print(paste("MT-Tidymass-hypergeometric_code execution time:", round(run_time, 2), "second"))
+
+### Tidymass-fisher
+time_start <- Sys.time()
+result <- enrich_kegg(query_id = diff_meta$name,
+                      query_type = "compound",
+                      id_type = "KEGG",method = "fisher",
+                      pathway_database = pathway_database,
+                      p_cutoff = 1.1,
+                      p_adjust_method = "BH",
+                      threads = 10)
+time_end <- Sys.time()
+run_time <- difftime(time_end, time_start, units = "secs")
+print(paste("MT-Tidymass-fisher_code execution time:", round(run_time, 2), "second"))
+
+## Gene
+all_gene <- mlimma(gene_dat,group)
+
+gene_filter <- PathwayExtendData %>%
+  filter(type=="gene") %>%
+  pull(name) %>% unique()
+
+diff_gene_all <- all_gene %>%
+  dplyr::filter(abs(logFC) > 0.58) %>%
+  dplyr::filter(adj.P.Val < 0.05)
+
+gene.data <- clusterProfiler::bitr(diff_gene_all$name,fromType = "SYMBOL",toType ="ENTREZID",OrgDb='org.Hs.eg.db')
+
+diff_gene_clusterprofiler <- diff_gene_all %>%
+  inner_join(gene.data,by=c("name"="SYMBOL"))
+
+diff_gene_mnet <- diff_gene_all %>%
+  filter(name %in% gene_filter)
+
+### MNet-hypergeo
+time_start <- Sys.time()
+gene_MNet_result_hypergeo <- ePEAlyser(diff_gene_mnet$name,out="gene",p_cutoff=1.1,test="hypergeo")
+time_end <- Sys.time()
+run_time <- difftime(time_end, time_start, units = "secs")
+print(paste("MT-MNet-hypergeo_code execution time:", round(run_time, 2), "second"))
+
+### MNet-fisher
+time_start <- Sys.time()
+gene_MNet_result_fisher <- ePEAlyser(diff_gene_mnet$name,out="gene",p_cutoff=1.1,test="fisher")
+time_end <- Sys.time()
+run_time <- difftime(time_end, time_start, units = "secs")
+print(paste("MT-MNet-fisher_code execution time:", round(run_time, 2), "second"))
+
+### MNet-binomial
+time_start <- Sys.time()
+gene_MNet_result_binomial <- ePEAlyser(diff_gene_mnet$name,out="gene",p_cutoff=1.1,test="binomial")
+time_end <- Sys.time()
+run_time <- difftime(time_end, time_start, units = "secs")
+print(paste("MT-MNet-binomial_code execution time:", round(run_time, 2), "second"))
+
+### clusterProfiler
+time_start <- Sys.time()
+kegg_F <- enrichKEGG(
+  gene = diff_gene_clusterprofiler$ENTREZID,
+  keyType = 'kegg',
+  organism = 'hsa',
+  minGSSize = 1,
+  pAdjustMethod = 'BH',
+  pvalueCutoff = 1.1,
+  use_internal_data = F)
+time_end <- Sys.time()
+run_time <- difftime(time_end, time_start, units = "secs")
+print(paste("MC-Clusterprofiler-F_code execution time:", round(run_time, 2), "second"))
+
+## Extend
+all_meta <- mlimma(meta_dat,group)
+## metabolite
+### Filter the increase differential genes and metabolites
+diff_meta <- all_meta %>%
+  dplyr::filter(abs(logFC) > 0.58) %>%
+  dplyr::filter(adj.P.Val < 0.05)
+
+all_gene <- mlimma(gene_dat,group)
+## gene
+## Filter the increase differential genes and metabolites
+diff_gene <- all_gene %>%
+  dplyr::filter(abs(logFC) > 0.58) %>%
+  dplyr::filter(adj.P.Val < 0.05)
+
+result <- rbind(diff_meta,diff_gene) %>%
+  filter(name %in% PathwayExtendData$name)
+
+### MNet-hypergeo
+time_start <- Sys.time()
+result_pathway_fisher <- ePEAlyser(result$name,out="Extended",p_cutoff=1.1,test="hypergeo")
+time_end <- Sys.time()
+run_time <- difftime(time_end, time_start, units = "secs")
+print(paste("MP-MNet-hypergeo_code execution time:", round(run_time, 2), "second"))
+
+### MNet-fisher
+time_start <- Sys.time()
+result_pathway_fisher <- ePEAlyser(result$name,out="Extended",p_cutoff=1.1,test="fisher")
+time_end <- Sys.time()
+run_time <- difftime(time_end, time_start, units = "secs")
+print(paste("MP-MNet-fisher_code execution time:", round(run_time, 2), "second"))
+
+### MNet-binomial
+time_start <- Sys.time()
+result_pathway_fisher <- ePEAlyser(result$name,out="Extended",p_cutoff=1.1,test="binomial")
+time_end <- Sys.time()
+run_time <- difftime(time_end, time_start, units = "secs")
+print(paste("MP-MNet-binomial_code execution time:", round(run_time, 2), "second"))
+
+### PaintOmics4
+print("MP-PaintOmics4_code execution time: 228.71 second")
+
+## Barplot
+dat <- data.frame(
+  y = c(1.34,0.45,0.41,164.88,161.44,0.52,0.49,0.49,6.16,0.52,0.57,0.5,228.71),
+  x = c("MNet-hypergeo","MNet-fisher","MNet-binomial","TidyMass-hypergeo","TidyMass-fisher","MNet-hypergeo","MNet-fisher","MNet-binomial","Clusterprofiler","MNet-hypergeo","MNet-fisher","MNet-binomial","PaintOmics4"),
+  group = c(rep("Metabolite",5),rep("Gene",4),rep("Extend",4)))
+dat$group <- factor(dat$group, levels = c("Metabolite","Gene","Extend"))
+dat$x <- factor(dat$x,levels = c("MNet-hypergeo","MNet-fisher","MNet-binomial","TidyMass-hypergeo","TidyMass-fisher","Clusterprofiler","PaintOmics4"))
+
+corlor <- c(
+  "MNet-fisher"="#f16c23",
+  "MNet-hypergeo"="#F94141",
+  "MNet-binomial"="#F3B169",
+  "TidyMass-hypergeo"="#589FF3",
+  "TidyMass-fisher"="#37AB78",
+  "Clusterprofiler"="#AA66EB",
+  "PaintOmics4"="#008080")
+
+p <- ggplot(dat, aes(x, y, fill = x)) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = corlor) +
+  theme_bw() +
+  facet_wrap(~group,scales = "free_x") +
+  labs(y = "Runtime (second)", x = "Software Name") +
+  theme(strip.text = element_text(size = 12))
+ggsave("result/Runtime_comparison.pdf",p,width=5,height = 4)
+```
+
+```{r,eval=TRUE,echo=FALSE,fig.align='center'}
+knitr::include_graphics("figure/runtime.png")
+```
+
+## Performance evaluation for GSEA
+
+### MNet
+
+Analyzing metabolites and metabolite-related genes data using MNet and using different method parameters.
+
+```{r}
+library(multiGSEA)
+library(org.Hs.eg.db)
+library(dplyr)
+library(MNet)
+
+data(transcriptome,package="multiGSEA")
+data(metabolome,package="multiGSEA")
+
+ah <- AnnotationHub::AnnotationHub()
+aa <- ah[["AH91792"]]
+metabolome_1 <- metabolome %>%
+  mutate(HMDB=gsub("HMDB","HMDB00",HMDB)) %>%
+  left_join(aa,by="HMDB") %>%
+  filter(!is.na(KEGG)) %>%
+  as.data.frame() %>%
+  dplyr::select(HMDB,logFC,pValue,KEGG,HMDB) %>%
+  unique() %>%
+  filter(KEGG %in% PathwayExtendData$name) %>%
+  distinct(KEGG,.keep_all = T) %>%
+  arrange(desc(logFC)) %>%
+  distinct(logFC,.keep_all = T)
+
+dat_metabolome <- metabolome_1$logFC
+names(dat_metabolome) <- metabolome_1$KEGG
+
+set.seed(1)
+result_metabolome <- eSEAlyser(dat_metabolome,minSize = 1,out="metabolite",gseaParam=1,nPermSimple=1000)
+
+transcriptome_temp <- transcriptome %>%
+  as.data.frame() %>%
+  filter(Symbol %in% PathwayExtendData$name) %>%
+  arrange(desc(logFC))
+dat_transcriptome <- transcriptome_temp$logFC
+names(dat_transcriptome) <- transcriptome_temp$Symbol
+
+set.seed(1)
+result_transcriptome <- eSEAlyser(dat_transcriptome,minSize = 1,out="gene",gseaParam=1,nPermSimple=1000)
+
+dat_all_temp <- rbind(metabolome_1 %>%
+                   dplyr::select(KEGG,logFC) %>%
+                   dplyr::rename("name"="KEGG"),
+                   transcriptome %>%
+                   as.data.frame() %>%
+                   dplyr::select(Symbol,logFC) %>%
+                   dplyr::rename("name"="Symbol")) %>%
+  filter(name %in% PathwayExtendData$name) %>%
+  arrange(desc(logFC))
+
+dat_all <- dat_all_temp$logFC
+names(dat_all) <- dat_all_temp$name
+
+set.seed(1)
+result_extended <- eSEAlyser(dat_all,minSize = 1,out="Extended",gseaParam=1,nPermSimple=1000)
+
+write.table(result_metabolome,"result/GSEA/MNet_GSEA_metabolome.txt",quote=F,row.names=F,sep="\t")
+write.table(result_transcriptome,"result/GSEA/MNet_GSEA_transcriptome.txt",quote=F,row.names=F,sep="\t")
+write.table(result_extended,"result/GSEA/MNet_GSEA_extended.txt",quote=F,row.names=F,sep="\t")
+```
+
+### multiGSEA
+
+Analyzing metabolites and metabolite-related genes data using multiGSEA and using different method parameters.
+
+```{r}
+## different
+data(transcriptome,package="multiGSEA")
+data(metabolome,package="multiGSEA")
+
+head(transcriptome)
+head(metabolome)
+
+transcriptome <- transcriptome %>%
+  arrange(desc(logFC))
+
+ah <- AnnotationHub::AnnotationHub()
+aa <- ah[["AH91792"]]
+metabolome <- metabolome %>%
+  mutate(HMDB=gsub("HMDB","HMDB00",HMDB)) %>%
+  left_join(aa,by="HMDB") %>%
+  filter(!is.na(KEGG)) %>%
+  as.data.frame() %>%
+  dplyr::select(HMDB,logFC,pValue,KEGG,HMDB) %>%
+  unique() %>%
+  distinct(KEGG,.keep_all = T) %>%
+  arrange(desc(logFC)) %>%
+  distinct(logFC,.keep_all = T)
+
+# create data structure
+omics_data <- initOmicsDataStructure(layer = c("transcriptome","metabolome"))
+
+## add transcriptome layer
+omics_data$transcriptome <- transcriptome$logFC
+names(omics_data$transcriptome) <- transcriptome$Symbol
+
+## add metabolome layer
+## HMDB features have to be updated to the new HMDB format
+
+omics_data$metabolome <- metabolome$logFC
+names(omics_data$metabolome) <- metabolome$KEGG
+
+  databases <- c("kegg")
+  layers <- names(omics_data)
+
+  pathways <- getMultiOmicsFeatures(
+    dbs = databases, layer = layers,
+    returnTranscriptome = "SYMBOL",
+    returnMetabolome = "KEGG",
+    useLocal = T)
+
+set.seed(1)
+enrichment_scores <- multiGSEA(pathways, omics_data)
+
+df <- extractPvalues(
+  enrichmentScores = enrichment_scores,
+  pathwayNames = names(pathways[[1]]))
+
+df$combined_pval <- combinePvalues(df)
+df$combined_padj <- p.adjust(df$combined_pval, method = "BH")
+
+df <- cbind(data.frame(pathway = names(pathways[[1]])), df)
+write.table(df,"result/GSEA/multiGSEA-diff.txt",quote=F,row.names = F,sep="\t")
+
+## same
+data(transcriptome,package="multiGSEA")
+data(metabolome,package="multiGSEA")
+
+head(transcriptome)
+head(metabolome)
+
+transcriptome <- transcriptome %>%
+  filter(Symbol %in% PathwayExtendData$name) %>%
+  arrange(desc(logFC))
+
+ah <- AnnotationHub::AnnotationHub()
+aa <- ah[["AH91792"]]
+metabolome <- metabolome %>%
+  mutate(HMDB=gsub("HMDB","HMDB00",HMDB)) %>%
+  left_join(aa,by="HMDB") %>%
+  filter(!is.na(KEGG)) %>%
+  as.data.frame() %>%
+  dplyr::select(HMDB,logFC,pValue,KEGG,HMDB) %>%
+  unique() %>%
+  filter(KEGG %in% PathwayExtendData$name) %>%
+  distinct(KEGG,.keep_all = T) %>%
+  arrange(desc(logFC)) %>%
+  distinct(logFC,.keep_all = T)
+
+# create data structure
+omics_data <- initOmicsDataStructure(layer = c("transcriptome","metabolome"))
+
+## add transcriptome layer
+omics_data$transcriptome <- transcriptome$logFC
+names(omics_data$transcriptome) <- transcriptome$Symbol
+
+## add metabolome layer
+## HMDB features have to be updated to the new HMDB format
+
+omics_data$metabolome <- metabolome$logFC
+names(omics_data$metabolome) <- metabolome$KEGG
+
+pathways <- list()
+pathways$transcriptome <- Pathways_gene
+pathways$metabolome <- Pathways_metabolite
+
+set.seed(1)
+enrichment_scores <- multiGSEA(pathways, omics_data)
+
+df <- extractPvalues(
+  enrichmentScores = enrichment_scores,
+  pathwayNames = names(pathways[[1]]))
+
+df$combined_pval <- combinePvalues(df)
+df$combined_padj <- p.adjust(df$combined_pval, method = "BH")
+
+df <- cbind(data.frame(pathway = names(pathways[[1]])), df)
+write.table(df,"result/GSEA/multiGSEA-same.txt",quote=F,row.names = F,sep="\t")
+```
+
+### Comparison between MNet and multiGSEA
+
+#### Set different cutoffs
+
+Compare the stability of the results of different methods under different cutoff values.
+
+```{r}
+library(ggplot2)
+
+dat_mnet_gene <- data.table::fread("result/GSEA/MNet_GSEA_transcriptome.txt") %>%
+  as.data.frame() %>%
+  mutate(type="gene",software="MNet")
+
+dat_mnet_metabolite <- data.table::fread("result/GSEA/MNet_GSEA_metabolome.txt") %>%
+  as.data.frame() %>%
+  mutate(type="metabolite",software="MNet")
+
+dat_mnet_extended <- data.table::fread("result/GSEA/MNet_GSEA_extended.txt") %>%
+  as.data.frame() %>%
+  mutate(type="extended",software="MNet")
+
+dat_mnet_all <- rbind(dat_mnet_gene,dat_mnet_metabolite,dat_mnet_extended) %>%
+  dplyr::select(pathway,pval,type,software)
+
+dat_multigsea <- data.table::fread("result/GSEA/multiGSEA-diff.txt") %>%
+  as.data.frame() %>%
+  mutate(pathway=substr(pathway, 8, nchar(pathway))) %>%
+  filter(pathway %in% PathwayExtendData$kegg_pathwayname) %>%
+  dplyr::select(pathway,transcriptome_pval,metabolome_pval,combined_pval)
+
+dat_multigsea_melt <- reshape2::melt(dat_multigsea,id="pathway")
+
+dat_multigsea_same <- dat_multigsea_melt %>%
+  dplyr::rename("pval"="value","type"="variable") %>%
+  mutate(software="multiGSEA-diffdatabase") %>%
+  mutate(type=ifelse(type=="transcriptome_pval","gene",
+                     ifelse(type=="metabolome_pval","metabolite",
+                            ifelse(type=="combined_pval","extended","jj"))))
+
+## same database
+dat_multigsea <- data.table::fread("result/GSEA/multiGSEA-same.txt") %>%
+  as.data.frame() %>%
+  filter(pathway %in% PathwayExtendData$kegg_pathwayname) %>%
+  dplyr::select(pathway,transcriptome_pval,metabolome_pval,combined_pval)
+
+dat_multigsea_melt <- reshape2::melt(dat_multigsea,id="pathway")
+
+dat_multigsea_diff <- dat_multigsea_melt %>%
+  dplyr::rename("pval"="value","type"="variable") %>%
+  mutate(software="multiGSEA-samedatabase") %>%
+  mutate(type=ifelse(type=="transcriptome_pval","gene",
+                     ifelse(type=="metabolome_pval","metabolite",
+                            ifelse(type=="combined_pval","extended","jj"))))
+
+all <- rbind(dat_mnet_all,dat_multigsea_same,dat_multigsea_diff)
+
+n = seq(1,0.0001,-0.005)
+
+result <- data.frame()
+
+for (i in n) {
+  ## Hypergeo
+  result_temp <- all %>%
+    filter(pval < i) %>%
+    group_by(type,software) %>%
+    summarise(n=n()) %>%
+    as.data.frame() %>%
+    mutate(cutoff=i)
+  result <- rbind(result,result_temp)
+}
+
+result$type <- factor(result$type,levels=c("metabolite","gene","extended"))
+
+p <- ggplot(result,aes(cutoff,n))+
+  geom_point(color="gray",size=.5)+
+  geom_smooth(aes(color=software))+
+  geom_vline(xintercept=c(0.01), linetype = 'dashed',color="gray")+
+  facet_grid(. ~ type)+
+  scale_color_manual(values=c("MNet"="#EF2C2B",
+                              "multiGSEA-diffdatabase"="#4FBD81",
+                              "multiGSEA-samedatabase"="#FFC839"))+
+  scale_x_reverse()+
+  theme_bw()
+ggsave("result/GSEA/MNet-multiGSEA-cutoff.pdf",p,width=12,height = 5)
+```
+
+```{r,eval=TRUE,echo=FALSE,fig.align='center'}
+knitr::include_graphics("figure/multiGSEA-cutoff.png")
+```
+
+#### Venn plot
+
+Quantifying the agreement of different methods using Venn diagrams.
+
+```{r}
+library(VennDiagram)
+
+dat_mnet_gene <- data.table::fread("result/GSEA/MNet_GSEA_transcriptome.txt") %>%
+  as.data.frame() %>%
+  mutate(type="gene",software="MNet")
+
+dat_mnet_metabolite <- data.table::fread("result/GSEA/MNet_GSEA_metabolome.txt") %>%
+  as.data.frame() %>%
+  mutate(type="metabolite",software="MNet")
+
+dat_mnet_extended <- data.table::fread("result/GSEA/MNet_GSEA_extended.txt") %>%
+  as.data.frame() %>%
+  mutate(type="extended",software="MNet")
+
+dat_mnet_all <- rbind(dat_mnet_gene,dat_mnet_metabolite,dat_mnet_extended) %>%
+  dplyr::select(pathway,pval,type,software)
+
+dat_multigsea <- data.table::fread("result/GSEA/multiGSEA-diff.txt") %>%
+  as.data.frame() %>%
+  mutate(pathway=substr(pathway, 8, nchar(pathway))) %>%
+  filter(pathway %in% PathwayExtendData$kegg_pathwayname) %>%
+  dplyr::select(pathway,transcriptome_pval,metabolome_pval,combined_pval)
+
+dat_multigsea_melt <- reshape2::melt(dat_multigsea,id="pathway")
+
+dat_multigsea_diff <- dat_multigsea_melt %>%
+  dplyr::rename("pval"="value","type"="variable") %>%
+  dplyr::mutate(software="multiGSEA-diffdatabase") %>%
+  dplyr::mutate(type=ifelse(type=="transcriptome_pval","gene",
+                     ifelse(type=="metabolome_pval","metabolite",
+                            ifelse(type=="combined_pval","extended","jj"))))
+
+dat_multigsea <- data.table::fread("result/GSEA/multiGSEA-same.txt") %>%
+  as.data.frame() %>%
+  filter(pathway %in% PathwayExtendData$kegg_pathwayname) %>%
+  dplyr::select(pathway,transcriptome_pval,metabolome_pval,combined_pval)
+
+dat_multigsea_melt <- reshape2::melt(dat_multigsea,id="pathway")
+
+dat_multigsea_same <- dat_multigsea_melt %>%
+  dplyr::rename("pval"="value","type"="variable") %>%
+  dplyr::mutate(software="multiGSEA-samedatabase") %>%
+  dplyr::mutate(type=ifelse(type=="transcriptome_pval","gene",
+                            ifelse(type=="metabolome_pval","metabolite",
+                                   ifelse(type=="combined_pval","extended","jj"))))
+
+all <- rbind(dat_mnet_all,dat_multigsea_diff,dat_multigsea_same)
+
+all_filter <- all %>%
+  filter(pval < 0.01)
+
+all_filter_metabolite <- all_filter %>%
+  filter(type=="metabolite")
+
+all_filter_gene <- all_filter %>%
+  filter(type=="gene")
+
+all_filter_extended <- all_filter %>%
+  filter(type=="extended")
+
+## metabolite
+metabolite_MNet_venn <- all_filter_metabolite %>%
+  filter(software=="MNet") %>%
+  pull(pathway)
+metabolite_multigsea_same_venn <- all_filter_metabolite %>%
+  filter(software == "multiGSEA-samedatabase") %>%
+  pull(pathway)
+metabolite_multigsea_diff_venn <- all_filter_metabolite %>%
+  filter(software == "multiGSEA-diffdatabase") %>%
+  pull(pathway)
+
+## gene
+gene_MNet_venn <- all_filter_gene %>%
+  filter(software=="MNet") %>%
+  pull(pathway)
+gene_multigsea_same_venn <- all_filter_gene %>%
+  filter(software == "multiGSEA-samedatabase") %>%
+  pull(pathway)
+gene_multigsea_diff_venn <- all_filter_gene %>%
+  filter(software == "multiGSEA-diffdatabase") %>%
+  pull(pathway)
+
+## extended
+extended_MNet_venn <- all_filter_extended %>%
+  filter(software=="MNet") %>%
+  pull(pathway)
+extended_multigsea_same_venn <- all_filter_extended %>%
+  filter(software == "multiGSEA-samedatabase") %>%
+  pull(pathway)
+extended_multigsea_diff_venn <- all_filter_extended %>%
+  filter(software == "multiGSEA-diffdatabase") %>%
+  pull(pathway)
+
+a<-venn.diagram(list(metabolite_mnet=metabolite_MNet_venn,
+                     metabolite_multigsea_same=metabolite_multigsea_same_venn,
+                     metabolite_multigsea_diff=metabolite_multigsea_diff_venn),
+                filename=NULL,fill=c("#EF2C2B","#FFC839","#4FBD81"),
+                alpha=0.9)
+pdf("result/GSEA/GSEA_metabolite_venn.pdf",width=5,height = 5)
+grid.draw(a)
+dev.off()
+
+a<-venn.diagram(list(gene_mnet=gene_MNet_venn,
+                     gene_multigsea_same=gene_multigsea_same_venn,
+                     gene_multigsea_diff=gene_multigsea_diff_venn),
+                filename=NULL,fill=c("#EF2C2B","#FFC839","#4FBD81"),
+                alpha=0.9)
+pdf("result/GSEA/GSEA_gene_venn.pdf",width=5,height = 5)
+grid.draw(a)
+dev.off()
+
+a<-venn.diagram(list(extended_mnet=extended_MNet_venn,
+                     extended_multigsea_same=extended_multigsea_same_venn,
+                     extended_multigsea_diff=extended_multigsea_diff_venn),
+                filename=NULL,fill=c("#EF2C2B","#FFC839","#4FBD81"),
+                alpha=0.9)
+pdf("result/GSEA/GSEA_extended_venn.pdf",width=5,height = 5)
+grid.draw(a)
+dev.off()
+```
+
+```{r,eval=TRUE,echo=FALSE,fig.align='center'}
+knitr::include_graphics("figure/multiGSEA-venn.png")
+```
+
+#### Barplot
+
+The barplot shows the results of the analysis using only metabolism, only metabolite-related genes, and the combination of both data.
+
+```{r}
+dat_mnet_gene <- data.table::fread("result/GSEA/MNet_GSEA_transcriptome.txt") %>%
+  as.data.frame() %>%
+  mutate(type="gene",software="MNet")
+
+dat_mnet_metabolite <- data.table::fread("result/GSEA/MNet_GSEA_metabolome.txt") %>%
+  as.data.frame() %>%
+  mutate(type="metabolite",software="MNet")
+
+dat_mnet_extended <- data.table::fread("result/GSEA/MNet_GSEA_extended.txt") %>%
+  as.data.frame() %>%
+  mutate(type="extended",software="MNet")
+
+dat_mnet_all <- rbind(dat_mnet_gene,dat_mnet_metabolite,dat_mnet_extended) %>%
+  dplyr::select(pathway,pval,type,software)
+
+dat_multigsea <- data.table::fread("result/GSEA/multiGSEA-diff.txt") %>%
+  as.data.frame() %>%
+  mutate(pathway=substr(pathway, 8, nchar(pathway))) %>%
+  filter(pathway %in% PathwayExtendData$kegg_pathwayname) %>%
+  dplyr::select(pathway,transcriptome_pval,metabolome_pval,combined_pval)
+
+dat_multigsea_melt <- reshape2::melt(dat_multigsea,id="pathway")
+
+dat_multigsea_diff <- dat_multigsea_melt %>%
+  dplyr::rename("pval"="value","type"="variable") %>%
+  dplyr::mutate(software="multiGSEA-diffdatabase") %>%
+  dplyr::mutate(type=ifelse(type=="transcriptome_pval","gene",
+                            ifelse(type=="metabolome_pval","metabolite",
+                                   ifelse(type=="combined_pval","extended","jj"))))
+
+dat_multigsea <- data.table::fread("result/GSEA/multiGSEA-same.txt") %>%
+  as.data.frame() %>%
+  filter(pathway %in% PathwayExtendData$kegg_pathwayname) %>%
+  dplyr::select(pathway,transcriptome_pval,metabolome_pval,combined_pval)
+
+dat_multigsea_melt <- reshape2::melt(dat_multigsea,id="pathway")
+
+dat_multigsea_same <- dat_multigsea_melt %>%
+  dplyr::rename("pval"="value","type"="variable") %>%
+  dplyr::mutate(software="multiGSEA-samedatabase") %>%
+  dplyr::mutate(type=ifelse(type=="transcriptome_pval","gene",
+                            ifelse(type=="metabolome_pval","metabolite",
+                                   ifelse(type=="combined_pval","extended","jj"))))
+
+all <- rbind(dat_mnet_all,dat_multigsea_diff,dat_multigsea_same)
+
+all_filter <- all %>%
+  filter(pval < 0.01)
+
+all_filter_metabolite <- all_filter %>%
+  filter(type=="metabolite") %>%
+  arrange(desc(pval)) %>%
+  arrange(match(software,c("multiGSEA-diffdatabase","multiGSEA-samedatabase","MNet"))) %>%
+  mutate(pathway=factor(pathway,
+                        levels = unique(pathway))) %>%
+  mutate(software=factor(software,levels=c("MNet","multiGSEA-samedatabase","multiGSEA-diffdatabase")))
+
+all_filter_gene <- all_filter %>%
+  filter(type=="gene") %>%
+  arrange(desc(pval)) %>%
+  arrange(match(software,c("multiGSEA-diffdatabase","multiGSEA-samedatabase","MNet"))) %>%
+  mutate(pathway=factor(pathway,levels = unique(pathway))) %>%
+  mutate(software=factor(software,levels=c("MNet","multiGSEA-samedatabase","multiGSEA-diffdatabase")))
+
+all_filter_extended <- all_filter %>%
+  filter(type=="extended") %>%
+  arrange(desc(pval)) %>%
+  arrange(match(software,c("multiGSEA-diffdatabase","multiGSEA-samedatabase","MNet"))) %>%
+  mutate(pathway=factor(pathway,levels = unique(pathway))) %>%
+  mutate(software=factor(software,levels=c("MNet","multiGSEA-samedatabase","multiGSEA-diffdatabase")))
+
+p_metabolite <- ggplot(all_filter_metabolite,aes(pathway,-log10(pval),fill=software))+
+  geom_bar(stat="identity",position="dodge")+
+  scale_fill_manual(values=c("#EF2C2B","#FFC839","#4FBD81"))+
+  theme_bw()+
+  facet_grid(. ~ software)+
+  coord_flip()+
+  labs(title="metabolite")
+#p_metabolite
+
+p_gene <- ggplot(all_filter_gene,aes(pathway,-log10(pval),fill=software))+
+  geom_bar(stat="identity",position="dodge")+
+  scale_fill_manual(values=c("#EF2C2B","#FFC839","#4FBD81"))+
+  theme_bw()+
+  facet_grid(. ~ software)+
+  coord_flip()+
+  labs(title="gene")
+#p_gene
+
+p_extended <- ggplot(all_filter_extended,aes(pathway,-log10(pval),fill=software))+
+  geom_bar(stat="identity",position="dodge")+
+  scale_fill_manual(values=c("#EF2C2B","#FFC839","#4FBD81"))+
+  theme_bw()+
+  facet_grid(. ~ software)+
+  coord_flip()+
+  labs(title="extended")
+#p_extended
+
+ggsave("result/GSEA/GSEA_metabolite_barplot.pdf",p_metabolite,width=8,height = 3)
+ggsave("result/GSEA/GSEA_gene_barplot.pdf",p_gene,width=8,height = 2)
+ggsave("result/GSEA/GSEA_extended_barplot.pdf",p_extended,width=8,height = 3)
+```
+
+```{r,eval=TRUE,echo=FALSE,fig.align='center',out.width="70%"}
+knitr::include_graphics("figure/multiGSEA-barplot.png")
+```
+
+#### Radar plot
+
+Quantifying the agreement of different methods using radar diagrams.
+
+```{r}
+library(dplyr)
+library(MNet)
+library(ggplot2)
+library(fmsb)
+
+## Metabolite
+dat_mnet_gene <- data.table::fread("result/GSEA/MNet_GSEA_transcriptome.txt") %>%
+  as.data.frame() %>%
+  mutate(type="gene",software="MNet")
+
+dat_mnet_metabolite <- data.table::fread("result/GSEA/MNet_GSEA_metabolome.txt") %>%
+  as.data.frame() %>%
+  mutate(type="metabolite",software="MNet")
+
+dat_mnet_extended <- data.table::fread("result/GSEA/MNet_GSEA_extended.txt") %>%
+  as.data.frame() %>%
+  mutate(type="extended",software="MNet")
+
+dat_mnet_all <- rbind(dat_mnet_gene,dat_mnet_metabolite,dat_mnet_extended) %>%
+  dplyr::select(pathway,pval,type,software)
+
+dat_multigsea <- data.table::fread("result/GSEA/multiGSEA-diff.txt") %>%
+  as.data.frame() %>%
+  mutate(pathway=substr(pathway, 8, nchar(pathway))) %>%
+  filter(pathway %in% PathwayExtendData$kegg_pathwayname) %>%
+  dplyr::select(pathway,transcriptome_pval,metabolome_pval,combined_pval)
+
+dat_multigsea_melt <- reshape2::melt(dat_multigsea,id="pathway")
+
+dat_multigsea_diff <- dat_multigsea_melt %>%
+  dplyr::rename("pval"="value","type"="variable") %>%
+  dplyr::mutate(software="multiGSEA-diffdatabase") %>%
+  dplyr::mutate(type=ifelse(type=="transcriptome_pval","gene",
+                            ifelse(type=="metabolome_pval","metabolite",
+                                   ifelse(type=="combined_pval","extended","jj"))))
+
+dat_multigsea <- data.table::fread("result/GSEA/multiGSEA-same.txt") %>%
+  as.data.frame() %>%
+  filter(pathway %in% PathwayExtendData$kegg_pathwayname) %>%
+  dplyr::select(pathway,transcriptome_pval,metabolome_pval,combined_pval)
+
+dat_multigsea_melt <- reshape2::melt(dat_multigsea,id="pathway")
+
+dat_multigsea_same <- dat_multigsea_melt %>%
+  dplyr::rename("pval"="value","type"="variable") %>%
+  dplyr::mutate(software="multiGSEA-samedatabase") %>%
+  dplyr::mutate(type=ifelse(type=="transcriptome_pval","gene",
+                            ifelse(type=="metabolome_pval","metabolite",
+                                   ifelse(type=="combined_pval","extended","jj"))))
+
+all <- rbind(dat_mnet_all,dat_multigsea_diff,dat_multigsea_same)
+
+pathway_filter_metabolite <- all %>%
+  filter(type == "metabolite") %>%
+  filter(pval < 0.01) %>%
+  pull(pathway) %>% unique()
+
+all_metabolite_filter <- all %>%
+  filter(type == "metabolite") %>%
+  filter(pathway %in% pathway_filter_metabolite)
+
+all_metabolite_MNet <- all_metabolite_filter %>%
+  filter(software == "MNet") %>%
+  arrange(match(pathway,pathway_filter_metabolite)) %>%
+  dplyr::select(pval,pathway) %>%
+  mutate(pval=-log10(pval)) %>%
+  tibble::column_to_rownames("pathway") %>%
+  dplyr::rename("MNet"="pval")
+all_metabolite_multiGSEA_samedatabase <- all_metabolite_filter %>%
+  filter(software == "multiGSEA-samedatabase") %>%
+  arrange(match(pathway,pathway_filter_metabolite)) %>%
+  dplyr::select(pval,pathway) %>%
+  mutate(pval=-log10(pval)) %>%
+  tibble::column_to_rownames("pathway") %>%
+  dplyr::rename("multiGSEA_samedatabase"="pval")
+all_metabolite_multiGSEA_diffdatabase <- all_metabolite_filter %>%
+  filter(software == "multiGSEA-diffdatabase") %>%
+  arrange(match(pathway,pathway_filter_metabolite)) %>%
+  dplyr::select(pval,pathway) %>%
+  mutate(pval=-log10(pval)) %>%
+  tibble::column_to_rownames("pathway") %>%
+  dplyr::rename("multiGSEA_diffdatabase"="pval")
+
+d_min <- rep(0,7)
+d_max <- rep(5,7)
+
+dd_all <- cbind(d_max,d_min,all_metabolite_MNet,
+                all_metabolite_multiGSEA_samedatabase,all_metabolite_multiGSEA_diffdatabase) %>%
+  t() %>%
+  as.data.frame()
+
+colors <- c(rgb(239, 44, 43,alpha=100,maxColorValue = 255),
+            rgb(255, 200, 57,alpha=100,maxColorValue = 255),
+            rgb(79, 189, 129,alpha=100,maxColorValue = 255))
+
+colors1 <- c("#EF2C2B","#FFC839","#4FBD81")
+
+pdf("result/GSEA/GSEA_metabolite_radar.pdf",width=6,height = 6)
+
+radarchart(
+  dd_all,
+  axistype = 0,        
+  seg=5,
+  pcol = colors1,      
+  pfcol = colors,      
+  plwd = 2,            
+  plty = 1,            
+  cglcol = "grey",     
+  cglty = 1,          
+  cglwd = 0.8,         
+  axislabcol = "grey", 
+  vlcex = 0.8)
+
+legend(
+  "topright",
+  legend = c("MNet","multiGSEA_samedatabase", "multiGSEA_diffedatabase"),
+  bty = "n",
+  pch = 20,
+  col = colors1,
+  text.col = "black",
+  pt.cex = 1.5)
+dev.off()
+
+##  Gene
+dat_mnet_gene <- data.table::fread("result/GSEA/MNet_GSEA_transcriptome.txt") %>%
+  as.data.frame() %>%
+  mutate(type="gene",software="MNet")
+
+dat_mnet_metabolite <- data.table::fread("result/GSEA/MNet_GSEA_metabolome.txt") %>%
+  as.data.frame() %>%
+  mutate(type="metabolite",software="MNet")
+
+dat_mnet_extended <- data.table::fread("result/GSEA/MNet_GSEA_extended.txt") %>%
+  as.data.frame() %>%
+  mutate(type="extended",software="MNet")
+
+dat_mnet_all <- rbind(dat_mnet_gene,dat_mnet_metabolite,dat_mnet_extended) %>%
+  dplyr::select(pathway,pval,type,software)
+
+dat_multigsea <- data.table::fread("result/GSEA/multiGSEA-diff.txt") %>%
+  as.data.frame() %>%
+  mutate(pathway=substr(pathway, 8, nchar(pathway))) %>%
+  filter(pathway %in% PathwayExtendData$kegg_pathwayname) %>%
+  dplyr::select(pathway,transcriptome_pval,metabolome_pval,combined_pval)
+
+dat_multigsea_melt <- reshape2::melt(dat_multigsea,id="pathway")
+
+dat_multigsea_diff <- dat_multigsea_melt %>%
+  dplyr::rename("pval"="value","type"="variable") %>%
+  dplyr::mutate(software="multiGSEA-diffdatabase") %>%
+  dplyr::mutate(type=ifelse(type=="transcriptome_pval","gene",
+                            ifelse(type=="metabolome_pval","metabolite",
+                                   ifelse(type=="combined_pval","extended","jj"))))
+
+dat_multigsea <- data.table::fread("result/GSEA/multiGSEA-same.txt") %>%
+  as.data.frame() %>%
+  filter(pathway %in% PathwayExtendData$kegg_pathwayname) %>%
+  dplyr::select(pathway,transcriptome_pval,metabolome_pval,combined_pval)
+
+dat_multigsea_melt <- reshape2::melt(dat_multigsea,id="pathway")
+
+dat_multigsea_same <- dat_multigsea_melt %>%
+  dplyr::rename("pval"="value","type"="variable") %>%
+  dplyr::mutate(software="multiGSEA-samedatabase") %>%
+  dplyr::mutate(type=ifelse(type=="transcriptome_pval","gene",
+                            ifelse(type=="metabolome_pval","metabolite",
+                                   ifelse(type=="combined_pval","extended","jj"))))
+
+all <- rbind(dat_mnet_all,dat_multigsea_diff,dat_multigsea_same)
+
+pathway_filter_gene <- all %>%
+  filter(type == "gene") %>%
+  filter(pval < 0.01) %>%
+  pull(pathway) %>% unique()
+
+all_gene_filter <- all %>%
+  filter(type == "gene") %>%
+  filter(pathway %in% pathway_filter_gene)
+
+all_gene_MNet <- all_gene_filter %>%
+  filter(software == "MNet") %>%
+  arrange(match(pathway,pathway_filter_gene)) %>%
+  dplyr::select(pval,pathway) %>%
+  mutate(pval=-log10(pval)) %>%
+  tibble::column_to_rownames("pathway") %>%
+  dplyr::rename("MNet"="pval")
+all_gene_multiGSEA_samedatabase <- all_gene_filter %>%
+  filter(software == "multiGSEA-samedatabase") %>%
+  arrange(match(pathway,pathway_filter_gene)) %>%
+  dplyr::select(pval,pathway) %>%
+  mutate(pval=-log10(pval)) %>%
+  tibble::column_to_rownames("pathway") %>%
+  dplyr::rename("multiGSEA_samedatabase"="pval")
+all_gene_multiGSEA_diffdatabase <- all_gene_filter %>%
+  filter(software == "multiGSEA-diffdatabase") %>%
+  arrange(match(pathway,pathway_filter_gene)) %>%
+  dplyr::select(pval,pathway) %>%
+  mutate(pval=-log10(pval)) %>%
+  mutate(pval=ifelse(is.na(pval),0.000001,pval)) %>%
+  tibble::column_to_rownames("pathway") %>%
+  dplyr::rename("multiGSEA_diffdatabase"="pval")
+
+d_min <- rep(0,4)
+d_max <- rep(5,4)
+
+dd_all <- cbind(d_max,d_min,all_gene_MNet,
+                all_gene_multiGSEA_samedatabase,all_gene_multiGSEA_diffdatabase) %>%
+  t() %>%
+  as.data.frame()
+
+colors <- c(rgb(239, 44, 43,alpha=100,maxColorValue = 255),
+            rgb(255, 200, 57,alpha=100,maxColorValue = 255),
+            rgb(79, 189, 129,alpha=100,maxColorValue = 255))
+
+colors1 <- c("#EF2C2B","#FFC839","#4FBD81")
+
+pdf("result/GSEA/GSEA_gene_radar.pdf",width=6,height = 6)
+
+radarchart(
+  dd_all,
+  axistype = 0,     
+  seg=5,
+  pcol = colors1,      
+  pfcol = colors,      
+  plwd = 2,            
+  plty = 1,            
+  cglcol = "grey",    
+  cglty = 1,           
+  cglwd = 0.8,         
+  axislabcol = "grey", 
+  vlcex = 0.8)
+
+legend(
+  "topright",
+  legend = c("MNet","multiGSEA_samedatabase", "multiGSEA_diffedatabase"),
+  bty = "n",
+  pch = 20,
+  col = colors1,
+  text.col = "black",
+  pt.cex = 1.5)
+dev.off()
+
+##  Extended
+dat_mnet_gene <- data.table::fread("result/GSEA/MNet_GSEA_transcriptome.txt") %>%
+  as.data.frame() %>%
+  mutate(type="gene",software="MNet")
+
+dat_mnet_metabolite <- data.table::fread("result/GSEA/MNet_GSEA_metabolome.txt") %>%
+  as.data.frame() %>%
+  mutate(type="metabolite",software="MNet")
+
+dat_mnet_extended <- data.table::fread("result/GSEA/MNet_GSEA_extended.txt") %>%
+  as.data.frame() %>%
+  mutate(type="extended",software="MNet")
+
+dat_mnet_all <- rbind(dat_mnet_gene,dat_mnet_metabolite,dat_mnet_extended) %>%
+  dplyr::select(pathway,pval,type,software)
+
+dat_multigsea <- data.table::fread("result/GSEA/multiGSEA-diff.txt") %>%
+  as.data.frame() %>%
+  mutate(pathway=substr(pathway, 8, nchar(pathway))) %>%
+  filter(pathway %in% PathwayExtendData$kegg_pathwayname) %>%
+  dplyr::select(pathway,transcriptome_pval,metabolome_pval,combined_pval)
+
+dat_multigsea_melt <- reshape2::melt(dat_multigsea,id="pathway")
+
+dat_multigsea_diff <- dat_multigsea_melt %>%
+  dplyr::rename("pval"="value","type"="variable") %>%
+  dplyr::mutate(software="multiGSEA-diffdatabase") %>%
+  dplyr::mutate(type=ifelse(type=="transcriptome_pval","gene",
+                            ifelse(type=="metabolome_pval","metabolite",
+                                   ifelse(type=="combined_pval","extended","jj"))))
+
+dat_multigsea <- data.table::fread("result/GSEA/multiGSEA-same.txt") %>%
+  as.data.frame() %>%
+  filter(pathway %in% PathwayExtendData$kegg_pathwayname) %>%
+  dplyr::select(pathway,transcriptome_pval,metabolome_pval,combined_pval)
+
+dat_multigsea_melt <- reshape2::melt(dat_multigsea,id="pathway")
+
+dat_multigsea_same <- dat_multigsea_melt %>%
+  dplyr::rename("pval"="value","type"="variable") %>%
+  dplyr::mutate(software="multiGSEA-samedatabase") %>%
+  dplyr::mutate(type=ifelse(type=="transcriptome_pval","gene",
+                            ifelse(type=="metabolome_pval","metabolite",
+                                   ifelse(type=="combined_pval","extended","jj"))))
+
+all <- rbind(dat_mnet_all,dat_multigsea_diff,dat_multigsea_same)
+
+pathway_filter_extended <- all %>%
+  filter(type == "extended") %>%
+  filter(pval < 0.01) %>%
+  pull(pathway) %>% unique()
+
+all_extended_filter <- all %>%
+  filter(type == "extended") %>%
+  filter(pathway %in% pathway_filter_extended)
+
+all_extended_MNet <- all_extended_filter %>%
+  filter(software == "MNet") %>%
+  arrange(match(pathway,pathway_filter_extended)) %>%
+  dplyr::select(pval,pathway) %>%
+  mutate(pval=-log10(pval)) %>%
+  tibble::column_to_rownames("pathway") %>%
+  dplyr::rename("MNet"="pval")
+all_extended_multiGSEA_samedatabase <- all_extended_filter %>%
+  filter(software == "multiGSEA-samedatabase") %>%
+  arrange(match(pathway,pathway_filter_extended)) %>%
+  dplyr::select(pval,pathway) %>%
+  mutate(pval=-log10(pval)) %>%
+  tibble::column_to_rownames("pathway") %>%
+  dplyr::rename("multiGSEA_samedatabase"="pval")
+all_extended_multiGSEA_diffdatabase <- all_extended_filter %>%
+  filter(software == "multiGSEA-diffdatabase") %>%
+  arrange(match(pathway,pathway_filter_extended)) %>%
+  dplyr::select(pval,pathway) %>%
+  mutate(pval=-log10(pval)) %>%
+  mutate(pval=ifelse(is.na(pval),0.000001,pval)) %>%
+  tibble::column_to_rownames("pathway") %>%
+  dplyr::rename("multiGSEA_diffdatabase"="pval")
+
+d_min <- rep(0,9)
+d_max <- rep(5,9)
+
+dd_all <- cbind(d_max,d_min,all_extended_MNet,
+                all_extended_multiGSEA_samedatabase,all_extended_multiGSEA_diffdatabase) %>%
+  t() %>%
+  as.data.frame()
+
+colors <- c(rgb(239, 44, 43,alpha=100,maxColorValue = 255),
+            rgb(255, 200, 57,alpha=100,maxColorValue = 255),
+            rgb(79, 189, 129,alpha=100,maxColorValue = 255))
+
+colors1 <- c("#EF2C2B","#FFC839","#4FBD81")
+
+pdf("result/GSEA/GSEA_extended_radar.pdf",width=6,height = 6)
+
+radarchart(
+  dd_all,
+  axistype = 0,        
+  seg=5,
+  pcol = colors1,      
+  pfcol = colors,      
+  plwd = 2,            
+  plty = 1,            
+  cglcol = "grey",     
+  cglty = 1,           
+  cglwd = 0.8,         
+  axislabcol = "grey", 
+  vlcex = 0.8)
+
+legend(
+  "topright",
+  legend = c("MNet","multiGSEA_samedatabase", "multiGSEA_diffedatabase"),
+  bty = "n",
+  pch = 20,
+  col = colors1,
+  text.col = "black",
+  pt.cex = 1.5)
+dev.off()
+```
+
+```{r,eval=TRUE,echo=FALSE,fig.align='center'}
+knitr::include_graphics("figure/multiGSEA-radar.png")
+```
+
+#### Glycerophospholipid metabolism
+
+Using MNet to analyze the Glycerophospholipid metabolism pathway.
+
+```{r}
+library(multiGSEA)
+library(org.Hs.eg.db)
+library(dplyr)
+library(MNet)
+library(ggplot2)
+
+data(transcriptome,package="multiGSEA")
+data(metabolome,package="multiGSEA")
+
+ah <- AnnotationHub::AnnotationHub()
+aa <- ah[["AH91792"]]
+metabolome_1 <- metabolome %>%
+  mutate(HMDB=gsub("HMDB","HMDB00",HMDB)) %>%
+  left_join(aa,by="HMDB") %>%
+  filter(!is.na(KEGG)) %>%
+  as.data.frame() %>%
+  dplyr::select(HMDB,logFC,pValue,KEGG,HMDB) %>%
+  unique() %>%
+  filter(KEGG %in% PathwayExtendData$name) %>%
+  distinct(KEGG,.keep_all = T) %>%
+  arrange(desc(logFC)) %>%
+  distinct(logFC,.keep_all = T)
+
+dat_metabolome <- metabolome_1$logFC
+names(dat_metabolome) <- metabolome_1$KEGG
+
+p_Glycerophospholipid_metabolite <- pESEA("Glycerophospholipid metabolism",dat_metabolome,out = "metabolite",minSize = 1,gseaParam = 1)
+
+## gene
+transcriptome_temp <- transcriptome %>%
+  as.data.frame() %>%
+  filter(Symbol %in% PathwayExtendData$name) %>%
+  arrange(desc(logFC))
+dat_transcriptome <- transcriptome_temp$logFC
+names(dat_transcriptome) <- transcriptome_temp$Symbol
+p_Glycerophospholipid_gene <- pESEA("Glycerophospholipid metabolism",dat_transcriptome,out = "gene",minSize = 1,gseaParam = 1)
+
+## metabolite and gene
+dat_all_temp <- rbind(metabolome_1 %>%
+                        dplyr::select(KEGG,logFC) %>%
+                        rename("name"="KEGG"),
+                      transcriptome %>%
+                        as.data.frame() %>%
+                        dplyr::select(Symbol,logFC) %>%
+                        rename("name"="Symbol")) %>%
+  filter(name %in% PathwayExtendData$name) %>%
+  arrange(desc(logFC))
+
+dat_all <- dat_all_temp$logFC
+names(dat_all) <- dat_all_temp$name
+
+p_Glycerophospholipid_extended <- pESEA("Glycerophospholipid metabolism",dat_all,out = "Extended",minSize = 1,gseaParam = 1)
+
+ggsave("result/GSEA/GSEA_Glycerophospholipid_metabolite.pdf",p_Glycerophospholipid_metabolite,width=5,height = 5)
+ggsave("result/GSEA/GSEA_Glycerophospholipid_gene.pdf",p_Glycerophospholipid_gene,width=5,height = 5)
+ggsave("result/GSEA/GSEA_Glycerophospholipid_extended.pdf",p_Glycerophospholipid_extended,width=5,height = 5)
+```
+
+```{r,eval=TRUE,echo=FALSE,fig.align='center'}
+knitr::include_graphics("figure/multiGSEA-Glycerophospholipid.png")
+```
+
+#### Propanoate metabolism
+
+Using MNet to analyze the Propanoate metabolism pathway.
+
+```{r}
+data(transcriptome,package="multiGSEA")
+data(metabolome,package="multiGSEA")
+
+ah <- AnnotationHub::AnnotationHub()
+aa <- ah[["AH91792"]]
+metabolome_1 <- metabolome %>%
+  mutate(HMDB=gsub("HMDB","HMDB00",HMDB)) %>%
+  left_join(aa,by="HMDB") %>%
+  filter(!is.na(KEGG)) %>%
+  as.data.frame() %>%
+  dplyr::select(HMDB,logFC,pValue,KEGG,HMDB) %>%
+  unique() %>%
+  filter(KEGG %in% PathwayExtendData$name) %>%
+  distinct(KEGG,.keep_all = T) %>%
+  arrange(desc(logFC)) %>%
+  distinct(logFC,.keep_all = T)
+
+dat_metabolome <- metabolome_1$logFC
+names(dat_metabolome) <- metabolome_1$KEGG
+
+p_Propanoate_metabolite <- pESEA("Propanoate metabolism",dat_metabolome,out = "metabolite",minSize = 1,gseaParam = 1)
+
+## gene
+transcriptome_temp <- transcriptome %>%
+  as.data.frame() %>%
+  filter(Symbol %in% PathwayExtendData$name) %>%
+  arrange(desc(logFC))
+dat_transcriptome <- transcriptome_temp$logFC
+names(dat_transcriptome) <- transcriptome_temp$Symbol
+p_Propanoate_gene <- pESEA("Propanoate metabolism",dat_transcriptome,out = "gene",minSize = 1,gseaParam = 1)
+
+## metabolite and gene
+dat_all_temp <- rbind(metabolome_1 %>%
+                        dplyr::select(KEGG,logFC) %>%
+                        rename("name"="KEGG"),
+                      transcriptome %>%
+                        as.data.frame() %>%
+                        dplyr::select(Symbol,logFC) %>%
+                        rename("name"="Symbol")) %>%
+  filter(name %in% PathwayExtendData$name) %>%
+  arrange(desc(logFC))
+
+dat_all <- dat_all_temp$logFC
+names(dat_all) <- dat_all_temp$name
+
+p_Propanoate_extended <- pESEA("Propanoate metabolism",dat_all,out = "Extended",minSize = 1,gseaParam = 1)
+
+ggsave("result/GSEA/GSEA_Propanoate_metabolite.pdf",p_Propanoate_metabolite,width=6,height = 5)
+ggsave("result/GSEA/GSEA_Propanoate_gene.pdf",p_Propanoate_gene,width=6,height = 5)
+ggsave("result/GSEA/GSEA_Propanoate_extended.pdf",p_Propanoate_extended,width=6,height = 5)
+```
+
+```{r,eval=TRUE,echo=FALSE,fig.align='center'}
+knitr::include_graphics("figure/multiGSEA-Propanoate.png")
+```
+
 ## Apply to acute myeloid leukemia
 
 Acute myeloid leukemia (AML) is a group of myeloid neoplasms characterized by high heterogeneity in clinical courses and prognosis, and most AML patients respond poorly to immunotherapies.  

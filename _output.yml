@@ -13,3 +13,7 @@ bookdown::pdf_book:
   citation_package: natbib
   keep_tex: yes
 bookdown::epub_book: default
+bookdown::html_document2:
+  toc: true
+  toc_depth: 4
+  toc_float: true
